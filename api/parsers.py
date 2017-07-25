@@ -59,7 +59,7 @@ def switch_shell(PL_PWD, shell_input):
                 PL_POC_FILE = ch.pl_return_path(PL_PWD,PL_POC_FILE)
                 read_cmd_line(poc_re,PL_POC_FILE, poc_module_path_first_name, poc_module_path_end_name)
             else:
-                print u"没有找到此模块" + PL_POC_FILE
+                print setcolor.set_red("[!] ") + "没有找到此模块" + PL_POC_FILE
     else:
         if shell_input   == const.PL_SHOW:
             operation.pl_show_all_poc_info(PL_PWD)

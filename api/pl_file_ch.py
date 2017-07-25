@@ -18,6 +18,7 @@ sys.path.append(root_path)
 import pl_os_operation as operation
 import pl_poc_frame as frame
 import modules.getinfo as getinfo
+import pl_print_world_color as setcolor
 from modules.exploit import BGLogLevel, BGSeverity, BGType
 
 
@@ -64,7 +65,7 @@ def pl_show_poc_info(PL_POC_FILE):
             poc_info = getinfo.import_poc(PL_POC_FILE)
             print poc_info
     except:
-        print u"[-] 加载文件信息出错 "
+        print setcolor.set_red("[!] ") + "加载文件信息出错 "
 
 
 #返回绝对路径
@@ -78,7 +79,7 @@ def pl_return_path(pwd, path):
             PL_POC_FILE = PL_POC_FILE + '.py'
             return PL_POC_FILE
     except:
-        print u"[-] 加载出错,查看是否存在该文件 "
+        print setcolor.set_red("[!] ") + " 加载出错,查看是否存在该文件 "
     
 def pl_run_poc(poc):
     pl_bg_arg(poc)
@@ -86,7 +87,7 @@ def pl_run_poc(poc):
         results = [poc.result.to_python()]
         json.dumps(results)
     except Exception, e:
-        print(u'[-] result 序列化失败')
+        print(setcolor.set_red("[!] ") + ' result 序列化失败')
         print(e)
         return
 
@@ -125,7 +126,7 @@ def pl_run_poc(poc):
         
         #exploit执行返回信息
         elif poc.result.exp_status:
-            print u"[*]Start Exploit...."
+            pass
         else:
             pass
             #poc.print_error(poc.result.error)
@@ -157,7 +158,7 @@ def pl_get_poc_option(PL_POC_FILE):
                 return poc_option.option
             #读取poc中的description
     except:
-        print u"[-] 加载文件信息出错 "
+        print setcolor.set_red("[!] ") + "加载文件信息出错 "
 
 def pl_add_option(dicts,key,value):
     if key in dicts:
@@ -182,7 +183,7 @@ def pl_bg_arg(poc):
             else:
                 poc.payload()
     except:
-	print "[-] 载入失败 "
+	print setcolor.set_red("[!] ") + "载入失败 "
 
 	
 

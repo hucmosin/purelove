@@ -64,7 +64,7 @@ def read_cmd_lines(poc_re,PL_POC_FILE, poc_module_path_first_name, poc_module_pa
                         for option, option_filter in poc.option.items():
                             if option_key == option:
                                 if option_filter['Required'] == "":
-                                    print u"[-] 参数为固定值,无法修改!"
+                                    print setcolor.set_yellow("[-] ") + "参数为固定值,无法修改!"
                                 else:
                                     print option_key + " => " + option_value
                                     option_filter['default'] = option_filter['convert'](option_value) #转换option的类型
@@ -72,7 +72,7 @@ def read_cmd_lines(poc_re,PL_POC_FILE, poc_module_path_first_name, poc_module_pa
                             if not option_key:
                                 pass
                     except:
-                        print u"[!] 参数错误"
+                        print setcolor.set_red("[!] ") + "参数错误"
             elif poc_shell_input == const.PL_INFO:
                 ch.pl_show_poc_info(PL_POC_FILE) 
             elif poc_shell_input == const.PL_RUN or poc_shell_input == const.PL_EXPLOIT: #后期更改时，改为全局变量const
@@ -93,7 +93,7 @@ def read_cmd_lines(poc_re,PL_POC_FILE, poc_module_path_first_name, poc_module_pa
                         if not poc_shell:
                             pass
                 except:
-                    print u"[-] 参数错误"
+                    print setcolor.set_red("[!] ") + "参数错误"
                 
                 #监听shell,暂不开放
             #elif poc_shell_input[:10] == "set hander":

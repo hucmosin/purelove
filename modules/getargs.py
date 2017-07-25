@@ -55,7 +55,7 @@ def bgarg(bg_instance):
 		                  help="Print debug info")
 	(options, args) = parser.parse_args()
 	
-       # bg_instance.option.target['default'] = options.target
+        bg_instance.option.target['default'] = options.target
         
         infos.bginfos(bg_instance)
         
