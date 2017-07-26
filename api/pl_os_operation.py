@@ -192,7 +192,8 @@ def pl_find_poc_name(PL_PWD, PL_POC_NAME):
         except:
             f.close()
             return False
-    
+
+#在控制台上打印找到的poc_name的详细信息,此函数废弃，由print_poc_name_info代替
 def print_poc_name_infos(PL_PWD, PL_POC_NAME):
     PL_PWD_TMP = PL_PWD
     PL_PWD     = PL_PWD + "/logs/poc_name.pl"
@@ -256,12 +257,20 @@ def pl_get_UsePlatform():
 def print_poc_name_info(PL_PWD, PL_POC_NAME):
     PL_PWD_TMP = PL_PWD
     PL_PWD     = PL_PWD + "/logs/poc_name.pl"
+    desc = '''
+
+DirFileName
+-----------
+
+    '''
     if PL_POC_NAME:
-        print
-        print "\tDIRFILENAME"
-        print "\t============="
-        print
-        print u'\tFILENAMEPATH\t\t\t' + 'NAME\t\t\t' + 'DATE'
+        print desc
+        print "   {Filenamepath:<55}{Name:<20}{Date:<20}".format(Filenamepath   = "Filepath",
+                                                                 Name           = "Name",
+                                                                 Date           = "Date",)
+        print "   {Filenamepath:<55}{Name:<20}{Date:<20}".format(Filenamepath   = "--------",
+                                                                 Name           = "----",
+                                                                 Date           = "----",)
         print
         try:
             f = open(PL_PWD)
@@ -278,7 +287,10 @@ def print_poc_name_info(PL_PWD, PL_POC_NAME):
                     pname = pl_del_path_name(PL_PWD_TMP,poc_name)
                     #去掉绝对路径
                     pocname = pl_del_path(poc_name)
-                    print '\t' + pname + '\t\t\t' + pocname + '\t\t\t' + file_date
+                    print "   {Filenamepath:<55}{Name:<20}{Date:<20}".format(Filenamepath   = pname,
+                                                                             Name           = pocname,
+                                                                             Date           = file_date,)
+                    #print '\t' + pname + '\t\t\t' + pocname + '\t\t\t' + file_date
                 else:
                     pass
                 if not len(lines):
@@ -287,31 +299,31 @@ def print_poc_name_info(PL_PWD, PL_POC_NAME):
             f.close()
             return 
     else:
-        print
-        print "\tDIRFILENAME"
-        print "\t============="
-        print
-        print u'\tFILENAMEPATH\t\t\t' + 'NAME\t\t\t' + 'DATE'
+        print desc
+        print "   {Filenamepath:<55}{Name:<20}{Date:<20}".format(Filenamepath   = "Filepath",
+                                                                 Name           = "Name",
+                                                                 Date           = "Date",)
+        print "   {Filenamepath:<55}{Name:<20}{Date:<20}".format(Filenamepath   = "--------",
+                                                                 Name           = "----",
+                                                                 Date           = "----",)
         print 
         try:
-            #调用加载的文件进行查找
             f = open(PL_PWD)
             lines = f.readlines()
             for poc_name in lines:
                 poc_name        =   poc_name.replace('\n',"")
-                #截取出文件名
                 file_name       =   os.path.split(poc_name)     #分割出目录与文件
                 file_name       =   file_name[1]                #取出文件名
-                #模糊寻找匹配文件
-                #循环遍历模糊查询到的poc文件
                 if PL_POC_NAME in file_name:
                     print poc_name
                     file_date = pl_get_file_date(poc_name)
-                    #获取无后缀文件名
+
                     pname = pl_del_path_name(PL_PWD_TMP,poc_name)
-                    #去掉绝对路径
                     pocname = pl_del_path(ppoc_name)
-                    print '\t' + pname + '\t\t\t' + pocname + '\t\t\t' + file_date
+                    print "   {Filenamepath:<55}{Name:<20}{Date:<20}".format(Filenamepath   = pname,
+                                                                             Name           = pocname,
+                                                                             Date           = file_date,)
+                    #print '\t' + pname + '\t\t\t' + pocname + '\t\t\t' + file_date
                 else:
                     pass
                 if not len(lines):

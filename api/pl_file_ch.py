@@ -82,6 +82,8 @@ def pl_return_path(pwd, path):
         print setcolor.set_red("[!] ") + " 加载出错,查看是否存在该文件 "
     
 def pl_run_poc(poc):
+    #不指定监听模块，执行本地监听函数
+    #frame.pl_set_hander(poc)
     pl_bg_arg(poc)
     try:
         results = [poc.result.to_python()]

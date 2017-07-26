@@ -28,7 +28,7 @@ def main(bg_instance):
     if bg_instance.result.status:
         print(u'[POC 编写者]')
         print(u'\t{poc_author}'.format(poc_author=str(bg_instance.info.get('author', ''))))
-        print(u'[风险]')
+        print(u'[存在风险]')
         print('\t目标 {target} 存在 {poc_name}'.format(target = bg_instance.option.target.default,
                                                 poc_name  = bg_instance.info.get('name', '').strip()
                                                 ))
