@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<cms>
+  <files>
+      <file url="misc/drupal.js">
+          <version nb="7.33" md5="b1946ac92492d2347c6235b4d2611184"/>
+          <version nb="6.33" md5="b1946ac92492d2347c6235b4d2611184"/>
+          <version nb="8.1" md5="b1946ac92492d2347c6235b4d2611184"/>
+      </file>
+      <file url="misc/tabledrag.js">
+          <version nb="7.33" md5="b1946ac92492d2347c6235b4d2611184"/>
+          <version nb="6.33" md5="b1946ac92492d2347c6235b4d2611184"/>
+          <version nb="8.1" md5="b1946ac92492d2347c6235b4d2611184"/>
+      </file>
+      <file url="misc/ajax.js">
+          <version nb="7.33" md5="b1946ac92492d2347c6235b4d2611184"/>
+          <version nb="6.33" md5="b1946ac92492d2347c6235b4d2611184"/>
+          <version nb="8.1" md5="b1946ac92492d2347c6235b4d2611184"/>
+      </file>
+      <changelog url="CHANGELOG.txt">
+          <version nb="7.33" md5="b1946ac92492d2347c6235b4d2611184"/>
+          <version nb="6.33" md5="b1946ac92492d2347c6235b4d2611184"/>
+          <version nb="8.1" md5="b1946ac92492d2347c6235b4d2611184"/>
+      </changelog>
+  </files>
+</cms>

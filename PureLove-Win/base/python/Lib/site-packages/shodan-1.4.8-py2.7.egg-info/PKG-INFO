@@ -1,0 +1,15 @@
+Metadata-Version: 1.1
+Name: shodan
+Version: 1.4.8
+Summary: Python library and command-line utility for Shodan (https://developer.shodan.io)
+Home-page: http://github.com/achillean/shodan-python/tree/master
+Author: John Matherly
+Author-email: jmath@shodan.io
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Topic :: Software Development :: Libraries :: Python Modules

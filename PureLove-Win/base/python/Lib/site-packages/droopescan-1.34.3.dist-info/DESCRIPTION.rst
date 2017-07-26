@@ -1,0 +1,159 @@
+1.34.3
+======
+
+* New SS & Drupal versions.
+
+1.34.2
+======
+
+* New Drupal & Silverstripe versions.
+
+1.34.1
+======
+
+* Fix broken release.
+
+1.34.0
+======
+
+* New WP, Joomla and Drupal versions out. WP fixes serval security issues, including SSRF, XSS and an arbitrary redirect.
+
+1.33.7
+======
+
+* New Joomla, WP, SS and Drupal versions. WP has a XSS vuln.
+
+1.33.6
+======
+
+* Add joomla 3.4.7.
+* New interesting URLs for Joomla.
+* Fixed readme for wordpress.
+
+1.33.5
+======
+
+* New versions of SS, WP, and Joomla (RCE?)
+
+1.33.4
+======
+
+* Improved documentation.
+* Drupal 8.0.1 added.
+
+1.33.3
+======
+
+* Drupal 8.0.0 added to DB.A
+* Add interesting URL for joomla (approximate version disclosure.)
+
+1.33.2
+======
+
+* Added new SS version (security fixes.)
+
+1.33.1
+======
+
+* New versions for Joomla (unauthenticated SQL injection) and Drupal (open redirect).
+
+1.33.0
+======
+
+* Additional interesting URLs for Joomla.
+* Improved SIGINT handling.
+* Improved SilverStripe detection.
+* Notify users when following redirects.
+* Prevent erroneous CMS identification edge case.
+
+1.32.2
+======
+
+* New versions for Drupal & SilverStripe. No new vulnerabilities released.
+
+1.32.1
+======
+
+* Security updates for SS & Wordpress.
+* Now supports plugin and theme enumeration for wordpress.
+* Removed async capabilities.
+
+1.32.0
+======
+
+* New CMS versions (Joomla and Silverstripe)
+* Resolve issue in Kali.
+* Implement async scanning functionality. This coexists with synchronous scanning code and will likely be removed unless performance increases are substantial.
+
+1.32.0-rc8
+==========
+
+* New Joomla and SS versions.
+* Async mode in beta.
+
+1.31.0
+======
+
+* Added --resume flag. Allows the resuming of long-running scans.
+* New Wordpress and Drupal versions added to scanner. Drupal's is a security release.
+
+1.30.0
+======
+
+* Add wordpress support (version enumeration only.)
+* Improve cms identification.
+* Improve mass-scanning.
+* Add capacity to add custom host headers.
+* Improve documentation.
+
+1.29.0
+======
+
+* CMS identification functionality. This enables droopescan to automatically detect CMS.
+* Prototype implementation for Joomla version detection.
+* New Joomla versions (security fixes.)
+* General output improvements.
+
+1.28.0
+======
+
+* Update Drupal, new versions: 6.36 & 7.38 (Security fixes)
+
+1.28.0-rc1
+==========
+
+* Internal improvements.
+
+1.27.0
+======
+
+* UI improvements.
+* Add support for relative paths for -U.
+* Add fingerprints for SS 3.1.13 & 3.0.14.
+* Version detection improvements.
+
+1.27.0-beta
+===========
+
+* Version detection improvement.
+* Accept relative paths in -U.
+* Internal improvements.
+
+1.26.1
+======
+
+* Bug fix for Kali.
+
+1.26.0
+======
+
+* Update Drupal and SilverStripe. No security updates.
+* Improve version detection.
+* Added notice for legacy requests library (for Kali users.)
+
+1.25.0
+======
+
+* Bug fix.
+
+

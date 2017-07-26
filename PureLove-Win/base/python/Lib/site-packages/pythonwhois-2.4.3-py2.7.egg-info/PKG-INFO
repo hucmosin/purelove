@@ -1,0 +1,11 @@
+Metadata-Version: 1.1
+Name: pythonwhois
+Version: 2.4.3
+Summary: Module for retrieving and parsing the WHOIS data for a domain. Supports most domains. No dependencies.
+Home-page: http://cryto.net/pythonwhois
+Author: Sven Slootweg
+Author-email: pythonwhois@cryto.net
+License: WTFPL
+Description: UNKNOWN
+Platform: UNKNOWN
+Provides: pythonwhois

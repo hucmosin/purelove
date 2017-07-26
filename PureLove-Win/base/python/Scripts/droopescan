@@ -1,0 +1,5 @@
+#!C:\PentestBox\base\python\python.exe
+import sys, os
+from dscan import droopescan
+
+droopescan.main()
