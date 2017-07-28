@@ -120,14 +120,7 @@ def pl_set_hander(poc):
 
 #监听端口
 def pl_hander_loop(lhost,lport):
-
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.bind((lhost, lport))
-    server.listen()
-    print "[+] Start Listening host %s..." %lhost
-    print "[+] Start Listening port %s..." %lport
-    while True:
-        #接收shell和发送客户端信息
+    #接收shell和发送客户端信息
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((lhost, lport))
     server.listen(1)
