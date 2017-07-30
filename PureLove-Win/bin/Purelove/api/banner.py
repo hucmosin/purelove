@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+﻿#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 #导入model数量
 import pl_print_world_color as setcolor
@@ -18,8 +18,8 @@ def pl_get_banner():
        =[               purelove v1.0.0	                       ]
 + -- --=[                                                      ]
 + -- --=[                  by mosin                            ]
-+ -- --=[ Guthub Url: http://www.github.com/hucmmosin/purelove ]
-'''  #.format(payload = setcolor.set_yellow())
++ -- --=[ Guthub Url: http://www.github.com/hucmosin/purelove  ]
+'''  #.format(payload = setcolor.set_yellow()) 
     print desc
 
 

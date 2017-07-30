@@ -4,7 +4,7 @@ import os
 from socket import *
 
 HOST = '127.0.0.1'  #目标地址IP
-PORT = 4444        #目标端口
+PORT = 44444        #目标端口
 BUFSIZ = 2048
 ADDR=(HOST, PORT)
 client = socket(AF_INET, SOCK_STREAM)
