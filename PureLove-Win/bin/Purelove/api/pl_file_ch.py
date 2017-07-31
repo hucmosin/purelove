@@ -19,6 +19,7 @@ sys.path.append(root_path)
 import pl_os_operation as operation
 import pl_poc_frame as frame
 import modules.getinfo as getinfo
+import pl_print_world_color as setcolor
 from modules.exploit import BGLogLevel, BGSeverity, BGType
 
 
@@ -61,7 +62,7 @@ def pl_show_poc_info(PL_POC_FILE):
             poc_info = getinfo.import_poc(PL_POC_FILE)
             print poc_info
     except:
-        print u"[-] 加载文件信息出错 "
+        print setcolor.set_red("[!]") + " 加载文件信息出错 "
 
 
 #返回绝对路径
@@ -74,7 +75,7 @@ def pl_return_path(pwd, path):
             PL_POC_FILE = PL_POC_FILE + '.py'
             return PL_POC_FILE
     except:
-        print u"[-] 加载出错,查看是否存在该文件 "
+        print setcolor.set_red("[!]") + " 加载出错,查看是否存在该文件 "
     
 def pl_run_poc(poc):
     pl_bg_arg(poc)
@@ -120,7 +121,7 @@ def pl_run_poc(poc):
                 print('\t* {ref_key}: {ref_value}'.format(ref_key = ref_key, ref_value = each_ref.get(ref_key).strip())).decode('utf-8')
         
         elif poc.result.exp_status:
-            print u"[*]Start Exploit...."
+            pass
         else:
             pass
 
@@ -147,7 +148,7 @@ def pl_get_poc_option(PL_POC_FILE):
             else:
                 return poc_option.option
     except:
-        print u"[-] 加载文件信息出错 "
+        print setcolor.set_red("[!]") + "  加载文件信息出错 "
 
 def pl_add_option(dicts,key,value):
     if key in dicts:
@@ -173,7 +174,7 @@ def pl_bg_arg(poc):
             else:
                 poc.payload()
     except:
-	print u"[-] 载入失败 "
+	print setcolor.set_red("[!]") + "  载入失败 "
 
 	
 

@@ -26,6 +26,7 @@ def usage():
 Module Main Console Help
 -------------------------
 
+    use         Select an module by name
     info        Display module information
     set         Set module parameters
     show        show options settings information
@@ -37,11 +38,11 @@ Module Main Console Help
     print usages
 
 #执行poc
-def read_cmd_lines(poc_re,PL_POC_FILE, poc_module_path_first_name, poc_module_path_end_name):
+def read_cmd_lines(PL_PWD,poc_re,PL_POC_FILE, poc_module_path_first_name, poc_module_path_end_name):
     poc = getinfo.import_pocs(PL_POC_FILE) 
     while True:
         ple = setcolor.UseStyle("ple",mode = 'underline')
-        poc_shell_input = raw_input(ple + " " + poc_module_path_first_name + "(" + poc_module_path_end_name +") > ").strip().lower()
+        poc_shell_input = raw_input(ple + " " + poc_module_path_first_name + "(" + setcolor.set_red(poc_module_path_end_name) +") > ").strip().lower()
           
         if poc_shell_input == const.PL_BACK:
             return
@@ -64,7 +65,7 @@ def read_cmd_lines(poc_re,PL_POC_FILE, poc_module_path_first_name, poc_module_pa
                         for option, option_filter in poc.option.items():
                             if option_key == option:
                                 if option_filter['Required'] == "":
-                                    print u"[-] 参数为固定值,无法修改!"
+                                    print setcolor.set_yellow("[-] ") +"参数为固定值,无法修改!"
                                 else:
                                     print option_key + " => " + option_value
                                     option_filter['default'] = option_filter['convert'](option_value) 
@@ -72,7 +73,7 @@ def read_cmd_lines(poc_re,PL_POC_FILE, poc_module_path_first_name, poc_module_pa
                             if not option_key:
                                 pass
                     except:
-                        print u"[!] 参数错误"
+                        print setcolor.set_red("[-] ") +"参数错误"
             elif poc_shell_input == const.PL_INFO:
                 ch.pl_show_poc_info(PL_POC_FILE) 
             elif poc_shell_input == const.PL_RUN or poc_shell_input == const.PL_EXPLOIT: 
@@ -93,7 +94,20 @@ def read_cmd_lines(poc_re,PL_POC_FILE, poc_module_path_first_name, poc_module_pa
                         if not poc_shell:
                             pass
                 except:
-                    print u"[-] 参数错误"
+                    print setcolor.set_red("[-] ") +"参数错误"
+            elif poc_shell_input[:3] == const.PL_USE:
+                PL_POC_FILE = poc_shell_input[3:].strip()
+                if PL_POC_FILE == "":
+                    return
+                else:
+                    PL_STATUS = operation.pl_judge_file_name(PL_PWD, PL_POC_FILE)
+                    if PL_STATUS:
+                        poc_re = PL_POC_FILE
+                        poc_module_path_first_name  = ch.pl_path_split_first_name(PL_POC_FILE)
+                        poc_module_path_end_name    = ch.pl_path_split_end_name(PL_POC_FILE)
+                        PL_POC_FILE = ch.pl_return_path(PL_PWD,PL_POC_FILE)
+                    else:
+                        print setcolor.set_red(" [!] ") + "没有找到此模块 => ".decode('utf-8') + PL_POC_FILE
                 
                 #监听shell,暂不开放
             #elif poc_shell_input[:10] == "set hander":

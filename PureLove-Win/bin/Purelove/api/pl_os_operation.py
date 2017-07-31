@@ -80,7 +80,7 @@ def pl_get_poc_name(PL_PWD,PL_POC_FILE):
                 else:
                     pass
     except:
-        print u"[-] 加载PAYLOAD失败，请重新运行！"
+        print setcolor.set_red("[!]") + "  加载PAYLOAD失败，请重新运行！"
         f.close()
         f1.close()
     f.close()
@@ -121,7 +121,7 @@ PureLove Modules
         except:
             f.close()
     else:
-        print u"[-] payload加载出错" #红色字体
+        print setcolor.set_red("[!]") + "  payload加载出错" #红色字体
         return
         
 def pl_del_suffix(poc_name_path):
@@ -179,7 +179,8 @@ def pl_find_poc_name(PL_PWD, PL_POC_NAME):
         except:
             f.close()
             return False
-    
+
+#已废弃函数，由print_poc_name_info代替
 def print_poc_name_infos(PL_PWD, PL_POC_NAME):
 
     PL_PWD_TMP = PL_PWD

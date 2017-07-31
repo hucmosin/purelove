@@ -6,12 +6,12 @@ import sys
 
 docs = '''
 
-#title                  :example
-#description            :This is poc speak
+#title                  :java RMI反序列化漏洞
+#description            :java RMI反序列化漏洞
 #author                 :mosin
 #date                   :20160309
 #version                :0.1
-#usage                  :python example
+#usage                  :java RMI反序列化漏洞
 #notes                  :
 #python_version         :2.7.5
 #==============================================================================
@@ -45,8 +45,8 @@ class PLScan(BGExploit):
             "license": self.license.BG,  # POC的版权信息
             "author": ["mosin"],  # 编写POC者
             "ref": [
-                {self.ref.url: "www.baidu.com"},  # 引用的url
-                {self.ref.bugfrom: "www.baidu.com"},  # 漏洞出处
+                {self.ref.url: "www.example.com"},  # 引用的url
+                {self.ref.bugfrom: "www.example.com"},  # 漏洞出处
             ],
             "type": self.type.rce,  # 漏洞类型
             "severity": self.severity.high,  # 漏洞等级
@@ -100,6 +100,7 @@ class PLScan(BGExploit):
     def payload(self):
         ip =  self.option.target['default']
         port = self.option.port['default']
+        timeout = 15
         try:
             address=(ip,port)
             socket.setdefaulttimeout(timeout)
@@ -186,10 +187,10 @@ class PLScan(BGExploit):
                 self.result.status = True
                 self.result.data.infos = '存在 Java RMI 反序列化代码执行'
         except:
-            print "xss"
+            print u"payload代码执行出错，请检查源码"
     def exploit(self):
         if self.result.exp_status:
-            print " debug test"
+            print u" debug test"
 
 
 

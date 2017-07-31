@@ -27,7 +27,7 @@ Purelove Main Console Help
     show        Display module by name and path
     version	Show console version
     search      Find modules from directories
-    shell       Windows cmd and Linux shell
+    shell       Windows cmd and Linux shell pl-shell > back = (EXIT) 
     cls/clear   Clean screan
 
 '''

@@ -27,6 +27,7 @@ def usage():
 Module Main Console Help
 -------------------------
 
+    use         Select an module by name
     info        Display module information
     set         Set module parameters
     show        show options settings information
