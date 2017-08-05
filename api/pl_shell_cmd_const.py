@@ -28,6 +28,7 @@ PL_POC_NAME         =       ""                              #利用程序获取�
 PL_FILE_PATH        =       ""  	            	    #poc文件目录，不加文件名 example:explot/windows/smb/
 PL_PWD              =       os.getcwd()                     #获取当前绝对路径
 PL_PAYLOAD_DIR      =       "/payloads"                     #poc所在目录
+PL_TOOL_DIR         =       "/bin/Purelove/thirdtools"
 PL_SHELLCODE_DIR    =       "/shellcode"                    #shellcode目录，注：暂时还未启用
 PL_POC_FILE         =       ""  			    #完整的路径加文件名 example:explot/windows/smb/ms17-010
 PL_BACK             =       "back"

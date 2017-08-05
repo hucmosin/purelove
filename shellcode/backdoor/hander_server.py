@@ -1,4 +1,7 @@
 #-*- coding: utf-8 -*-
+"""
+适用win_shell
+"""
 
 import os
 from socket import *

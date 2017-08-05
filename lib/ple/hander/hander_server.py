@@ -64,7 +64,7 @@ class Server(threading.Thread):
     client_count = 1        
     current_client = None  
 
-    def __init__(self,target, port):
+    def __init__(self,host, port):
         super(Server, self).__init__()
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) 
