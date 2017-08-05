@@ -29,10 +29,10 @@ Purelove Main Console Help
     search      Find modules from directories
     shell       Windows cmd and Linux shell pl-shell > back = (EXIT) 
     cls/clear   Clean screan
+    load        In Load Others Tools shell
 
 '''
     print usages
-
 
 def shell(PL_PWD):
     while True:
@@ -40,10 +40,8 @@ def shell(PL_PWD):
         shell_input = raw_input(ple + " > ").strip().lower()
         switch_shell(PL_PWD, shell_input)
 
-
 def read_cmd_line(PL_PWD,poc_re,PL_POC_FILE, poc_module_path_first_name, poc_module_path_end_name):
     execute.read_cmd_lines(PL_PWD,poc_re,PL_POC_FILE, poc_module_path_first_name, poc_module_path_end_name)
-
 
 def switch_shell(PL_PWD, shell_input):
     if shell_input[:3] == const.PL_USE:
@@ -79,6 +77,8 @@ def switch_shell(PL_PWD, shell_input):
             os.system('cls')
         elif shell_input == const.PL_OS_SHELL:
             operation.pl_os_shell()
+        elif shell_input == "load":
+            load.exec_load(PL_PWD)
         else:
             #print u"ple => " + shell_input
             pass
