@@ -82,6 +82,8 @@ def switch_shell(PL_PWD, shell_input):
             os.system('cls')
         elif shell_input == const.PL_OS_SHELL:
             operation.pl_os_shell()
+	elif shell_input == "load":
+	    pass
         else:
             pass
 
