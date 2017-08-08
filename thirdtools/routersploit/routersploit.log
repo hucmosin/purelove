@@ -1,0 +1,16 @@
+2017-08-07 21:29:21,167 ERROR routersploit.exceptions       Unknown command: 'Possible'
+Traceback (most recent call last):
+  File "E:\pure\PureLove-Win\bin\Purelove\thirdtools\routersploit\routersploit\interpreter.py", line 71, in get_command_handler
+    command_handler = getattr(self, "command_{}".format(command))
+AttributeError: 'RoutersploitInterpreter' object has no attribute 'command_Possible'
+2017-08-07 21:29:33,319 ERROR routersploit.exceptions       Error during loading 'routersploit/modules/exploits\routers\zte\zxv10_rce'
+
+Error: Import by filename is not supported.
+
+It should be valid path to the module. Use <tab> key multiple times for completion.
+Traceback (most recent call last):
+  File "E:\pure\PureLove-Win\bin\Purelove\thirdtools\routersploit\routersploit\utils\__init__.py", line 66, in import_exploit
+    module = importlib.import_module(path)
+  File "C:\Python27\lib\importlib\__init__.py", line 37, in import_module
+    __import__(name)
+ImportError: Import by filename is not supported.

