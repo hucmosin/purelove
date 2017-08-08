@@ -15,7 +15,7 @@ def pl_get_banner():
     #poc_count = pl_get_poc_count()
     desc = '''
 
-       =[               purelove v1.0.0	                     ]
+       =[               purelove v1.1.0	                     ]
 + -- --=[                                                    ]
 + -- --=[                  by mosin                          ]
 + -- --=[    email: hucmoxing@163.com                        ]
