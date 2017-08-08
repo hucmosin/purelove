@@ -30,7 +30,7 @@ def exec_load(PL_PWD):
             tool.read_tool_env(PL_PWD)
         elif shell_input[:4] == "load":
             loads = shell_input[4:].strip()
-            path = PL_PWD + "/bin/Purelove/thirdtools/" + loads + "/" + loads + ".py"
+            path = PL_PWD + "/thirdtools/" + loads + "/" + loads + ".py"
             os.system(path)
         elif shell_input == "help" or shell_input == "?":
             usage()

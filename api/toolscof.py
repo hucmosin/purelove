@@ -8,7 +8,7 @@ import pl_print_world_color as setcolor
 
 def save_tool_env(PL_PWD):
     try:
-        f = open(PL_PWD + "/bin/Purelove/logs/third_tool.ini",'w+')
+        f = open(PL_PWD + "/logs/third_tool.ini",'w+')
     except:
         print setcolor.set_red('[!] ') + u"工具载入失败"
         return
@@ -23,7 +23,7 @@ def save_tool_env(PL_PWD):
     
 def read_tool_env(PL_PWD):
     try:
-        f = open(PL_PWD + "/bin/Purelove/logs/third_tool.ini",'r')
+        f = open(PL_PWD + "/logs/third_tool.ini",'r')
     except:
         print setcolor.set_red('[!] ') + u"工具载入失败"
         return
