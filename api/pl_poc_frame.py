@@ -106,6 +106,7 @@ def read_cmd_lines(PL_PWD,poc_re,PL_POC_FILE, poc_module_path_first_name, poc_mo
                         poc_module_path_first_name  = ch.pl_path_split_first_name(PL_POC_FILE)
                         poc_module_path_end_name    = ch.pl_path_split_end_name(PL_POC_FILE)
                         PL_POC_FILE = ch.pl_return_path(PL_PWD,PL_POC_FILE)
+                        poc = getinfo.import_pocs(PL_POC_FILE)
                     else:
                         print setcolor.set_red(" [!] ") + "没有找到此模块 => ".decode('utf-8') + PL_POC_FILE
  
