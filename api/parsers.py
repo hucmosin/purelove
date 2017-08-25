@@ -77,7 +77,8 @@ def switch_shell(PL_PWD, shell_input):
             os.system('cls')
         elif shell_input == const.PL_OS_SHELL:
             operation.pl_os_shell()
-        elif shell_input == "load":
+        elif shell_input == const.PL_LOAD:
+            import pl_load_tool as load
             load.exec_load(PL_PWD)
         else:
             #print u"ple => " + shell_input

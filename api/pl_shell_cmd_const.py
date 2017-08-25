@@ -21,6 +21,7 @@ PL_EXPLOIT          =       "exploit"
 PL_INFO             =       "info"
 PL_VERSION          =       "version"
 PL_OS_SHELL         =       "shell"
+PL_LOAD             =       "load"
 #-------------------------------------------------------------------------------
 #全局常量
 PL_EMPTY            =       ""
