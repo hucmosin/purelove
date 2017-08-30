@@ -17,6 +17,7 @@ sys.path.append(root_path)
 # local pret classes
 import pl_os_operation as operation
 import pl_poc_frame as frame
+import pl_shell_cmd_const as const 
 import modules.getinfo as getinfo
 import pl_print_world_color as setcolor
 from modules.exploit import BGLogLevel, BGSeverity, BGType
@@ -30,11 +31,9 @@ def pl_path_split_first_name(file_path):
         if system == 'Windows':
             lists = file_path.split('\\')   #分割出文件名
             return lists[0]
-        elif system == 'Linux':
+        else:
             lists = file_path.split('/')         #分割出文件名
             return lists[0]
-        else:
-            pass
     except:
         return
 
@@ -45,11 +44,9 @@ def pl_path_split_end_name(file_path):
             lists = file_path.split('\\')       #分割出文件名
             #print lists
             return lists[-1]
-        elif system == 'Linux':
+        else:
             lists = file_path.split('/')         #分割出文件名
             return lists[-1]
-        else:
-            pass
     except:
         return
 
@@ -125,7 +122,7 @@ def pl_run_poc(poc):
 
                 ref_key = each_ref.keys()[0]
                 print('\t* {ref_key}: {ref_value}'.format(ref_key = ref_key, ref_value = each_ref.get(ref_key).strip()))
-        
+            poc.result.status =False
         #exploit执行返回信息
         elif poc.result.exp_status:
             pass
@@ -185,10 +182,7 @@ def pl_bg_arg(poc):
             else:
                 poc.payload()
     except:
-	print setcolor.set_red("[!] ") + "载入失败 "
-
-	
-
+        print setcolor.set_red("[!] ") + "载入失败 "
 def pl_run_poc_show(poc,poc_re):
     print
     print "Module options " + '(' + poc_re + ') :'
@@ -212,9 +206,17 @@ def pl_run_poc_show(poc,poc_re):
     print 
 
 
-
-
-
+def reload_poc():
+    print setcolor_set_yellow("[*] ") + " Reload Payloads...."
+    
+    try:
+        operation.pl_get_poc_name(const.PL_PWD, const.PL_POC_FILE)
+    except:
+        print setcolor.set_red("[!] ") + "重载模块失败"
+        return
+    print setcolor.set_green("[*] ") + "Reload Success "
+    
+    
 #show version
 def pl_show_version(PL_PWD):
     #打开配置文件

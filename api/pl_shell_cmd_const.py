@@ -22,6 +22,7 @@ PL_INFO             =       "info"
 PL_VERSION          =       "version"
 PL_OS_SHELL         =       "shell"
 PL_LOAD             =       "load"
+PL_RELOAD_POC       =       "reload"
 #-------------------------------------------------------------------------------
 #全局常量
 PL_EMPTY            =       ""

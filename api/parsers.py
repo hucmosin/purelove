@@ -13,6 +13,7 @@ import pl_file_ch as ch
 import pl_poc_frame as execute
 import pl_print_world_color as setcolor
 
+# ----------------------------------------------------------------------
 
 def usage():
     usages = '''
@@ -30,7 +31,8 @@ Purelove Main Console Help
     shell       Windows cmd and Linux shell pl-shell > back = (EXIT) 
     cls/clear   Clean screan
     load        In Load Others Tools shell
-
+    reload      reload payloads
+    
 '''
     print usages
 
@@ -80,6 +82,8 @@ def switch_shell(PL_PWD, shell_input):
         elif shell_input == const.PL_LOAD:
             import pl_load_tool as load
             load.exec_load(PL_PWD)
+        elif shell_input == const.PL_RELOAD_POC:
+            ch.reload_poc()
         else:
             #print u"ple => " + shell_input
             pass
