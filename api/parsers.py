@@ -31,7 +31,7 @@ Purelove Main Console Help
     shell       Windows cmd and Linux shell pl-shell > back = (EXIT) 
     cls/clear   Clean screan
     load        In Load Others Tools shell
-    reload      reload payloads
+    reload      Reload payloads
     
 '''
     print usages

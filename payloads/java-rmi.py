@@ -64,7 +64,7 @@ class PLScan(BGExploit):
                 "Required":"no"
             },
             "port": {
-                "default": "18889",
+                "default": 18889,
                 "convert": self.convert.int_field,
                 "desc": "端口",
                 "Required":"no"

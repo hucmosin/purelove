@@ -27,13 +27,13 @@ def usage():
 Module Main Console Help
 -------------------------
 
-    use         Select an module by name
-    info        Display module information
-    set         Set module parameters
-    show        show options settings information
-    run         Run Module
-    exploit     Run Module
-    unset       Unset options
+    use                 Select an module by name
+    info                Display module information
+    set                 Set module parameters
+    show options        show options settings information
+    run                 Run Module
+    exploit             Run Module
+    unset               Unset options
     
 '''
     print usages
@@ -73,7 +73,7 @@ def read_cmd_lines(PL_PWD,poc_re,PL_POC_FILE, poc_module_path_first_name, poc_mo
                             if not option_key:
                                 pass
                     except:
-                        print setcolor.set_red("[!] ") + "参数错误"
+                        print setcolor.set_red("[!] ") + "参数设置错误"
             elif poc_shell_input == const.PL_INFO:
                 ch.pl_show_poc_info(PL_POC_FILE) 
             elif poc_shell_input == const.PL_RUN or poc_shell_input == const.PL_EXPLOIT: 
@@ -88,13 +88,16 @@ def read_cmd_lines(PL_PWD,poc_re,PL_POC_FILE, poc_module_path_first_name, poc_mo
                     print poc_shell
                     for option, option_filter in poc.option.items():
                         if poc_shell == option:
-                            print poc_shell + " => unset" 
-                            option_filter['default'] = "" 
-                            option_filter['Required'] = "no"
-                        if not poc_shell:
-                            pass
+                            if option_filter['default'] == "":
+                                pass
+                            elif option_filter['default'] != "":
+                                print poc_shell + " => unset" 
+                                option_filter['default'] = "" 
+                                option_filter['Required'] = "no"
+                            else:
+                                pass
                 except:
-                    print setcolor.set_red("[!] ") + "参数错误"
+                    print setcolor.set_red("[!] ") + "参数设置错误"
             elif poc_shell_input[:3] == const.PL_USE:
                 PL_POC_FILE = poc_shell_input[3:].strip()
                 if PL_POC_FILE == "":
