@@ -7,13 +7,10 @@ from utils.payload_count import ret_num
 
 
 payloads = ret_num()
-#读取pl里的payload数量
 def pl_get_banner():
-    #打开缓存文件，取出文件个数
-    #poc_count = pl_get_poc_count()
     desc = '''
 
-       =[               purelove v1.1.0	                              ]
+       =[               purelove v1.1.1                               ]
 + -- --=[                                                             ]
 + -- --=[                  by mosin                                   ]
 + -- --=[                 email: hucmoxing@163.com                    ]

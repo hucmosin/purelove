@@ -20,13 +20,10 @@ import pl_print_world_color as setcolor
 from pl_print_str import print_tables
 
 
-
 def pl_get_file_info(PL_POC_FILE):
     return pl_get_path(PL_POC_FILE) + pl_get_file_date(PL_POC_FILE)
-
 def pl_get_file_path(PL_POC_FILE):
     pass
-
 def pl_get_file_name(PL_POC_FILE):
     if PL_POC_FILE[-3:] == ".py":
         if os.path.isfile(PL_POC_FILE):
@@ -43,7 +40,6 @@ def pl_get_file_name(PL_POC_FILE):
             file_ext = lists[:-1]                   #取出文件名(列表切片操作)
             PL_POC_NAME = file_ext[0]
             return PL_POC_NAME
-
 def pl_get_file_date(PL_POC_FILE):
     if os.path.isfile(PL_POC_FILE):
         time = os.path.getctime(PL_POC_FILE)
@@ -51,14 +47,12 @@ def pl_get_file_date(PL_POC_FILE):
         return str(date)[:10]
     else:
         return
-
 def pl_judge_file(PL_POC_FILE):
     path_isfile = os.path.isfile(PL_POC_FILE)
     if path_isfile:
         return True
     else:
         return False
-
 def pl_judge_file_name(PL_PWD, PL_POC_FILE):
     PL_POC_FILE = PL_PWD + '/'+PL_POC_FILE + '.py'
     path_isfile = os.path.isfile(PL_POC_FILE)
@@ -66,7 +60,6 @@ def pl_judge_file_name(PL_PWD, PL_POC_FILE):
         return True
     else:
         return False
-
 def pl_get_poc_name(PL_PWD,PL_POC_FILE):
     try:
         f = open('logs/poc_name_path.pl','w+')
@@ -87,16 +80,11 @@ def pl_get_poc_name(PL_PWD,PL_POC_FILE):
         print setcolor.set_red("[!] ") + "加载PAYLOAD失败，请重新运行！"
         f.close()
         f1.close()
-
-
-
 def pl_show_all_poc_info(PL_PWD):
     PL_PWD = PL_PWD + "/logs/poc_name_path.pl"
     if pl_judge_file(PL_PWD):
         f = open(PL_PWD)
         lines = f.readlines()
-        
-#打印模块名称
         desc = '''
 PureLove Modules
 ----------------
@@ -129,35 +117,25 @@ PureLove Modules
     else:
         print setcolor.set_red("[!] ") + "payload加载出错" #红色字体
         return
-        
-#----------------------------------------------------------------------------
-#去后缀名
 def pl_del_suffix(poc_name_path):
     lists = poc_name_path.split('.')         #分割出文件与文件扩展名
     file_ext = lists[:-1]                   #取出文件名(列表切片操作)
     PL_POC_NAME = file_ext[0]
     return PL_POC_NAME
-
-
 def pl_get_path(PL_POC_FILE):
-
     if os.path.isfile(PL_POC_FILE):
         file_path = os.path.split(PL_POC_FILE)  #分割出目录与文件
         lists = file_path[0].split('.')         #分割出文件与文件扩展名
         #print lists
         file_ext = lists[0]                   #取出路径名(列表切片操作)
         return file_ext
-
-
 def pl_del_path(PL_POC_FILE):
-
     if os.path.isfile(PL_POC_FILE):
         file_path = os.path.split(PL_POC_FILE)  #分割出目录与文件
         lists = file_path[1].split('.')         #分割出文件与文件扩展名
         #print lists
         file_ext = lists[0]                   #取出文件名(列表切片操作)
         return file_ext
-
 def pl_find_poc_name(PL_PWD, PL_POC_NAME):
     PL_PWD = PL_PWD + "/logs/poc_name.pl"
     if PL_POC_NAME[-3:] == ".py":
@@ -192,8 +170,6 @@ def pl_find_poc_name(PL_PWD, PL_POC_NAME):
         except:
             f.close()
             return False
-
-#在控制台上打印找到的poc_name的详细信息,此函数废弃，由print_poc_name_info代替
 def print_poc_name_infos(PL_PWD, PL_POC_NAME):
     PL_PWD_TMP = PL_PWD
     PL_PWD     = PL_PWD + "/logs/poc_name.pl"
@@ -219,7 +195,6 @@ def print_poc_name_infos(PL_PWD, PL_POC_NAME):
             return 
     else:
         PL_POC_NAME = PL_POC_NAME + ".py"
-        #print PL_POC_NAME
         try:
             f = open(PL_PWD)
             lines = f.readlines()
@@ -234,17 +209,13 @@ def print_poc_name_infos(PL_PWD, PL_POC_NAME):
                     print u'filename\t\t\t' + 'name\t\t\t' + 'date'
                     print pname + '\t\t\t' + pocname + '\t\t\t' + file_date
                 else:
-                    #以后看情况写
                     pass
         except:
             f.close()
             return 
-
 def pl_del_path_name(PL_PWD,PL_PATH):
     tmp = PL_PATH.replace(PL_PWD,"")[1:]
-    
     return pl_del_suffix(tmp)
-
 def pl_get_UsePlatform():
     sysstr = platform.system()
     if(sysstr =="Windows"):
@@ -253,7 +224,12 @@ def pl_get_UsePlatform():
         return sysstr
     else:
         pass
-
+def pl_clsc():
+    sysstr = platform.system()
+    if(sysstr =="Windows"):
+        os.system("cls")
+    else:
+        os.system("clear")
 def print_poc_name_info(PL_PWD, PL_POC_NAME):
     PL_PWD_TMP = PL_PWD
     PL_PWD     = PL_PWD + "/logs/poc_name.pl"
@@ -279,18 +255,13 @@ DirFileName
                 poc_name        =   poc_name.replace('\n',"")
                 file_name       =   os.path.split(poc_name)     #分割出目录与文件
                 file_name       =   file_name[1]                #取出文件名
-                #模糊寻找匹配文件
-                #循环遍历模糊查询到的poc文件
                 if PL_POC_NAME in file_name:
                     file_date = pl_get_file_date(poc_name)
-                    #获取无后缀文件名
                     pname = pl_del_path_name(PL_PWD_TMP,poc_name)
-                    #去掉绝对路径
                     pocname = pl_del_path(poc_name)
                     print "   {Filenamepath:<55}{Name:<20}{Date:<20}".format(Filenamepath   = pname,
                                                                              Name           = pocname,
                                                                              Date           = file_date,)
-                    #print '\t' + pname + '\t\t\t' + pocname + '\t\t\t' + file_date
                 else:
                     pass
                 if not len(lines):
@@ -323,7 +294,6 @@ DirFileName
                     print "   {Filenamepath:<55}{Name:<20}{Date:<20}".format(Filenamepath   = pname,
                                                                              Name           = pocname,
                                                                              Date           = file_date,)
-                    #print '\t' + pname + '\t\t\t' + pocname + '\t\t\t' + file_date
                 else:
                     pass
                 if not len(lines):
@@ -331,8 +301,6 @@ DirFileName
         except:
             f.close()
             return 
-
-
 def pl_os_shell():
     while True:
         ple = setcolor.UseStyle("ple-shell",mode = 'underline')
@@ -343,18 +311,4 @@ def pl_os_shell():
             os.system(cmd_shell)
         except:
             pass
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
+        

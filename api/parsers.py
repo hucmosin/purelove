@@ -76,7 +76,7 @@ def switch_shell(PL_PWD, shell_input):
         elif shell_input == const.PL_VERSION:
             ch.pl_show_version(PL_PWD)
         elif shell_input == (const.PL_LINUX_CLEAR) or shell_input == (const.PL_WINDOWS_CLS):
-            os.system('cls')
+            operation.pl_clsc()
         elif shell_input == const.PL_OS_SHELL:
             operation.pl_os_shell()
         elif shell_input == const.PL_LOAD:
@@ -85,6 +85,5 @@ def switch_shell(PL_PWD, shell_input):
         elif shell_input == const.PL_RELOAD_POC:
             ch.reload_poc()
         else:
-            #print u"ple => " + shell_input
             pass
 
