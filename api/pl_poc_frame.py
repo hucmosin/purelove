@@ -20,7 +20,6 @@ import modules.getinfo as getinfo
 import pl_print_world_color as setcolor
 
 
-#用于打印poc用法
 def usage():
     usages = '''
 
@@ -30,7 +29,8 @@ Module Main Console Help
     use                 Select an module by name
     info                Display module information
     set                 Set module parameters
-    show options        show options settings information
+    back                Back purelove frame
+    show options        Show options settings information
     run                 Run Module
     exploit             Run Module
     unset               Unset options
@@ -38,7 +38,6 @@ Module Main Console Help
 '''
     print usages
 
-#执行poc
 def read_cmd_lines(PL_PWD,poc_re,PL_POC_FILE, poc_module_path_first_name, poc_module_path_end_name):
     poc = getinfo.import_pocs(PL_POC_FILE) 
     while True:

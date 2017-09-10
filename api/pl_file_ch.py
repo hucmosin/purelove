@@ -25,7 +25,6 @@ from modules.exploit import BGLogLevel, BGSeverity, BGType
 
 
 def pl_path_split_first_name(file_path):
-
     system = operation.pl_get_UsePlatform()
     try:
         if system == 'Windows':
@@ -36,51 +35,39 @@ def pl_path_split_first_name(file_path):
             return lists[0]
     except:
         return
-
 def pl_path_split_end_name(file_path):
     system = operation.pl_get_UsePlatform()
     try:
         if system == 'Windows':
             lists = file_path.split('\\')       #分割出文件名
-            #print lists
             return lists[-1]
         else:
             lists = file_path.split('/')         #分割出文件名
             return lists[-1]
     except:
         return
-
 def pl_show_poc_info(PL_POC_FILE):
-    #判断后缀
     try:
         if PL_POC_FILE[-3:] == ".py":
             poc_info = getinfo.import_poc(PL_POC_FILE)
             print poc_info
         else:
-            #加上后缀
             PL_POC_FILE = PL_POC_FILE + '.py'
             poc_info = getinfo.import_poc(PL_POC_FILE)
             print poc_info
     except:
         print setcolor.set_red("[!] ") + "加载文件信息出错 "
-
-
-#返回绝对路径
 def pl_return_path(pwd, path):
     PL_POC_FILE = pwd + '/' + path
     try:
         if PL_POC_FILE[-3:] == ".py":
             return PL_POC_FILE
         else:
-            #加上后缀
             PL_POC_FILE = PL_POC_FILE + '.py'
             return PL_POC_FILE
     except:
         print setcolor.set_red("[!] ") + " 加载出错,查看是否存在该文件 "
-    
 def pl_run_poc(poc):
-    #不指定监听模块，执行本地监听函数
-    #frame.pl_set_hander(poc)
     pl_bg_arg(poc)
     try:
         results = [poc.result.to_python()]
@@ -89,7 +76,6 @@ def pl_run_poc(poc):
         print(setcolor.set_red("[!] ") + ' result 序列化失败')
         print(e)
         return
-
     if poc.option.debug.default == "":
         if poc.result.status:
             print(u'[ 编写作者 ]')
@@ -119,55 +105,42 @@ def pl_run_poc(poc):
             for each_ref in poc.info.get('ref', {}):
                 if not each_ref:
                     return
-
                 ref_key = each_ref.keys()[0]
                 print('\t* {ref_key}: {ref_value}'.format(ref_key = ref_key, ref_value = each_ref.get(ref_key).strip()))
             poc.result.status =False
-        #exploit执行返回信息
         elif poc.result.exp_status:
             pass
         else:
             pass
-            #poc.print_error(poc.result.error)
-
     elif poc.option.debug.default == "debug":
         pass
     else:
         error = "[!] debug error"
         poc.print_error(error)
-        
-
 def pl_get_poc_option(PL_POC_FILE):
-    #判断后缀
     try:
         if PL_POC_FILE[-3:] == ".py":
-            #读取poc中的option
             poc_option = getinfo.import_pocs(PL_POC_FILE)
             if poc_option == None:
                 pass
             else:
                 return poc_option.option
         else:
-            #加上后缀
             PL_POC_FILE = PL_POC_FILE + '.py'
             poc_option = getinfo.import_pocs(PL_POC_FILE)
             if poc_option == None:
                 pass
             else:
                 return poc_option.option
-            #读取poc中的description
     except:
         print setcolor.set_red("[!] ") + "加载文件信息出错 "
-
 def pl_add_option(dicts,key,value):
     if key in dicts:
-        #获取poc类中的参数
         dicts[key] = value
         return dicts
     else:
         dicts.setdefault(key,value)
         return dicts
-
 def pl_bg_arg(poc):
     try:
         if poc.option.debug.default == 'debug':
@@ -197,29 +170,20 @@ def pl_run_poc_show(poc,poc_re):
                                                                                      Rank            = "--------",
                                                                                      Descriptions    = "-----------")
     for option, option_filter in poc.option.items():
-       # t = option + " " + str(option_filter['default']) + " " + str(option_filter['Required']) + " " + str(option_filter['desc'])
         print "\t{option:<35}{default:<35}{Required:<35}{Descriptions:<35}".format( option       = option,
                                                                                     default      = str(option_filter['default']),
                                                                                     Required     = str(option_filter['Required']),
                                                                                     Descriptions = str(option_filter['desc']))
-        #print '\t' + option + '\t\t' + str(option_filter['default']) + '\t\t\t\t\t\t\t' + str(option_filter['Required']) + '\t\t\t\t\t\t' + str(option_filter['desc'])
     print 
-
-
 def reload_poc():
-    print setcolor_set_yellow("[*] ") + " Reload Payloads...."
-    
+    print setcolor.set_yellow("[*] ") + " Reload Payloads...."
     try:
         operation.pl_get_poc_name(const.PL_PWD, const.PL_POC_FILE)
     except:
         print setcolor.set_red("[!] ") + "重载模块失败"
         return
     print setcolor.set_green("[*] ") + "Reload Success "
-    
-    
-#show version
 def pl_show_version(PL_PWD):
-    #打开配置文件
     print
     print "PureLove Version Info"
     print "---------------------"
@@ -229,20 +193,4 @@ def pl_show_version(PL_PWD):
     for i in ff:
         i = i.replace('\n',"")
         print "\t" + i
- 
-
     f.close()
-
-
-
-
-
-
-
-
-    
-    
-
-
-
-

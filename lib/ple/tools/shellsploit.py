@@ -3,4 +3,5 @@
 
 from shell.shellsploit import main
 
-main()
+def main_shell():
+	main()
