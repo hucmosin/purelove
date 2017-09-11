@@ -206,7 +206,7 @@ class Shellcode(Disassembly):
 
     def __init__(self):
         super(Shellcode, self).__init__()
-        #Disassembly.__init__(self)
+        Disassembly.__init__(self)
         self.options = {}
 
     def getpayload(self):
