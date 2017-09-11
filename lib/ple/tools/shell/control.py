@@ -28,7 +28,7 @@ class PLline(object):
         poc = poc.Payload()
         return poc
     def gener(self,poc):
-        from database.test import generator
+        from database.generator import generator
         poc.sld()
         self.disassembly = generator(poc)
         

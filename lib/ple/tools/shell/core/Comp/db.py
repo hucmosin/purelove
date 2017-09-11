@@ -7,18 +7,12 @@
 # python standard library
 def ret():
 	list = [
-		"back",			
+		"back",	
 		"set",		
-		"ip",			
-		"clear",		
-		"disas",		
-		"whatisthis",     
-		"iteration",		
-		"generate", 	
-		"output",			
-		"show",		
-		"encoders",
-		"options",	
+		"generate",
+		"output",		
+		"show",
+		"options"
 	]
 	return list
 
@@ -26,47 +20,13 @@ def ret():
 def ret2():
 	list = [
 		"linux",	 
-		"linux_arm",
-		"linux_mips",
-		"solarisx86",
-		"osx",
-		"FreeBSDx",
 		"windows",
-
-
-		"encoders",
 		"options",	
-
-		"binsh_spawn",
-		"bindash_spawn",
-		"read",
-		"chmod",
-		"reboot",
-		"shutdown",
-		"mkdir",
-		"rmdir",
-		"ipv4forward",
-		"Remoteportforward",
-		"reverse_telnet",
-		"add_user",
-		"DeleteMBR",
-		"tcp_bind",
 		"reverse_tcp",
-		"egghunter",
-		"add_map",
-		"netcatbind",
-		"creat",
-		"messagebox",
-		"download&execute",
-		"killall",
-		"netcatreverse",
-
 		"generate",
-		"help",          
-		"clear",			
+		"help",          			
 		"use",			
 		"show",
-		"modules",  	
-		"injectors",
+		"modules"	
 	]
 	return list
