@@ -74,7 +74,7 @@ class PLScan(BGExploit):
                 "convert": self.convert.str_field,
                 "desc": "执行exploit,或者执行payload",
                 "Required":""
-            },
+            }
         })
         
         #自定义返回内容

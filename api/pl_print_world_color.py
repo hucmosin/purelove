@@ -6,8 +6,7 @@ sys.path.insert(0, '../thirdparty')
 import colorama
 
 colorama.init()
-
- 
+'''
 STD_INPUT_HANDLE = -10
 STD_OUTPUT_HANDLE = -11
 STD_ERROR_HANDLE = -12
@@ -195,7 +194,7 @@ def printYellowRed(mess):
     sys.stdout.write(mess)
     resetColor()
  
- 
+''' 
 ##############################################################
 
 

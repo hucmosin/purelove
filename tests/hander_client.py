@@ -6,8 +6,8 @@ import time
 
 from core import *
 
-HOST = '127.0.0.1'
-PORT = 13337
+HOST = '192.168.19.128'
+PORT = 5555
 
 CONN_TIMEOUT = 30
 
