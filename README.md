@@ -1,4 +1,4 @@
-# purelove
+﻿# purelove
 <H2>PureLove是一款跨平台轻量级渗透测试框架<H2>
 
 更新日志:
@@ -10,7 +10,7 @@
 #2017.7.1 v1.0 <br>
   1.更新框架，模块<br>
   2.增加自动化功能<br>
-  3.增加Windows版本<br>
+  3.增加Windows版本(目前Windows版本已暂停更新)<br>
   4.修复bug<br>
 <br>
 #2017.8.8 v1.1 <br>
