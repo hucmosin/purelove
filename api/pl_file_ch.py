@@ -107,7 +107,7 @@ def pl_run_poc(poc):
                     return
                 ref_key = each_ref.keys()[0]
                 print('\t* {ref_key}: {ref_value}'.format(ref_key = ref_key, ref_value = each_ref.get(ref_key).strip()))
-            poc.result.status =False
+            poc.result.status = False
         elif poc.result.exp_status:
             pass
         else:
