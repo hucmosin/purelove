@@ -66,7 +66,7 @@ def pl_get_poc_name(PL_PWD,PL_POC_FILE):
         f1 = open('logs/poc_name.pl','w+')
         for root, dirs, files in os.walk(PL_POC_FILE):
             for name in files:
-                if name.split('.')[1] == 'py' and os.path.split(name)[1] != '__init__.py':
+                if name.split('.')[-1] == 'py' and os.path.split(name)[1] != '__init__.py':
                     file_path  = os.path.join(root.replace(PL_PWD,"")[1:], name)
                     file_path1 = os.path.join(root, name)
                     #把当前获取到的文件路径名称写入file_path.pl
