@@ -165,13 +165,13 @@ class RoutersploitInterpreter(BaseInterpreter):
     show <exploits/scanners>        Display Modules"""
 
     module_help = """Module commands:
-    run                                 Run the selected module with the given options
-    back                                De-select the current module
-    set <option name> <option value>    Set an option for the selected module
-    setg <option name> <option value>   Set an option for all of the modules
-    unsetg <option name>                Unset option that was set globally
-    show [info|options|devices]         Print information, options, or target devices for a module
-    check                               Check if a given target is vulnerable to a selected module's exploit"""
+    run                                     Run the selected module with the given options
+    back                                    De-select the current module
+    set <option name> <option value>        Set an option for the selected module
+    setg <option name> <option value>       Set an option for all of the modules
+    unsetg <option name>                    Unset option that was set globally
+    show [info|options|devices]             Print information, options, or target devices for a module
+    check                                   Check if a given target is vulnerable to a selected module's exploit"""
 
     def __init__(self):
         super(RoutersploitInterpreter, self).__init__()
@@ -276,8 +276,7 @@ class RoutersploitInterpreter(BaseInterpreter):
 
     def command_back(self, *args, **kwargs):
         self.current_module = None
-        #xxxxxx
-#----------------------------------------------------------------------------
+
     def command_use(self, module_path, *args, **kwargs):
         module_path = utils.pythonize_path(module_path)
         module_path = '.'.join(('routersploit', 'modules', module_path))
@@ -286,7 +285,7 @@ class RoutersploitInterpreter(BaseInterpreter):
             self.current_module = utils.import_exploit(module_path)()
         except RoutersploitException as err:
             utils.print_error(err.message)
-#---------------------------------------------------------------------------
+
     @utils.stop_after(2)
     def complete_use(self, text, *args, **kwargs):
         if text:
@@ -477,5 +476,6 @@ class RoutersploitInterpreter(BaseInterpreter):
                 utils.print_info(
                     "{}\033[31m{}\033[0m{}".format(*module.partition(keyword))
                 )
+
     def command_exit(self, *args, **kwargs):
         raise EOFError
