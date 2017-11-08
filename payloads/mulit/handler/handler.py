@@ -22,7 +22,7 @@ docs = '''
 '''
 
 from modules.exploit import BGExploit
-import lib.ple.hander.loder as loder
+import lib.ple.handler.loder as loder
 
 
 class PLScan(BGExploit):

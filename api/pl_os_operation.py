@@ -122,6 +122,10 @@ def pl_del_suffix(poc_name_path):
     file_ext = lists[:-1]                   #取出文件名(列表切片操作)
     PL_POC_NAME = file_ext[0]
     return PL_POC_NAME
+def pl_get_name(poc_name_path):
+    lists = poc_name_path.split('/')         
+    file_name = lists[-1:]
+    return str(file_name)
 def pl_get_path(PL_POC_FILE):
     if os.path.isfile(PL_POC_FILE):
         file_path = os.path.split(PL_POC_FILE)  #分割出目录与文件

@@ -3,7 +3,7 @@
 
 import os
 import sys
-from thirdpart import requests
+from thirdparty import requests
 from datetime import datetime
 #模块使用说明
 docs = '''

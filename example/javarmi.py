@@ -1,20 +1,8 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#title                  :example
-#description            :This is poc speak
-#author                 :mosin
-#date                   :20170609
-#version                :0.1
-#usage                  :python example
-#notes                  :
-#python_version         :2.7.5
-#==============================================================================
 import os
 import sys
-
-root_path = "../"
-sys.path.append(root_path)
 
 docs = '''
 
@@ -26,14 +14,13 @@ docs = '''
 #usage                  :python example
 #notes                  :
 #python_version         :2.7.5
-#==============================================================================
 
 '''
 
 from modules.exploit import BGExploit
 import socket
-import  binascii
-import  time
+import binascii
+import time
 
 
 class PLScan(BGExploit):
@@ -80,7 +67,7 @@ class PLScan(BGExploit):
                 "desc": "目标 host"
             },
             "port": {
-                "default": "18889",
+                "default": 18889,
                 "convert": self.convert.int_field,
                 "desc": "端口"
             },

@@ -5,7 +5,7 @@ from client_handler import write_code
 
 def write_client(name,lport,lhost):
     if name =="":
-        name = "client_hander"
+        name = "acceptor"
     a = write_code(lport,lhost)
     f = open("result/" + name + ".cpp",'w')
     f.write(a)

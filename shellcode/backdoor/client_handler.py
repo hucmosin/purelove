@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-Author: mosin <hucmoxing@163.com>
+Author: mosin
+Email:<hucmoxing@163.com>
 
 说明:此模块为客户端接受Shellcode程序，当Shellcode存在EXIT函数时，程序将退出，
 接管权交给Shellcode

@@ -18,7 +18,7 @@ docs = '''
 '''
 
 from modules.exploit import BGExploit
-from lib.ple.vfunc.struts2 import load_struts_frame as smain
+from lib.ple.vfunc.strut2 import load_struts_frame as smain
 
 class PLScan(BGExploit):
     

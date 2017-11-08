@@ -28,6 +28,9 @@ headers3 = {
 
 #st2 exp
 class struts_baseverify:
+    '''
+    @本类用于检测Strut2的RCE漏洞，此后如有其他漏洞爆出，可在此基础上添加
+    '''
     def __init__(self, url):
         self.url = url
         self.poc = {
