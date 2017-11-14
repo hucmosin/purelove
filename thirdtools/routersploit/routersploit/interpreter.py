@@ -1,15 +1,17 @@
 from __future__ import print_function
+
+import atexit
+import itertools
 import os
 import sys
-import itertools
 import traceback
-import atexit
 from collections import Counter
 
-from routersploit.printer import PrinterThread, printer_queue
-from routersploit.exceptions import RoutersploitException
-from routersploit.exploits import GLOBAL_OPTS
 from routersploit import utils
+from routersploit.exceptions import RoutersploitException
+from routersploit.exploits import Exploit, GLOBAL_OPTS
+from routersploit.payloads import BasePayload
+from routersploit.printer import PrinterThread, printer_queue
 
 if sys.platform == "darwin":
     import gnureadline as readline
@@ -157,21 +159,21 @@ class BaseInterpreter(object):
 class RoutersploitInterpreter(BaseInterpreter):
     history_file = os.path.expanduser("~/.rsf_history")
     global_help = """Global commands:
-    help                            Print this help menu
-    use <module>                    Select a module for usage
-    exec <shell command> <args>     Execute a command in a shell
-    search <search term>            Search for appropriate module
-    exit                            Exit RouterSploit
-    show <exploits/scanners>        Display Modules"""
+    help                        Print this help menu
+    use <module>                Select a module for usage
+    exec <shell command> <args> Execute a command in a shell
+    search <search term>        Search for appropriate module
+    show <scanners><exploits>   Show Scanner/Exploit
+    exit                        Exit RouterSploit"""
 
     module_help = """Module commands:
-    run                                     Run the selected module with the given options
-    back                                    De-select the current module
-    set <option name> <option value>        Set an option for the selected module
-    setg <option name> <option value>       Set an option for all of the modules
-    unsetg <option name>                    Unset option that was set globally
-    show [info|options|devices]             Print information, options, or target devices for a module
-    check                                   Check if a given target is vulnerable to a selected module's exploit"""
+    run                                 Run the selected module with the given options
+    back                                De-select the current module
+    set <option name> <option value>    Set an option for the selected module
+    setg <option name> <option value>   Set an option for all of the modules
+    unsetg <option name>                Unset option that was set globally
+    show [info|options|devices]         Print information, options, or target devices for a module
+    check                               Check if a given target is vulnerable to a selected module's exploit"""
 
     def __init__(self):
         super(RoutersploitInterpreter, self).__init__()
@@ -181,12 +183,20 @@ class RoutersploitInterpreter(BaseInterpreter):
         self.raw_prompt_template = None
         self.module_prompt_template = None
         self.prompt_hostname = 'rsf'
-        self.show_sub_commands = ('info', 'options', 'devices', 'all', 'creds', 'exploits', 'scanners')
+        self.show_sub_commands = (
+            'info', 'options', 'devices', 'all',
+            'creds', 'exploits', 'scanners'
+        )
 
-        self.global_commands = sorted(['use ', 'exec ', 'help', 'exit', 'show ', 'search '])
-        self.module_commands = ['run', 'back', 'set ', 'setg ', 'check']
-        self.module_commands.extend(self.global_commands)
-        self.module_commands.sort()
+        self.global_commands = sorted(
+            ['use ', 'exec ', 'help', 'exit', 'show ', 'search ']
+        )
+        self.module_commands = self._extend_with_global_commands(
+            ['run', 'back', 'set ', 'setg ', 'check']
+        )
+        self.payload_commands = self._extend_with_global_commands(
+            ['run', 'back', 'set ', 'setg ']
+        )
 
         self.modules = utils.index_modules()
         self.modules_count = Counter()
@@ -202,16 +212,17 @@ class RoutersploitInterpreter(BaseInterpreter):
  | |\ \ (_) | |_| | ||  __/ |  /\__/ / |_) | | (_) | | |_
  \_| \_\___/ \__,_|\__\___|_|  \____/| .__/|_|\___/|_|\__|
                                      | |
-     Router Exploitation Framework   |_|
+        IoT Exploitation Framework   |_|
 
  Dev Team : Marcin Bury (lucyoa) & Mariusz Kupidura (fwkz)
  Codename : Bad Blood
  Version  : 2.2.1
 
- Exploits: {exploits_count} Scanners: {scanners_count} Creds: {creds_count}
+ Exploits: {exploits_count} Scanners: {scanners_count} Creds: {creds_count} Payloads: {payloads_count}
 """.format(exploits_count=self.modules_count['exploits'],
            scanners_count=self.modules_count['scanners'],
-           creds_count=self.modules_count['creds'])
+           creds_count=self.modules_count['creds'],
+           payloads_count=self.modules_count['payloads'])
 
     def __parse_prompt(self):
         raw_prompt_default_template = "\001\033[4m\002{host}\001\033[0m\002 > "
@@ -221,6 +232,12 @@ class RoutersploitInterpreter(BaseInterpreter):
         module_prompt_default_template = "\001\033[4m\002{host}\001\033[0m\002 (\001\033[91m\002{module}\001\033[0m\002) > "
         module_prompt_template = os.getenv("RSF_MODULE_PROMPT", module_prompt_default_template).replace('\\033', '\033')
         self.module_prompt_template = module_prompt_template if all(map(lambda x: x in module_prompt_template, ['{host}', "{module}"])) else module_prompt_default_template
+
+    def _extend_with_global_commands(self, sequence):
+        """ Extend specific command suggestion with global commands """
+        sequence.extend(self.global_commands)
+        sequence.sort()
+        return sequence
 
     @property
     def module_metadata(self):
@@ -269,6 +286,11 @@ class RoutersploitInterpreter(BaseInterpreter):
         """
         if self.current_module and GLOBAL_OPTS:
             return sorted(itertools.chain(self.module_commands, ('unsetg ',)))
+        elif self.current_module and isinstance(self.current_module, Exploit):
+            return self.module_commands
+        elif self.current_module and isinstance(self.current_module,
+                                                BasePayload):
+            return self.payload_commands
         elif self.current_module:
             return self.module_commands
         else:
@@ -301,7 +323,7 @@ class RoutersploitInterpreter(BaseInterpreter):
         except KeyboardInterrupt:
             utils.print_info()
             utils.print_error("Operation cancelled by user")
-        except:
+        except Exception:
             utils.print_error(traceback.format_exc(sys.exc_info()))
 
     def command_exploit(self, *args, **kwargs):
@@ -379,7 +401,7 @@ class RoutersploitInterpreter(BaseInterpreter):
 
     @utils.module_required
     def _show_options(self, *args, **kwargs):
-        target_opts = ['target', 'port']
+        target_opts = ['target', 'port', 'rhost', 'rport', 'lhost', 'lport']
         module_opts = [opt for opt in self.current_module.options if opt not in target_opts]
         headers = ("Name", "Current settings", "Description")
 
