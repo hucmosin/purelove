@@ -85,9 +85,7 @@ class PLline(object):
                 controlset(poc,string)
 
             elif terminal[:8] == PL_GENERATE:
-                from database.generator import generator
-                poc.sld()
-                self.disassembly = generator(poc)
+                self.gener(poc)
                 print self.disassembly
 
             elif terminal[:6] == PL_OUTPUT:
@@ -99,7 +97,7 @@ class PLline(object):
 
                 if self.disassembly == "":
                     print ("[*] Please generate shellcode before save it.")
-                    self.control(string)
+                    continue
 
                 elif str_exe == "exe":
                     if "windows" in terminal.lower():
@@ -109,6 +107,9 @@ class PLline(object):
                         OS = None
                     from Outputs.exe import ExeFile
                     ExeFile(self.disassembly,OS,str_name)
+                #开始写其他系统shellcode生成 date:2017-11-24 
+                elif str_exe == "c":
+                    pass
                 else:
                     print (bcolors.RED + bcolors.BOLD + "[-] Unknown output type: {0}".format(terminal) + bcolors.ENDC)
             else:

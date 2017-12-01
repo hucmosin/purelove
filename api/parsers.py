@@ -37,8 +37,8 @@ Purelove Main Console Help
     print usages
 
 def shell(PL_PWD):
+    ple = setcolor.UseStyle("ple",mode = 'underline')
     while True:
-        ple = setcolor.UseStyle("ple",mode = 'underline')
         shell_input = raw_input(ple + " > ").strip().lower()
         switch_shell(PL_PWD, shell_input)
 

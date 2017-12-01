@@ -46,7 +46,7 @@ class Payload(Shellcode):
            		 },
             "LPORT":{
                 "default": 4444,
-                "desc": " LHOST",
+                "desc": " LPORT",
                 "Required":"no"
             		}
        		 })

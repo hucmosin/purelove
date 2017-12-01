@@ -10,7 +10,7 @@ class Disassembly(object):
     "Require shellcode format to disassembly \xFF\xFF\xFF\xFF .."
     def startdisas(self, shellcode, string):
         if string == "None":
-            print("Shellcode must be generate before disassembly !")
+            print("[+] Shellcode must be generate before disassembly !")
             return None
 
         shellcode = self.getrawhex(shellcode)
@@ -40,7 +40,7 @@ class Disassembly(object):
                         print(disasNOTintel(shellcode.decode("hex"), "arm", 32))
                 print("\n\n")
             except TypeError as err:    
-                print("Disassembly failed.Please do not forget report.")
+                print("[+] Disassembly failed.Please do not forget report.")
 
     def getrawhex(self, x):
         return x.replace("\\x", "")

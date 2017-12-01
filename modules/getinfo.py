@@ -32,5 +32,3 @@ def put_poc_info(path):
 def get_poc_class(bg_instance):
     return bg_instance.option.items
 
-#path = "E:\\GitHub\\Purelove\\payloads\\exa.py"
-#print put_poc_info(path)
