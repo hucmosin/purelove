@@ -1,8 +1,0 @@
-e.=explorer .
-ls=ls --color $*
-pwd=cd
-clear=cls
-gl=git log --oneline --all --graph --decorate  $*
-purelove = python "%purelove_ROOT%\bin\Purelove\Purelove.py" $*
-
-

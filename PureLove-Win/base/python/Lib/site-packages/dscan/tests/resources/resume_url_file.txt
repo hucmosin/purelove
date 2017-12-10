@@ -1,4 +1,0 @@
-example1.com
-example2.com
-example3.com
-example4.com
