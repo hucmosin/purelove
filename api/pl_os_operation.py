@@ -67,7 +67,7 @@ def pl_get_poc_name(PL_PWD,PL_POC_FILE):
         for root, dirs, files in os.walk(PL_POC_FILE):
             for name in files:
                 if name.split('.')[-1] == 'py' and os.path.split(name)[1] != '__init__.py':
-                    file_path  = os.path.join(root.replace(PL_PWD,"")[1:], name)
+                    file_path  = os.path.join(root.replace(PL_POC_FILE,"")[1:], name)
                     file_path1 = os.path.join(root, name)
                     #把当前获取到的文件路径名称写入file_path.pl
                     f.write(file_path + '\n')
@@ -103,10 +103,11 @@ PureLove Modules
                 poc_name = poc_name.replace('\n',"")
                 #去掉后缀
                 #导入模块
+                poc_name_t = "module/" +  poc_name
                 try:
-                    poc = getinfo.import_pocs(poc_name) #导入poc主函数
+                    poc = getinfo.import_pocs(poc_name_t) #导入poc主函数
                     print "   {poc_name:<55}{date:<20}{severity:<20}{name:<40}".format(poc_name = pl_del_suffix(poc_name),
-                                                                                      date     = pl_get_file_date(poc_name),
+                                                                                      date     = pl_get_file_date(poc_name_t),
                                                                                       severity = poc.info['severity'],
                                                                                       name     = poc.info['name'])
                     print

@@ -10,7 +10,7 @@ payloads = ret_num()
 def pl_get_banner():
     desc = '''
 
-       =[               purelove v1.1.2                               ]
+       =[               purelove v1.1.3                               ]
 + -- --=[                                                             ]
 + -- --=[                  by mosin                                   ]
 + -- --=[                 email: hucmoxing@163.com                    ]
