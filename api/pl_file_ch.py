@@ -76,46 +76,41 @@ def pl_run_poc(poc):
         print(setcolor.set_red("[!] ") + ' result 序列化失败')
         print(e)
         return
-    if poc.option.debug.default == "":
-        if poc.result.status:
-            print(u'[ 编写作者 ]')
-            print(u'\t{poc_author}'.format(poc_author = str(poc.info.get('author', ''))))
-            print(u'[风险]')
-            print('\t目标存在 {poc_name}'.format(poc_name  = poc.info.get('name', '').strip()
+    
+    if poc.result.status:
+        print(u'[ 编写作者 ]')
+        print(u'\t{poc_author}'.format(poc_author = str(poc.info.get('author', ''))))
+        print(u'[风险]')
+        print('\t目标存在 {poc_name}'.format(poc_name  = poc.info.get('name', '').strip()
                                                     ))
-            print('\t{desc_target}: {default_target}\n\t{desc_port}: {default_port}\r\n'.format(
+        print('\t{desc_target}: {default_target}\n\t{desc_port}: {default_port}\r\n'.format(
                                                      desc_target      =   poc.option.target.desc,
                                                      default_target   =   poc.option.target.default,
                                                      desc_port        =   poc.option.port.desc,
                                                      default_port     =   poc.option.port.default
                                                      ))
-            print(u'[详细说明]')
-            print('\t{poc_desc}'.format(poc_desc = poc.info.get('desc', '').strip()))
+        print(u'[详细说明]')
+        print('\t{poc_desc}'.format(poc_desc = poc.info.get('desc', '').strip()))
 
-            print(u'[程序返回]')
-            print('\t{poc_return}'.format(poc_return = poc.result.get('description', '').strip()))
+        print(u'[程序返回]')
+        print('\t{poc_return}'.format(poc_return = poc.result.get('description', '').strip()))
 
-            print(u'[危害等级]')
-            print('\t{poc_severity}'.format(poc_severity = poc.info.get('severity', '')))
+        print(u'[危害等级]')
+        print('\t{poc_severity}'.format(poc_severity = poc.info.get('severity', '')))
 
-            print(u'[漏洞类别]')
-            print('\t{poc_type}'.format(poc_type = poc.info.get('type', '')))
+        print(u'[漏洞类别]')
+        print('\t{poc_type}'.format(poc_type = poc.info.get('type', '')))
 
-            print(u'[相关引用]')
-            for each_ref in poc.info.get('ref', {}):
-                if not each_ref:
-                    return
-                ref_key = each_ref.keys()[0]
-                print('\t* {ref_key}: {ref_value}'.format(ref_key = ref_key, ref_value = each_ref.get(ref_key).strip()))
-            poc.result.status = False
-        elif poc.result.exp_status:
-            pass
-        else:
-            pass
-    elif poc.option.debug.default == "debug":
+        print(u'[相关引用]')
+        for each_ref in poc.info.get('ref', {}):
+            if not each_ref:
+                return
+            ref_key = each_ref.keys()[0]
+            print('\t* {ref_key}: {ref_value}'.format(ref_key = ref_key, ref_value = each_ref.get(ref_key).strip()))
+        poc.result.status = False
+    elif poc.result.exp_status:
         pass
     else:
-        error = "[!] debug error"
         poc.print_error(error)
 def pl_get_poc_option(PL_POC_FILE):
     try:
@@ -142,18 +137,11 @@ def pl_add_option(dicts,key,value):
         dicts.setdefault(key,value)
         return dicts
 def pl_bg_arg(poc):
-    try:
-        if poc.option.debug.default == 'debug':
-            poc.log_level = BGLogLevel.debug
-            if poc.option.mode.default == 'exploit': 
-                poc.exploit()       # 默认为 exploit，如果用户指定payload则重新赋值
-            else:
-                poc.payload()
-        else: 
-            if poc.option.mode.default == 'exploit': 
-                poc.exploit()       # 默认为 exploit，如果用户指定payload则重新赋值
-            else:
-                poc.payload()
+    try: 
+        if poc.option.mode.default == 'exploit': 
+            poc.exploit()       # 默认为 exploit，如果用户指定payload则重新赋值
+        else:
+            poc.payload()
     except:
         print setcolor.set_red("[!] ") + "载入失败 "
 def pl_run_poc_show(poc,poc_re):

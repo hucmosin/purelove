@@ -30,3 +30,21 @@ Shellcode Commands
 \toutput 			Save option to shellcode(txt,py,c,cpp,exe)
 \tshow options		Show Current Options Of Selected Module
 """)
+
+def def_shellcode_help():
+	print (bcolors.GREEN+"""
+Shellcode Commands
+===================
+\tCommands		Description
+\t------------		-------------
+\tback			Exit Current Module
+\toutput 			Save option to shellcode(txt,py,c,cpp,exe)
+\tshow options		Show Current Options Of Selected Module
+""")
+
+
+
+
+
+
+	

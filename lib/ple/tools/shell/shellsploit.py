@@ -44,8 +44,14 @@ def shellsploit():
             terminal = terminal[3:].strip()
             PL_STATUS = pl_judge_file_name(name, PL_USE_PATH + terminal)
             if PL_STATUS:
-                PLline().control(terminal)
-                shellsploit()
+                #自定义脚本处理
+                if "payload" in terminal:
+                    #执行自定义脚本处理程序
+                    from defcontrol import DPLline
+                    DPLline().control(terminal)
+                else:    
+                    PLline().control(terminal)
+                    shellsploit()
             else:
                 print ("\n[-] Module not avaible !\n")
                 shellsploit()

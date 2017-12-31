@@ -1,4 +1,5 @@
-﻿# Purelove  v1.1.3
+﻿# Purelove  v1.1.4
+
 ### 框架介绍：
 
 
@@ -85,6 +86,8 @@ Module Main Console Help
 
 `poc`的模块是在`TangScan`的基础上加强而来，所以对以前写过插件的朋友来说，应该能很快上手。
 
+在1.1.4版本后，在`“payload”`检测模式下，参数需保持不变，在“exploit”攻击模式下，参数除“mode”不能修改外，其余的都可以修改。
+
 ```
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
@@ -143,12 +146,6 @@ class PLScan(BGExploit):
                 "desc": "端口",
                 "Required":"no"
             },
-            "debug": {
-                "default": "",
-                "convert": self.convert.str_field,
-                "desc": "用于调试，排查poc中的问题",
-                "Required":"no"
-            },
             "mode": {
                 "default": "payload",
                 "convert": self.convert.str_field,
@@ -177,7 +174,6 @@ class PLScan(BGExploit):
             "error": ""
         })
 
-
     def payload(self):
         """
         检测类型
@@ -191,7 +187,6 @@ class PLScan(BGExploit):
         :return:
         """
         pass
-
 
 #下面为单框架程序执行，可以省略
 if __name__ == '__main__':
@@ -208,16 +203,18 @@ if __name__ == '__main__':
 ### 待扩展或已完成功能
 
 - [x] 漏洞主体利用框架
-
 - [x] Shellcode生成框架
+- [x] 后渗透框架
 
-- [ ] 后渗透框架（开发中）
+**如果您有好的技术支持和思路，欢迎提交。**
 
-      **后续将扩展多个模块，力保让渗透更加便捷。**
+### 适用系统
 
-### 开发感想：
+- [x] *UX
+- [ ] Windows (因为编码原因，暂移除Windows支持框架)
 
-框架目前还处在开发前期，相关漏洞利用模块还没有集成多少,框架功能还大量未完善，再加上个人原因，这个框架的编写也是断断续续的，可能自身的技术短板，框架不如人意，所以希望如果感兴趣的朋友能够和我一起完善这个项目。
+### 未来：
 
-希望能有一个坚持下去的期望。
+框架目前还处在开发前期，相关漏洞利用模块还没有集成,框架功能还大量未完善，再加上个人原因，这个框架的编写也是断断续续的，可能自身的技术短板，框架不如人意，所以希望如果感兴趣或有能力的朋友能够和我一起完善这个项目。
 
+当然，如果您有对框架有好的建议，欢迎探讨！

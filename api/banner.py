@@ -10,12 +10,10 @@ payloads = ret_num()
 def pl_get_banner():
     desc = '''
 
-       =[               purelove v1.1.3                               ]
+       =[               purelove v1.1.4                               ]
 + -- --=[                                                             ]
-+ -- --=[                  by mosin                                   ]
-+ -- --=[                 email: hucmoxing@163.com                    ]
 + -- --=[    Guthub Url: https://github.com/hucmosin/purelove         ]
-+ -- --=[    Shellcode - (0) Different OS                             ]
++ -- --=[    Shellcode - (1) Different OS                             ]
 + -- --=[    Payload   - ({payload}) (Payloads and Exploits Module)   ]
 '''.format(payload = color.set_yellow(payloads))
     print desc
