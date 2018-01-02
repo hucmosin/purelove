@@ -35,14 +35,8 @@ try:
 except NameError:
     pass 
 
-def listen(port=4444):
-    global clisock, listening, done
-    s   = socket(AF_INET, SOCK_STREAM)         
-    s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)   
-    s.bind(('0.0.0.0', port))                   
-    s.listen(3)                                
-    listening   = True
-    sock, addr  = s.accept()                   
+def listen(sock):
+    global clisock, listening, done                 
     clisock     = sock                         
     print("Client connected from {}".format(addr))
     data = ""
@@ -75,8 +69,8 @@ def write():
             pass
 
 
-def nc( PORT=4444):
-    listenThread    = Thread(target=listen, args=(int(PORT),))
+def nc(sock):
+    listenThread    = Thread(target=listen, args=(sock,))
     writeThread     = Thread(target=write)
     listenThread.start()
     writeThread.start()

@@ -42,7 +42,7 @@ def read_cmd_lines(PL_PWD,poc_re,PL_POC_FILE, poc_module_path_first_name, poc_mo
     poc = getinfo.import_pocs(PL_POC_FILE) 
     while True:
         ple = setcolor.UseStyle("ple",mode = 'underline')
-        poc_shell_input = raw_input(ple + " " + poc_module_path_first_name + "(" + setcolor.set_red(poc_module_path_end_name) +") > ").strip().lower()
+        poc_shell_input = raw_input(ple + " " + poc_module_path_first_name + "(" + setcolor.set_red(poc_module_path_end_name) +") > ").strip()
           
         if poc_shell_input == const.PL_BACK:
             return

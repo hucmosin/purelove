@@ -11,6 +11,10 @@
 
 import socket
 class TCP:
+
+    #sock循环开始或结束标记
+    sock_flag = True
+
     
     def create_tcp_socket():
         '''
