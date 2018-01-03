@@ -42,9 +42,9 @@ class PLline(object):
             bash += bcolors.RED + string+ bcolors.ENDC
             bash += bcolors.OKBLUE + " > "+ bcolors.ENDC
             try:
-                terminal = raw_input(bash).lower()
+                terminal = raw_input(bash)
             except NameError:
-                terminal = input(bash).lower()
+                terminal = input(bash)
             if terminal[:4] == PL_HELP:
                 from core.help import shellcode_help  
                 shellcode_help()
@@ -54,7 +54,7 @@ class PLline(object):
                 from sys import exit
                 exit()
             elif terminal[:3] == PL_SET:
-                poc_shell = terminal[3:].strip().upper()
+                poc_shell = terminal[3:].strip()
                 if poc_shell == "":
                     pass
                 else:

@@ -23,10 +23,13 @@ class Payload(BGExploit):
     #写出文件
     def write_jsp(self,file_data,path_name):
         print u"[+] 保存中..."
-        ff = open(path_name,'w')
-        ff.write(file_data)
-        ff.close()
-        print u"[+] 文件保存路径在" + path_name
+        try:
+            ff = open(path_name,'w')
+            ff.write(file_data)
+            ff.close()
+            print u"[+] 文件保存路径在" + path_name
+        except:
+            print u"[-] 文件保存失败!请检查路径或参数"
 
     #打开文件
     def open_file(self):

@@ -1,9 +1,10 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-说明：模块利用类
-date:2017-12-24
-author:mosin
+说明：模块利用类,
+@本模块为自定义shellcoed生成类,主要是改写，输出非汇编成的机器码，主要为完整文件
+@date:2017-12-24
+@author:mosin
 """
 
 # python standard library
@@ -40,9 +41,9 @@ class DPLline(object):
             bash += bcolors.RED + string+ bcolors.ENDC
             bash += bcolors.OKBLUE + " > "+ bcolors.ENDC
             try:
-                terminal = raw_input(bash).lower()
+                terminal = raw_input(bash)
             except NameError:
-                terminal = input(bash).lower()
+                terminal = input(bash)
             if terminal[:4] == PL_HELP:
                 from core.help import def_shellcode_help 
                 def_shellcode_help()
@@ -52,7 +53,7 @@ class DPLline(object):
                 from sys import exit
                 exit()
             elif terminal[:3] == PL_SET:
-                poc_shell = terminal[3:].strip().upper()
+                poc_shell = terminal[3:].strip()
                 if poc_shell == "":
                     pass
                 else:
