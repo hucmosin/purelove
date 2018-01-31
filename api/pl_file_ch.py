@@ -66,7 +66,7 @@ def pl_return_path(pwd, path):
             PL_POC_FILE = PL_POC_FILE + '.py'
             return PL_POC_FILE
     except:
-        print setcolor.set_red("[!] ") + " 加载出错,查看是否存在该文件 "
+        print setcolor.set_red("[!] ") + " 加载出错,查看是否存在该模块文件 "
 def pl_run_poc(poc):
     pl_bg_arg(poc)
     try:
@@ -138,12 +138,17 @@ def pl_add_option(dicts,key,value):
         return dicts
 def pl_bg_arg(poc):
     try: 
-        if poc.option.mode.default == 'exploit': 
-            poc.exploit()       # 默认为 exploit，如果用户指定payload则重新赋值
+        if poc.option.mode.default == 'exploit':
+            #判断监听状态
+            if poc.handler.listen == True:
+                poc.exploit()
+                poc.handler.payload_fun.exploit()
+            else:
+                poc.exploit()       # 默认为 exploit，如果用户指定payload则重新赋值
         else:
             poc.payload()
     except:
-        print setcolor.set_red("[!] ") + "载入失败 "
+        print setcolor.set_red("[!] ") + "执行失败 "
 def pl_run_poc_show(poc,poc_re):
     print
     print "Module options " + '(' + poc_re + ') :'
@@ -162,7 +167,30 @@ def pl_run_poc_show(poc,poc_re):
                                                                                     default      = str(option_filter['default']),
                                                                                     Required     = str(option_filter['Required']),
                                                                                     Descriptions = str(option_filter['desc']))
-    print 
+    print
+    #判断payload是否为真
+    if poc.handler.listen == True:
+        pl_payload_listen_tf(poc)
+#判断payload是否设置
+def pl_payload_listen_tf(poc):
+    print
+    print "Payload options " + '(' + poc.handler.payload + ') :'
+    print
+    print
+    print "\t{Name:<35}{CurrentSetting:<35}{Required:<35}{Descriptions:<35}".format( Name            = "Name",
+                                                                                     CurrentSetting = "Current Setting",
+                                                                                     Required        = "Required",
+                                                                                     Descriptions    = "Description")
+    print "\t{Name:<35}{DisclosureDate:<35}{Rank:<35}{Descriptions:<35}".format(     Name            = "----",
+                                                                                     DisclosureDate  = "---------------",
+                                                                                     Rank            = "--------",
+                                                                                     Descriptions    = "-----------")
+    for option, option_filter in poc.handler.payload_fun.option.items():
+        print "\t{option:<35}{default:<35}{Required:<35}{Descriptions:<35}".format( option       = option,
+                                                                                    default      = str(option_filter['default']),
+                                                                                    Required     = str(option_filter['Required']),
+                                                                                    Descriptions = str(option_filter['desc']))
+    print
 def reload_poc():
     print setcolor.set_yellow("[*] ") + " Reload Payloads...."
     try:
