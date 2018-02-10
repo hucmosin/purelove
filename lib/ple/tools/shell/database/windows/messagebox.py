@@ -50,8 +50,6 @@ class Payload(Shellcode):
             Shellcode.info["payload"][0] += message
 
         Shellcode.info["payload"][0] += r"\x8b\xcc\x57\x57\x51\x57"
-        Shellcode.info["payload"][
-            0] += r"\xff\xd0\x57\x68\x65\x73\x73\x01\xfe\x4c"
-        Shellcode.info["payload"][
-            0] += r"\x24\x03\x68\x50\x72\x6f\x63\x68\x45\x78"
+        Shellcode.info["payload"][0] += r"\xff\xd0\x57\x68\x65\x73\x73\x01\xfe\x4c"
+        Shellcode.info["payload"][0] += r"\x24\x03\x68\x50\x72\x6f\x63\x68\x45\x78"
         Shellcode.info["payload"][0] += r"\x69\x74\x54\x53\xff\xd6\x57\xff\xd0" 

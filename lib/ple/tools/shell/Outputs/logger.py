@@ -18,9 +18,9 @@ def logs(data=None, extension=None,filename = None):
         filename = "{0}.{1}".format(filename,extension)
 
     if extension == "exe":
-        logs = open(filename, "wb")
+        logs = open(os.getcwd()+os.sep+filename, "wb")
     else:
-        logs = open(filename, "w")
+        logs = open(os.getcwd()+os.sep+filename, "w")
 
     logs.write(data)
     logs.close()
