@@ -46,17 +46,6 @@ def pl_path_split_end_name(file_path):
             return lists[-1]
     except:
         return
-def pl_show_poc_info(PL_POC_FILE):
-    try:
-        if PL_POC_FILE[-3:] == ".py":
-            poc_info = getinfo.import_poc(PL_POC_FILE)
-            print poc_info
-        else:
-            PL_POC_FILE = PL_POC_FILE + '.py'
-            poc_info = getinfo.import_poc(PL_POC_FILE)
-            print poc_info
-    except:
-        print setcolor.set_red("[!] ") + "加载文件信息出错 "
 def pl_return_path(pwd, path):
     PL_POC_FILE = pwd + '/' + path
     try:
@@ -149,6 +138,32 @@ def pl_bg_arg(poc):
             poc.payload()
     except:
         print setcolor.set_red("[!] ") + "执行失败 "
+
+def pl_show_poc_infos(poc_options):
+    try:
+        pl_poc_info_show(poc_options.option.items())
+    except:
+        print setcolor.set_red("[!] ") + "加载文件参数出错 "
+#打印poc的参数信息
+def pl_poc_info_show(poc_options):
+    print
+    print "Module Options Info"
+    print "-------------------"
+    print
+    print "{Name:<35}{CurrentSetting:<35}{Required:<35}{Descriptions:<35}".format( Name            = "Name",
+                                                                                     CurrentSetting = "Current Setting",
+                                                                                     Required        = "Required",
+                                                                                     Descriptions    = "Description")
+    print "{Name:<35}{DisclosureDate:<35}{Rank:<35}{Descriptions:<35}".format(     Name            = "----",
+                                                                                     DisclosureDate  = "---------------",
+                                                                                     Rank            = "--------",
+                                                                                     Descriptions    = "-----------")
+    for option, option_filter in poc_options:
+        print "{option:<35}{default:<35}{Required:<35}{Descriptions:<35}".format( option       = option,
+                                                                                    default      = str(option_filter['default']),
+                                                                                    Required     = str(option_filter['Required']),
+                                                                                    Descriptions = str(option_filter['desc']))
+    print
 def pl_run_poc_show(poc,poc_re):
     print
     print "Module options " + '(' + poc_re + ') :'
@@ -191,6 +206,17 @@ def pl_payload_listen_tf(poc):
                                                                                     Required     = str(option_filter['Required']),
                                                                                     Descriptions = str(option_filter['desc']))
     print
+def pl_show_poc_info(PL_POC_FILE):
+    try:
+        if PL_POC_FILE[-3:] == ".py":
+            poc_info = getinfo.import_poc(PL_POC_FILE)
+            print poc_info
+        else:
+            PL_POC_FILE = PL_POC_FILE + '.py'
+            poc_info = getinfo.import_poc(PL_POC_FILE)
+            print poc_info
+    except:
+        print setcolor.set_red("[!] ") + "加载文件信息出错 "
 def reload_poc():
     print setcolor.set_yellow("[*] ") + " Reload Payloads...."
     try:

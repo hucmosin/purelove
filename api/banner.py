@@ -10,7 +10,7 @@ payloads = ret_num()
 def pl_get_banner():
     desc = '''
 
-       =[               purelove v1.1.4.5                               ]
+       =[               purelove v1.1.4.6                               ]
 + -- --=[                                                             ]
 + -- --=[    Guthub Url: https://github.com/hucmosin/purelove         ]
 + -- --=[    Shellcode - (1) Different OS                             ]

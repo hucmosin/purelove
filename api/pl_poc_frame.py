@@ -101,7 +101,8 @@ def read_cmd_lines(PL_PWD,poc_re,PL_POC_FILE, poc_module_path_first_name, poc_mo
                     except:
                         print setcolor.set_red("[!] ") + "参数设置错误"
             elif poc_shell_input == const.PL_INFO:
-                ch.pl_show_poc_info(PL_POC_FILE) 
+                ch.pl_show_poc_info(PL_POC_FILE)
+                ch.pl_show_poc_infos(poc)
             elif poc_shell_input == const.PL_RUN or poc_shell_input == const.PL_EXPLOIT: 
                 ch.pl_run_poc(poc)
             elif poc_shell_input == const.PL_SHOW_OPTIONS:
