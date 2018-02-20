@@ -100,7 +100,7 @@ def pl_run_poc(poc):
     elif poc.result.exp_status:
         pass
     else:
-        poc.print_error(error)
+        print setcolor.set_red("[-] ") + " 目标不存在漏洞"
 def pl_get_poc_option(PL_POC_FILE):
     try:
         if PL_POC_FILE[-3:] == ".py":
@@ -220,7 +220,7 @@ def pl_show_poc_info(PL_POC_FILE):
 def reload_poc():
     print setcolor.set_yellow("[*] ") + " Reload Payloads...."
     try:
-        operation.pl_get_poc_name(const.PL_PWD, const.PL_POC_FILE)
+        operation.pl_get_poc_name(const.PL_PWD)
     except:
         print setcolor.set_red("[!] ") + "重载模块失败"
         return

@@ -69,12 +69,6 @@ class PLScan(BGExploit):
                 "desc": "端口",
                 "Required":"no"
             },
-            "debug": {
-                "default": "",
-                "convert": self.convert.str_field,
-                "desc": "用于调试，排查poc中的问题",
-                "Required":""
-            },
             "mode": {
                 "default": "payload",
                 "convert": self.convert.str_field,

@@ -60,64 +60,13 @@ def pl_judge_file_name(PL_PWD, PL_POC_FILE):
         return True
     else:
         return False
-def pl_get_poc_name(PL_PWD,PL_POC_FILE):
-    try:
-        f = open('logs/poc_name_path.pl','w+')
-        f1 = open('logs/poc_name.pl','w+')
-        for root, dirs, files in os.walk(PL_POC_FILE):
-            for name in files:
-                if name.split('.')[-1] == 'py' and os.path.split(name)[1] != '__init__.py':
-                    file_path  = os.path.join(root.replace(PL_POC_FILE,"")[1:], name)
-                    file_path1 = os.path.join(root, name)
-                    #把当前获取到的文件路径名称写入file_path.pl
-                    f.write(file_path + '\n')
-                    f1.write(file_path1 + '\n')
-                else:
-                    pass
-        f.close()
-        f1.close()
-    except:
-        print setcolor.set_red("[!] ") + "加载PAYLOAD失败，请重新运行！"
-        f.close()
-        f1.close()
+def pl_get_poc_name(PL_PWD):
+    from db.loader_db import loadDB
+    loadDB(PL_PWD).check_modules()
 def pl_show_all_poc_info(PL_PWD):
-    PL_PWD = PL_PWD + "/logs/poc_name_path.pl"
-    if pl_judge_file(PL_PWD):
-        f = open(PL_PWD)
-        lines = f.readlines()
-        desc = '''
-PureLove Modules
-----------------
-'''
-        print desc
-        print "   {Name:<55}{DisclosureDate:<20}{Rank:<20}{Descriptions:<40}".format(Name            = "Name",
-                                                                                     DisclosureDate = "Disclosure Date",
-                                                                                     Rank           = "Rank",
-                                                                                     Descriptions   = "Descriptions")
-        print "   {Name:<55}{DisclosureDate:<20}{Rank:<20}{Descriptions:<40}".format(Name            = "----",
-                                                                                     DisclosureDate = "---------------",
-                                                                                     Rank           = "----",
-                                                                                     Descriptions   = "------------")
-        try:
-            for poc_name in lines:
-                poc_name = poc_name.replace('\n',"")
-                #去掉后缀
-                #导入模块
-                poc_name_t = "module/" +  poc_name
-                try:
-                    poc = getinfo.import_pocs(poc_name_t) #导入poc主函数
-                    print "   {poc_name:<55}{date:<20}{severity:<20}{name:<40}".format(poc_name = pl_del_suffix(poc_name),
-                                                                                      date     = pl_get_file_date(poc_name_t),
-                                                                                      severity = poc.info['severity'],
-                                                                                      name     = poc.info['name'])
-                    print
-                except:
-                    f.close()
-        except:
-            f.close()
-    else:
-        print setcolor.set_red("[!] ") + "payload加载出错" #红色字体
-        return
+    #调用数据库
+    from db.loader_db import loadDB
+    loadDB(PL_PWD).show_modules()
 def pl_del_suffix(poc_name_path):
     lists = poc_name_path.split('.')         #分割出文件与文件扩展名
     file_ext = lists[:-1]                   #取出文件名(列表切片操作)
@@ -141,83 +90,6 @@ def pl_del_path(PL_POC_FILE):
         #print lists
         file_ext = lists[0]                   #取出文件名(列表切片操作)
         return file_ext
-def pl_find_poc_name(PL_PWD, PL_POC_NAME):
-    PL_PWD = PL_PWD + "/logs/poc_name.pl"
-    if PL_POC_NAME[-3:] == ".py":
-        try:
-            f = open(PL_PWD)
-            lines = f.readlines()
-            for poc_name in lines:
-                poc_name = poc_name.replace('\n',"")
-                file_name = os.path.split(poc_name)     #分割出目录与文件
-                file_name = file_name[1]                #取出文件名
-                if  file_name == PL_POC_NAME :
-                    return True
-                else:
-                    return False
-        except:
-            f.close()
-            return False
-    else:
-        PL_POC_NAME = PL_POC_NAME + ".py"
-        try:
-            f = open(PL_PWD)
-            lines = f.readlines()
-            for poc_name in lines:
-                poc_name = poc_name.replace('\n',"")
-                file_name = os.path.split(poc_name)     #分割出目录与文件
-                file_name = file_name[1]                #取出文件名
-                if  file_name == PL_POC_NAME :
-                    #print "True"
-                    return True
-                else:
-                    return False
-        except:
-            f.close()
-            return False
-def print_poc_name_infos(PL_PWD, PL_POC_NAME):
-    PL_PWD_TMP = PL_PWD
-    PL_PWD     = PL_PWD + "/logs/poc_name.pl"
-    if PL_POC_NAME[-3:] == ".py":
-        try:
-            f = open(PL_PWD)
-            lines = f.readlines()
-            for poc_name in lines:
-                poc_name        =   poc_name.replace('\n',"")
-                file_name       =   os.path.split(poc_name)     #分割出目录与文件
-                file_name       =   file_name[1]                #取出文件名
-                file_name_path  =   file_name[0]
-                if  file_name == PL_POC_NAME :
-                    file_date = pl_get_file_date(poc_name)
-                    pname = pl_del_path_name(PL_PWD_TMP,poc_name)
-                    pocname = pl_del_path(poc_name)
-                    print u'filename\t\t\t' + 'name\t\t\t' + 'date'
-                    print pname + '\t\t\t' + pocname + '\t\t\t' + file_date
-                else:
-                    pass
-        except:
-            f.close()
-            return 
-    else:
-        PL_POC_NAME = PL_POC_NAME + ".py"
-        try:
-            f = open(PL_PWD)
-            lines = f.readlines()
-            for poc_name in lines:
-                poc_name        =   poc_name.replace('\n',"")
-                file_name       =   os.path.split(poc_name)     #分割出目录与文件
-                file_name       =   file_name[1]                #取出文件名
-                if  file_name == PL_POC_NAME :
-                    file_date = pl_get_file_date(poc_name)
-                    pname = pl_del_path_name(PL_PWD_TMP,poc_name)
-                    pocname = pl_del_path(poc_name)
-                    print u'filename\t\t\t' + 'name\t\t\t' + 'date'
-                    print pname + '\t\t\t' + pocname + '\t\t\t' + file_date
-                else:
-                    pass
-        except:
-            f.close()
-            return 
 def pl_del_path_name(PL_PWD,PL_PATH):
     tmp = PL_PATH.replace(PL_PWD,"")[1:]
     return pl_del_suffix(tmp)
@@ -235,77 +107,11 @@ def pl_clsc():
         os.system("cls")
     else:
         os.system("clear")
-def print_poc_name_info(PL_PWD, PL_POC_NAME):
-    PL_PWD_TMP = PL_PWD
-    PL_PWD     = PL_PWD + "/logs/poc_name.pl"
-    desc = '''
+def print_poc_name_info(PL_PWD,PL_POC_NAME):
+    #查询数据库
+    from api.db.loader_db import loadDB
+    loadDB(PL_PWD).search_modules(PL_POC_NAME)
 
-DirFileName
------------
-
-    '''
-    if PL_POC_NAME:
-        print desc
-        print "   {Filenamepath:<55}{Name:<20}{Date:<20}".format(Filenamepath   = "Filepath",
-                                                                 Name           = "Name",
-                                                                 Date           = "Date",)
-        print "   {Filenamepath:<55}{Name:<20}{Date:<20}".format(Filenamepath   = "--------",
-                                                                 Name           = "----",
-                                                                 Date           = "----",)
-        print
-        try:
-            f = open(PL_PWD)
-            lines = f.readlines()
-            for poc_name in lines:
-                poc_name        =   poc_name.replace('\n',"")
-                file_name       =   os.path.split(poc_name)     #分割出目录与文件
-                file_name       =   file_name[1]                #取出文件名
-                if PL_POC_NAME in file_name:
-                    file_date = pl_get_file_date(poc_name)
-                    pname = pl_del_path_name(PL_PWD_TMP,poc_name)
-                    pocname = pl_del_path(poc_name)
-                    print "   {Filenamepath:<55}{Name:<20}{Date:<20}".format(Filenamepath   = pname,
-                                                                             Name           = pocname,
-                                                                             Date           = file_date,)
-                else:
-                    pass
-                if not len(lines):
-                    f.close()
-        except:
-            f.close()
-            return 
-    else:
-        print desc
-        print "   {Filenamepath:<55}{Name:<20}{Date:<20}".format(Filenamepath   = "Filepath",
-                                                                 Name           = "Name",
-                                                                 Date           = "Date",)
-        print "   {Filenamepath:<55}{Name:<20}{Date:<20}".format(Filenamepath   = "--------",
-                                                                 Name           = "----",
-                                                                 Date           = "----",)
-        print 
-        try:
-            f = open(PL_PWD)
-            lines = f.readlines()
-            for poc_name in lines:
-                poc_name        =   poc_name.replace('\n',"")
-                file_name       =   os.path.split(poc_name)     #分割出目录与文件
-                file_name       =   file_name[1]                #取出文件名
-                if PL_POC_NAME in file_name:
-                    print poc_name
-                    file_date = pl_get_file_date(poc_name)
-
-                    pname = pl_del_path_name(PL_PWD_TMP,poc_name)
-                    pocname = pl_del_path(ppoc_name)
-                    print "   {Filenamepath:<55}{Name:<20}{Date:<20}".format(Filenamepath   = pname,
-                                                                             Name           = pocname,
-                                                                             Date           = file_date,)
-                else:
-                    pass
-                if not len(lines):
-                    f.close()
-        except:
-            f.close()
-            return 
 def pl_os_shell():
     while True:
         ple = setcolor.UseStyle("ple-shell",mode = 'underline')

@@ -71,7 +71,7 @@ def switch_shell(PL_PWD, shell_input):
 	    if PL_POC_NAME == "":
                 return
             else:
-                operation.print_poc_name_info(PL_PWD, PL_POC_NAME)
+                operation.print_poc_name_info(PL_PWD,PL_POC_NAME)
         elif shell_input == const.PL_EXIT:
             sys.exit()
         elif shell_input == const.PL_VERSION:
