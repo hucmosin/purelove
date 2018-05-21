@@ -23,7 +23,7 @@ PL_BANNER           = "banner"
 
 #其他变量
 #-------------------------------------------------------------------------------------------------
-PL_DATA_PATH        = "/purelove/lib/ple/tools/shell/database/"             #用于定位shellcode的位置
-PL_USE_PATH         = "purelove/lib/ple/tools/shell/database/"              #用于use模块时的路径
-PL_SHOW_PATH        = "/purelove/lib/ple/tools"
+PL_DATA_PATH        = "/lib/ple/tools/shell/database/"             #用于定位shellcode的位置
+PL_USE_PATH         = "lib/ple/tools/shell/database/"              #用于use模块时的路径
+PL_SHOW_PATH        = "/lib/ple/tools"
 

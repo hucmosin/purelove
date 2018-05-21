@@ -12,6 +12,7 @@ import os
 
 # local pret classes
 import api.pl_print_world_color as setcolor
+from api.pl_os_operation import pl_judge_file
 #from sqlconn import *
 
 class SqlExec(object):
@@ -21,7 +22,8 @@ class SqlExec(object):
     '''
     def __init__(self, PL_PWD, times, sql_exec):
         self.PWD = PL_PWD + "/module/" #模块存放路径（完整路径）
-        self.date = times.get_date()
+        #self.date = times.get_createfile_time()
+        self.times = times
         self.sql_exec = sql_exec
 
     #把参数插入数据库，此函数只执行一次，当且仅当第一次运行时执行时
@@ -30,14 +32,15 @@ class SqlExec(object):
         sql = "UPDATE STATUS set FLAG = 'True' WHERE ID = 1"
         try:
             for root, dirs, files in os.walk(self.PWD):
-                for name in files:
-                    if name[-3:] == '.py' and name != '__init__.py':
+                for  name in files:
+                     if name[-3:] == '.py' and name != '__init__.py':
                         file_name  = root.replace(self.PWD,"") + "/" + name
                         file_path  = root + "/" + name
-                        self.sql_exec.insert(file_name,file_path,self.date) #插入数据
+                        file_time  = self.times.get_createfile_time(file_path) 
+                        self.sql_exec.insert(file_name,file_path,file_time) #插入数据
                         #print file_name
                         #print file_path
-                    else:
+                     else:
                         pass
         except:
             print setcolor.set_red("[!] ")  + "加载PAYLOAD失败，请重新运行！"
@@ -48,15 +51,15 @@ class SqlExec(object):
     #读取poc进行比较是否相同
     def cmp_module(self,cursor,file_name,file_path):
         for row in cursor:
-            if file_name == row[0] or  file_path == row[1]:
+            if file_name == row[0] and file_path == row[1]:
                 return False
         return True
 
     #每次启动执行
     def exist_poc(self):
         #date = self.times.get_date()   #获取日期
-        #首先遍历整个目录，看是否有存在新增文件
-        cursor = self.sql_exec.select()  #读取所有模块文件
+        #首先遍历整个目录，看是否有存在新增文exist_poc件
+        cursor = self.sql_exec.select()  #
         try:
             for root, dirs, files in os.walk(self.PWD):
                 for name in files:
@@ -66,14 +69,29 @@ class SqlExec(object):
                         #判断是否存在
                         poc_flag = self.cmp_module(cursor,file_name,file_path )
                         if poc_flag == True:
-                            self.sql_exec.insert(file_name,file_path,self.date) #插入数据
+                            file_time  = self.times.get_createfile_time(file_path) 
+                            self.sql_exec.insert(file_name,file_path,file_time) #插入数据
                     else:
                         pass
         except:
             print setcolor.set_red("[!] ")  + "加载PAYLOAD失败，请重新运行！"
             self.sql_exec.db_close()
+        self.exist_db(cursor)
         self.sql_exec.db_close()
 
+    #Determines whether a file exists and does not exist in the database, delete it.
+    def exist_db(self,cursor):
+        '''
+        Fix Bug,Repair invalid module delete
+        By:mosin
+        Date:2018-05-17
+        '''
+        #遍历出文件路径
+        for row in cursor:
+            if pl_judge_file(row[1]) == False:
+                #sql = DELETE from POC WHERE POC_NAME=" + file_name
+                self.sql_exec.delete(poc_name_path = row[1]) #从数据库中删除失效模块
+        
 '''
 @模块信息展示类
 '''
@@ -94,8 +112,8 @@ class ShowSql(object):
     def pl_show_all_poc_info(self):
         cursor = self.sql_exec.select()
         desc = '''
-        PureLove Modules
-        ----------------
+   PureLove Modules
+   ----------------
         '''
         print desc
         print "   {Name:<55}{DisclosureDate:<20}{Rank:<7}{Descriptions:<35}".format(Name            = "Name",
@@ -130,8 +148,8 @@ class ShowSql(object):
         cursor = self.sql_exec.select()
         desc = '''
 
-    DirFileName
-    -----------
+   DirFileName
+   -----------
 
         '''
         if PL_POC_NAME:
@@ -169,3 +187,152 @@ class ShowSql(object):
             print setcolor.set_red("[-] ") + "Sorry！ Not Found Module."
             self.sql_exec.db_close()
         self.sql_exec.db_close()
+#-------------------------------------------------------------------------split
+    '''
+    @show payload info
+    '''
+    def print_payload_poc_info(self):
+        cursor = self.sql_exec.select()
+        desc = '''
+   PureLove Modules
+   ----------------
+        '''
+        print desc
+        print "   {Name:<55}{DisclosureDate:<20}{Rank:<7}{Descriptions:<35}".format(Name            = "Name",
+                                                                                        DisclosureDate = "Disclosure Date",
+                                                                                        Rank           = "Rank",
+                                                                                        Descriptions   = "Descriptions")
+        print "   {Name:<55}{DisclosureDate:<20}{Rank:<7}{Descriptions:<35}".format(Name            = "----",
+                                                                                        DisclosureDate = "---------------",
+                                                                                        Rank           = "----",
+                                                                                        Descriptions   = "------------")
+        try:
+            for row in cursor:
+                poc_name =  row[0]
+                if poc_name[:7] == "payload":
+                    poc_name_path =  row[1]
+                    date = row[2]
+                    try:
+                        poc = getinfo.import_pocs(poc_name_path) #导入poc主函数
+                        print "   {poc_name:<55}{date:<20}{severity:<7}{name:<35}".format(poc_name = pl_del_suffix(poc_name),
+                                                                                            date     = date,
+                                                                                            severity = poc.info['severity'],
+                                                                                            name     = poc.info['name'])
+                        print
+                    except:
+                        pass
+            self.sql_exec.db_close()
+        except:
+            self.sql_exec.db_close()
+
+    '''
+    @show expoit info
+    '''
+    def print_exploit_poc_info(self):
+        cursor = self.sql_exec.select()
+        desc = '''
+   PureLove Modules
+   ----------------
+        '''
+        print desc
+        print "   {Name:<55}{DisclosureDate:<20}{Rank:<7}{Descriptions:<35}".format(Name            = "Name",
+                                                                                        DisclosureDate = "Disclosure Date",
+                                                                                        Rank           = "Rank",
+                                                                                        Descriptions   = "Descriptions")
+        print "   {Name:<55}{DisclosureDate:<20}{Rank:<7}{Descriptions:<35}".format(Name            = "----",
+                                                                                        DisclosureDate = "---------------",
+                                                                                        Rank           = "----",
+                                                                                        Descriptions   = "------------")
+        try:
+            for row in cursor:
+                poc_name =  row[0]
+                if poc_name[:7] == "exploit":
+                    poc_name_path =  row[1]
+                    date = row[2]
+                    try:
+                        poc = getinfo.import_pocs(poc_name_path) #导入poc主函数
+                        print "   {poc_name:<55}{date:<20}{severity:<7}{name:<35}".format(poc_name = pl_del_suffix(poc_name),
+                                                                                            date     = date,
+                                                                                            severity = poc.info['severity'],
+                                                                                            name     = poc.info['name'])
+                        print
+                    except:
+                        pass
+            self.sql_exec.db_close()
+        except:
+            self.sql_exec.db_close()
+
+    '''
+    @show handler info
+    '''
+    def print_handler_poc_info(self):
+        cursor = self.sql_exec.select()
+        desc = '''
+   PureLove Modules
+   ----------------
+        '''
+        print desc
+        print "   {Name:<55}{DisclosureDate:<20}{Rank:<7}{Descriptions:<35}".format(Name            = "Name",
+                                                                                        DisclosureDate = "Disclosure Date",
+                                                                                        Rank           = "Rank",
+                                                                                        Descriptions   = "Descriptions")
+        print "   {Name:<55}{DisclosureDate:<20}{Rank:<7}{Descriptions:<35}".format(Name            = "----",
+                                                                                        DisclosureDate = "---------------",
+                                                                                        Rank           = "----",
+                                                                                        Descriptions   = "------------")
+        try:
+            for row in cursor:
+                poc_name =  row[0]
+                if poc_name[:7] == "handler":
+                    poc_name_path =  row[1]
+                    date = row[2]
+                    try:
+                        poc = getinfo.import_pocs(poc_name_path) #导入poc主函数
+                        print "   {poc_name:<55}{date:<20}{severity:<7}{name:<35}".format(poc_name = pl_del_suffix(poc_name),
+                                                                                            date     = date,
+                                                                                            severity = poc.info['severity'],
+                                                                                            name     = poc.info['name'])
+                        print
+                    except:
+                        pass
+            self.sql_exec.db_close()
+        except:
+            self.sql_exec.db_close()
+
+    '''
+    @show scanner info
+    '''
+    def print_scanner_poc_info(self):
+        cursor = self.sql_exec.select()
+        desc = '''
+   PureLove Modules
+   ----------------
+        '''
+        print desc
+        print "   {Name:<55}{DisclosureDate:<20}{Rank:<7}{Descriptions:<35}".format(Name            = "Name",
+                                                                                        DisclosureDate = "Disclosure Date",
+                                                                                        Rank           = "Rank",
+                                                                                        Descriptions   = "Descriptions")
+        print "   {Name:<55}{DisclosureDate:<20}{Rank:<7}{Descriptions:<35}".format(Name            = "----",
+                                                                                        DisclosureDate = "---------------",
+                                                                                        Rank           = "----",
+                                                                                        Descriptions   = "------------")
+        try:
+            for row in cursor:
+                poc_name =  row[0]
+                if poc_name[:7] == "scanner":
+                    poc_name_path =  row[1]
+                    date = row[2]
+                    try:
+                        poc = getinfo.import_pocs(poc_name_path) #导入poc主函数
+                        print "   {poc_name:<55}{date:<20}{severity:<7}{name:<35}".format(poc_name = pl_del_suffix(poc_name),
+                                                                                            date     = date,
+                                                                                            severity = poc.info['severity'],
+                                                                                            name     = poc.info['name'])
+                        print
+                    except:
+                        pass
+            self.sql_exec.db_close()
+        except:
+            self.sql_exec.db_close()
+

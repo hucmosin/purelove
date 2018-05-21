@@ -30,31 +30,6 @@ def plaintextreverse( string):
     db = findall("..?", string)
     return "\\x"+"\\x".join(db[::-1])
 
-
-def PORT( port):
-    db = []
-    fixmesempai = findall('..?', hex(int(port))[2:])
-    for x in fixmesempai:
-        if len(x) == 1:
-            x = "0"+x
-        db.append(x)
-    return "\\x"+"\\x".join(db)
-
-
-def IP( ip):
-    #0x101017f : 127.1.1.1
-    ip = str(ip).split(".")
-    db = []
-    db2 = []
-    for x in ip:
-        db.append(hex( int(x))[2:])
-    for x in db: 
-        if len(x) == 1:
-            x = "0"+x
-        db2.append(x)
-    return "\\x"+"\\x".join(db2)
-
-
 def rawSTR( string):
     db = []
     for x in string:

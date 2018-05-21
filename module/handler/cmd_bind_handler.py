@@ -9,10 +9,10 @@ import sys
 docs = '''
 
 #==============================================================================
-#title                  :handler
+#title                  :win_cmd_bind_handler
 #description            :shell handler
 #author                 :mosin
-#date                   :20170712
+#date                   :20180102
 #version                :0.1
 #usage                  ：
 #python_version         :2.7.5
@@ -22,7 +22,8 @@ docs = '''
 '''
 
 from modules.exploit import BGExploit
-import lib.ple.handler.loder as loder
+from lib.ple.network.TCP import TCP
+from lib.ple.network import NC
 
 
 class PLScan(BGExploit):
@@ -30,11 +31,11 @@ class PLScan(BGExploit):
     def __init__(self):
         super(self.__class__, self).__init__()
         self.info = {
-            "name": "监听",  # 该POC的名称
+            "name": "win Bind监听",  # 该POC的名称
             "product": "Handler",  # 该POC所针对的应用名称,
             "product_version": "1.0",  # 应用的版本号
             "desc": '''
-            用于监听反弹过来的shell
+            用于连接本地监听的shell
 
             ''',  # 该POC的描述
             "author": ["mosin"],  # 编写POC者
@@ -45,19 +46,19 @@ class PLScan(BGExploit):
             "type": self.type.rce,  # 漏洞类型
             "severity": self.severity.high,  # 漏洞等级
             "privileged": False,  # 是否需要登录
-            "disclosure_date": "2017-07-17",  # 漏洞公开时间
-            "create_date": "2017-07-17",  # POC 创建时间
+            "disclosure_date": "2018-01-02",  # 漏洞公开时间
+            "create_date": "2018-01-02",  # POC 创建时间
         }
 
         #自定义显示参数
         self.register_option({
-            "LHOST": {
+            "RHOST": {
                 "default": "",
                 "convert": self.convert.str_field,
                 "desc": "监听地址",
                 "Required":"no"
             },
-            "LPORT": {
+            "RPORT": {
                 "default": 19954,
                 "convert": self.convert.int_field,
                 "desc": "监听端口",
@@ -84,7 +85,6 @@ class PLScan(BGExploit):
             "description": "",
             "error": ""
         })
-        
     def payload(self):
         pass
        
@@ -92,7 +92,8 @@ class PLScan(BGExploit):
         HOST   = self.option.LHOST['default']
         PORT   = self.option.LPORT['default']
         try:
-            loder.lunch(HOST,PORT)
+            sock = TCP().create_tcp_connect(HOST,PORT)
+            NC.nc(sock)
         except:
             print_error("[-] Handler Error.")
 

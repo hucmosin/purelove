@@ -22,7 +22,7 @@ def get_ex(file_data, ex_ip,ex_port):
     return ex_data
 
 #转十六进制
-def cover(ex_ip,ex_port):
+def cover_ip_port(ex_ip,ex_port):
     port_tmp = ""
     ip_tmp = ""
     for i in ex_port:

@@ -8,6 +8,7 @@
 '''
 
 import time
+import os
 
 class Mytime(object):
     '''
@@ -22,6 +23,14 @@ class Mytime(object):
         '''
         this_date = time.strftime("%Y-%m-%d", time.localtime())
         return this_date
+
+    def TimeStampToTime(self,timestamp):
+        '''
+        把时间戳转化为时间: 1479264792 to 2016-11-16
+        '''
+        timeStruct = time.localtime(timestamp)
+        return time.strftime('%Y-%m-%d',timeStruct)
+
     def get_now_time(self):
         '''
         @获取当前年月日时间，整体时间..
@@ -29,3 +38,10 @@ class Mytime(object):
         '''
         this_date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         return this_date
+    def get_createfile_time(self,filePath):
+        '''
+        获取文件的创建时间
+        '''
+        filePath = unicode(filePath,'utf8')
+        t = os.path.getctime(filePath)
+        return self.TimeStampToTime(t)

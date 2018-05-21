@@ -16,8 +16,12 @@ docs = '''
 #date                   :20170917
 #version                :0.1
 #usage                   send:> qiut    #退出监听，返回框架
-                            
+
 #python_version         :2.7.5
+
+python Shellsploit.py
+USE MODULE =>payload\windows\shellcode_loader x64
+
 #==============================================================================
 
 '''

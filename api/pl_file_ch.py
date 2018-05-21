@@ -20,8 +20,8 @@ import pl_poc_frame as frame
 import pl_shell_cmd_const as const 
 import modules.getinfo as getinfo
 import pl_print_world_color as setcolor
+from lib.ple.handler.exec_handler import judgeHandler
 from modules.exploit import BGLogLevel, BGSeverity, BGType
-
 
 
 def pl_path_split_first_name(file_path):
@@ -98,7 +98,7 @@ def pl_run_poc(poc):
             print('\t* {ref_key}: {ref_value}'.format(ref_key = ref_key, ref_value = each_ref.get(ref_key).strip()))
         poc.result.status = False
     elif poc.result.exp_status:
-        pass
+        poc.result.exp_status = False
     else:
         print setcolor.set_red("[-] ") + " 目标不存在漏洞"
 def pl_get_poc_option(PL_POC_FILE):
@@ -130,8 +130,10 @@ def pl_bg_arg(poc):
         if poc.option.mode.default == 'exploit':
             #判断监听状态
             if poc.handler.listen == True:
+                #判断监听模块 
                 poc.exploit()
-                poc.handler.payload_fun.exploit()
+                judgeHandler.judge_str(poc.handler.payload_handler) #This is Bug.
+                #poc.handler.payload_fun.exploit()
             else:
                 poc.exploit()       # 默认为 exploit，如果用户指定payload则重新赋值
         else:

@@ -11,8 +11,9 @@ import imp
 from core.color import *
 from core.Comp import tab
 from core.static_const import *
+from api.pl_shell_cmd_const import PL_PWD
 
-name = os.sep.join([x for x in os.getcwd().split(os.sep) if x != os.getcwd().split(os.sep)[-1]])
+name = PL_PWD
 sys.path.append(name)
 
 #记录开始

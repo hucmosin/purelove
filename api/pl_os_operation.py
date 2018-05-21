@@ -62,11 +62,25 @@ def pl_judge_file_name(PL_PWD, PL_POC_FILE):
         return False
 def pl_get_poc_name(PL_PWD):
     from db.loader_db import loadDB
+    #Clean Tables data
+    loadDB(PL_PWD).clean_table_datas()
     loadDB(PL_PWD).check_modules()
 def pl_show_all_poc_info(PL_PWD):
     #调用数据库
     from db.loader_db import loadDB
     loadDB(PL_PWD).show_modules()
+def pl_show_payloads(PL_PWD):
+    from db.loader_db import loadDB
+    loadDB(PL_PWD).show_payload_modules()
+def pl_show_exploits(PL_PWD):
+    from db.loader_db import loadDB
+    loadDB(PL_PWD).show_exploit_modules()
+def pl_show_handlers(PL_PWD):
+    from db.loader_db import loadDB
+    loadDB(PL_PWD).show_handler_modules()
+def pl_show_scanners(PL_PWD):
+    from db.loader_db import loadDB
+    loadDB(PL_PWD).show_scanner_modules()
 def pl_del_suffix(poc_name_path):
     lists = poc_name_path.split('.')         #分割出文件与文件扩展名
     file_ext = lists[:-1]                   #取出文件名(列表切片操作)
@@ -122,4 +136,3 @@ def pl_os_shell():
             os.system(cmd_shell)
         except:
             pass
-        

@@ -25,7 +25,7 @@ Purelove Main Console Help
     help        Show the main console help
     use	        Select an module by name
     exit        Exit the console
-    show        Display module by name and path
+    show        Display module by name and path=>/payload|exploit|scanner|handler
     version	Show console version
     search      Find modules from directories
     shell       Windows cmd and Linux shell pl-shell > back = (EXIT) 
@@ -64,12 +64,20 @@ def switch_shell(PL_PWD, shell_input):
     else:
         if shell_input   == const.PL_SHOW:
             operation.pl_show_all_poc_info(PL_PWD)
+        elif shell_input == const.PL_SHOW_PAYLOAD:
+            operation.pl_show_payloads(PL_PWD)
+        elif shell_input == const.PL_SHOW_EXPLOIT:
+            operation.pl_show_exploits(PL_PWD)
+        elif shell_input == const.PL_SHOW_HANDLER:
+            operation.pl_show_handlers(PL_PWD)
+        elif shell_input == const.PL_SHOW_SCANNER:
+            operation.pl_show_scanners(PL_PWD)
         elif shell_input == const.PL_HELP or shell_input == "?":
             usage()
         elif shell_input[:6] == const.PL_SEARCH:
-	    PL_POC_NAME = shell_input[6:].strip()
-	    if PL_POC_NAME == "":
-                return
+            PL_POC_NAME = shell_input[6:].strip()
+            if PL_POC_NAME == "":
+                    return
             else:
                 operation.print_poc_name_info(PL_PWD,PL_POC_NAME)
         elif shell_input == const.PL_EXIT:

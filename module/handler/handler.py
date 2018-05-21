@@ -4,24 +4,25 @@
 import os
 import sys
 
+
 #模块使用说明
 docs = '''
 
 #==============================================================================
-#title                  :example
-#description            :This is poc speak
+#title                  :handler
+#description            :shell handler
 #author                 :mosin
-#date                   :20170609
+#date                   :20170712
 #version                :0.1
-#usage                  :python example
-#notes                  :
+#usage                  ：
 #python_version         :2.7.5
+
 #==============================================================================
 
 '''
 
 from modules.exploit import BGExploit
-
+import lib.ple.handler.loder as loder
 
 
 class PLScan(BGExploit):
@@ -29,13 +30,14 @@ class PLScan(BGExploit):
     def __init__(self):
         super(self.__class__, self).__init__()
         self.info = {
-            "name": "",  # 该POC的名称
-            "product": "",  # 该POC所针对的应用名称,
-            "product_version": "",  # 应用的版本号
+            "name": "监听",  # 该POC的名称
+            "product": "Handler",  # 该POC所针对的应用名称,
+            "product_version": "1.0",  # 应用的版本号
             "desc": '''
+            用于监听反弹过来的shell
 
             ''',  # 该POC的描述
-            "author": [""],  # 编写POC者
+            "author": ["mosin"],  # 编写POC者
             "ref": [
                 {self.ref.url: ""},  # 引用的url
                 {self.ref.bugfrom: ""},  # 漏洞出处
@@ -43,42 +45,29 @@ class PLScan(BGExploit):
             "type": self.type.rce,  # 漏洞类型
             "severity": self.severity.high,  # 漏洞等级
             "privileged": False,  # 是否需要登录
-            "disclosure_date": "2017-05-17",  # 漏洞公开时间
-            "create_date": "2017-06-17",  # POC 创建时间
+            "disclosure_date": "2017-07-17",  # 漏洞公开时间
+            "create_date": "2017-07-17",  # POC 创建时间
         }
 
         #自定义显示参数
         self.register_option({
-            "target": {
+            "LHOST": {
                 "default": "",
                 "convert": self.convert.str_field,
-                "desc": "目标",
+                "desc": "监听地址",
                 "Required":"no"
             },
-            "port": {
-                "default": "",
+            "LPORT": {
+                "default": 19954,
                 "convert": self.convert.int_field,
-                "desc": "端口",
+                "desc": "监听端口",
                 "Required":"no"
-            },
-            "debug": {
-                "default": "",
-                "convert": self.convert.str_field,
-                "desc": "用于调试，排查poc中的问题",
-                "Required":""
             },
             "mode": {
-                "default": "payload",
+                "default": "exploit",
                 "convert": self.convert.str_field,
                 "desc": "执行exploit,或者执行payload",
-                "Required":"no"
-            },
-            #以下内容可以自定义
-            "example": {
-                "default": "",
-                "prints": "HELLO PURELOVE",
-                "desc": "例如",
-                "Required":"no"
+                "Required":""
             }
         })
         
@@ -92,27 +81,28 @@ class PLScan(BGExploit):
 
             },
             #程序返回信息
-            "description": "this is test ",
+            "description": "",
             "error": ""
         })
-
-
+        
     def payload(self):
-        """
-        检测类型
-        :return:
-        """
         pass
-
+       
     def exploit(self):
-        """
-        攻击类型
-        :return:
-        """
-        pass
+        HOST   = self.option.LHOST['default']
+        PORT   = self.option.LPORT['default']
+        if self.handler.listen == False:
+            try:
+                loder.lunch(HOST,PORT)
+            except:
+                print_error("[-] Handler Error.")
+        else:
+            self.handler.payload_fun.exploit()
 
 
 #下面为单框架程序执行，可以省略
 if __name__ == '__main__':
     from main import main
     main(PLScan())
+
+

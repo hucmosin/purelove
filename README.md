@@ -1,22 +1,29 @@
-﻿# Purelove  v1.1.4.7
+﻿# Purelove  v1.1.4.8
+
+#### 目录：
+
+- 框架介绍
+- 使用介绍
+- 待扩展或已完成功能
+- 适用系统
+- 未来
 
 ### 框架介绍：
-
-
 
 > 守住心中的一点光，不灭；坚信心中的期盼，不错；执著最后的努力，不败；我望见青春时光的恬静透明印满了我来时的脚印。 愿我们对任何事情一直都有最开始的热爱 -->PureLove
 
 
 
 **PureLove**是一款轻量级渗透测试框架。
-安全研究人员可以根据自己的经验编写合适的漏洞利用脚本, 按照平台的开发标准编写出对应的安全检测插件, 安全研究人员之间可以分享漏洞分析, 代码开发的相关技术，来获得更好的技术提升。 
-**PureLove** 分Web版(**暂未开源**)和客户端版，Web版支持网页在线批量检测，客户端版为漏洞检测利用框架，客户端版分为单框架和集成框架，更大程度的方便安全研究人员的对漏洞的利用分析。
+
+安全研究人员可以根据自己的经验编写合适的漏洞利用脚本, 按照平台的开发标准编写出对应的安全检测插件模块, 安全研究人员之间可以分享漏洞分析, 代码开发的相关技术，来获得更好的技术提升。 
+**PureLove** 目前只开源客户端版，客户端版为漏洞检测利用框架，利用程序以模块的形式展现，方便安全研究人员的对漏洞的利用分析。
 
 ![SADAS](http://cao2.3vhost.net/assets/1.jpg)
 
 
 
-### 利用介绍：
+### 使用介绍：
 
 框架采用模块化编写，界面和命令行操作延续Linux风格。
 
@@ -26,21 +33,21 @@
 >
 > lib 
 >
-> module   
->
-> shellcode      
+> module     
 >
 > thirdtools       
 >
 > modules  
 >
+> Purelove.py 
+>
 > Shellsploit.py 
 >
 > thirdparty
 
-`api` 目录为框架代码存放目录，`lib`目录为`POC`和框架调用的类库，里面集成了一些库来减少`POC`和框架的代码量，`module`目录是存放`POC`的地方，分类存储各个`POC`  , `shellcode`目录为后门存放目录，`thirdparty`目录存放了常用的第三方库供`POC`和框架使用，`modules`目录存放的是`POC`框架模块的支持文件，thirdtools目录存放了第三方工具，存放在里面的工具，可以由Purelove自行调用，Purelove.py为框架主程序，Shellsploit.py 为shellcode框架启动程序。
+`api` 目录为框架代码存放目录，`lib`目录为`POC`和框架调用的类库，里面集成了一些库来减少`POC`和框架的代码量，`module`目录是存放`POC`的地方，分类存储各个`POC`  ,`thirdparty`目录存放了常用的第三方库供`POC`和框架使用，`modules`目录存放的是`POC`框架模块的支持文件，thirdtools目录存放了第三方工具，存放在里面的工具，可以由Purelove自行调用，Purelove.py为框架主程序，Shellsploit.py 为shellcode框架启动程序。
 
-Purelove的使用和常规框架一样，采用命令行形式，对相关漏洞进行检测只需调用对应模块就好。下图是对web后门的监听返回
+**Purelove**的使用和常规框架一样，采用命令行形式，对相关漏洞进行检测只需调用对应模块就好。下图是对web后门的监听返回
 
 ![5](http://cao2.3vhost.net/assets/5.jpg)
 
@@ -56,14 +63,13 @@ Purelove Main Console Help
     help        Show the main console help
     use         Select an module by name
     exit        Exit the console
-    show        Display module by name and path
+    show        Display module by name and path payload/exploit/handler/scanner
     version     Show console version
     search      Find modules from directories
     shell       Windows cmd and Linux shell pl-shell > back = (EXIT)
     cls/clear   Clean screan
     load        In Load Others Tools shell
     reload      Reload payloads
-
 ```
 
 **模块利用命令：**
@@ -208,7 +214,7 @@ if __name__ == '__main__':
 
 框架后续附带
 
-- [ ] 资源数据库
+- [x] 资源数据库
 - [ ] 新增漏洞利用模块
 - [ ] 新增后渗透利用模块
 
@@ -217,7 +223,7 @@ if __name__ == '__main__':
 ### 适用系统
 
 - [x] *UX
-- [ ] Windows (因为编码原因，暂移除Windows支持框架)
+- [ ] Windows (因为编码原因，暂移除Windows支持框架，后期支持)
 
 
 
@@ -228,5 +234,7 @@ if __name__ == '__main__':
 ### 未来：
 
 框架目前还处在开发前期，相关漏洞利用模块还没有集成,框架功能还大量未完善，再加上个人原因，这个框架的编写也是断断续续的，可能自身的技术短板，框架不如人意，所以希望如果感兴趣或有能力的朋友能够和我一起完善这个项目。
+
+**Purelove**在多次升级改版后，已经初步具备了渗透能力。
 
 当然，如果您有对框架有好的建议，欢迎探讨！

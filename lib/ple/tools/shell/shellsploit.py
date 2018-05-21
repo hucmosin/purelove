@@ -4,9 +4,9 @@
 # python standard library
 import os
 import sys
+from api.pl_shell_cmd_const import PL_PWD
 
-#os.path.dirname(os.path.realpath(__file__))
-name = os.sep.join([x for x in os.getcwd().split(os.sep) if x != os.getcwd().split(os.sep)[-1]])
+name = PL_PWD
 sys.path.append(name)
 
 

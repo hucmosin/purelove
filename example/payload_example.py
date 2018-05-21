@@ -4,26 +4,24 @@
 import os
 import sys
 
-
 #模块使用说明
 docs = '''
 
 #==============================================================================
-#title                  :win_cmd_bind_handler
-#description            :shell handler
+#title                  :example
+#description            :This is poc speak
 #author                 :mosin
-#date                   :20180102
+#date                   :20170609
 #version                :0.1
-#usage                  ：
+#usage                  :python example
+#notes                  :
 #python_version         :2.7.5
-
 #==============================================================================
 
 '''
 
 from modules.exploit import BGExploit
-from lib.ple.network.TCP import TCP
-from lib.ple.network import NC
+
 
 
 class PLScan(BGExploit):
@@ -31,14 +29,13 @@ class PLScan(BGExploit):
     def __init__(self):
         super(self.__class__, self).__init__()
         self.info = {
-            "name": "win Bind监听",  # 该POC的名称
-            "product": "Handler",  # 该POC所针对的应用名称,
-            "product_version": "1.0",  # 应用的版本号
+            "name": "",  # 该POC的名称
+            "product": "",  # 该POC所针对的应用名称,
+            "product_version": "",  # 应用的版本号
             "desc": '''
-            用于连接本地监听的shell
 
             ''',  # 该POC的描述
-            "author": ["mosin"],  # 编写POC者
+            "author": [""],  # 编写POC者
             "ref": [
                 {self.ref.url: ""},  # 引用的url
                 {self.ref.bugfrom: ""},  # 漏洞出处
@@ -46,29 +43,38 @@ class PLScan(BGExploit):
             "type": self.type.rce,  # 漏洞类型
             "severity": self.severity.high,  # 漏洞等级
             "privileged": False,  # 是否需要登录
-            "disclosure_date": "2018-01-02",  # 漏洞公开时间
-            "create_date": "2018-01-02",  # POC 创建时间
+            "listen": self.handler.listen,  #开启监听
+            "payload": self.handler.payload, #payload监听模块名称
+            "disclosure_date": "2017-05-17",  # 漏洞公开时间
+            "create_date": "2017-06-17",  # POC 创建时间
         }
 
         #自定义显示参数
         self.register_option({
-            "RHOST": {
+            "target": {
                 "default": "",
                 "convert": self.convert.str_field,
-                "desc": "监听地址",
+                "desc": "目标",
                 "Required":"no"
             },
-            "RPORT": {
-                "default": 19954,
+            "port": {
+                "default": 4444,
                 "convert": self.convert.int_field,
-                "desc": "监听端口",
+                "desc": "端口",
                 "Required":"no"
             },
             "mode": {
-                "default": "exploit",
+                "default": "payload",
                 "convert": self.convert.str_field,
                 "desc": "执行exploit,或者执行payload",
-                "Required":""
+                "Required":"no"
+            },
+            #以下内容可以自定义
+            "example": {
+                "default": "",
+                "prints": "HELLO PURELOVE",
+                "desc": "例如",
+                "Required":"no"
             }
         })
         
@@ -82,25 +88,27 @@ class PLScan(BGExploit):
 
             },
             #程序返回信息
-            "description": "",
+            "description": "this is test ",
             "error": ""
         })
+
+
     def payload(self):
+        """
+        检测类型
+        :return:
+        """
         pass
-       
+
     def exploit(self):
-        HOST   = self.option.LHOST['default']
-        PORT   = self.option.LPORT['default']
-        try:
-            sock = TCP.create_tcp_connect(HOST,PORT)
-            NC.nc(sock)
-        except:
-            print_error("[-] Handler Error.")
+        """
+        攻击类型
+        :return:
+        """
+        pass
 
 
 #下面为单框架程序执行，可以省略
 if __name__ == '__main__':
     from main import main
     main(PLScan())
-
-

@@ -45,17 +45,57 @@ class loadDB(object):
         if flag == "True":
             sqlexec = SqlExec(self.PWD,self.conn_db.times,self.conn_db.sql_exec) 
             sqlexec.exist_poc()
+    
+    def clean_table_datas(self):
+        self.conn_db.sql_exec.clean_table_data()
 
+    '''
+    @ Show POC modules
+    '''
     def show_modules(self):
         #Load pl_show_all_poc_info Function
         show = ShowSql(self.conn_db.sql_exec)
         show.pl_show_all_poc_info()
-
+        
+    '''
+    @ Search POC modules
+    '''
     def search_modules(self,POC_NAME):
         #Load print_poc_name_info Function
         search = ShowSql(self.conn_db.sql_exec)
         search.print_poc_name_info(POC_NAME)
+        
+    '''
+    @ Show POC payload modules
+    '''
+    def show_payload_modules(self):
+        #Load print_poc_name_info Function
+        show_payload = ShowSql(self.conn_db.sql_exec)
+        show_payload.print_payload_poc_info()
+        
+    '''
+    @ Show POC exploit modules
+    '''
+    def show_exploit_modules(self):
+        #Load print_poc_name_info Function
+        show_exploit = ShowSql(self.conn_db.sql_exec)
+        show_exploit.print_exploit_poc_info()
 
+    '''
+    @ Show POC handler modules
+    '''
+    def show_handler_modules(self):
+        #Load print_poc_name_info Function
+        show_exploit = ShowSql(self.conn_db.sql_exec)
+        show_exploit.print_handler_poc_info()
+
+    '''
+    @ Show POC scanner modules
+    '''
+    def show_scanner_modules(self):
+        #Load print_poc_name_info Function
+        show_exploit = ShowSql(self.conn_db.sql_exec)
+        show_exploit.print_scanner_poc_info()
 
 #=================================================================
 def test():

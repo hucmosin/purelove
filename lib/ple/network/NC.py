@@ -9,10 +9,6 @@
 # https://github.com/hucmosin/purelove
 #
 
-
-
-
-
 from __future__ import print_function
 from socket import socket, AF_INET, SOCK_STREAM, SOCK_DGRAM, SOL_SOCKET, SO_REUSEADDR
 from threading import Thread
@@ -27,18 +23,15 @@ done        = False
 #Beta script for listener.
 #Same effect nc -vlp [PORT]
 
-
-
-
 try:
     input = raw_input 
 except NameError:
     pass 
 
 def listen(sock):
-    global clisock, listening, done                 
+    global clisock, listening, done
+    listening   = True
     clisock     = sock                         
-    print("Client connected from {}".format(addr))
     data = ""
     while listening:
         try:
@@ -58,8 +51,8 @@ def write():
             data = input()
             if data.strip().lower() in ["exit", "quit"]:
                 clisock.close()
-                exit()
                 listening = False
+                exit()
                 while not done: sleep(0.1)
                 break
             _, wr, _ = select([], [clisock,], [], 1)

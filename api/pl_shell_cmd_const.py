@@ -8,6 +8,10 @@ import os
 #-------------------------------------------------------------------------------
 #shell执行命令
 PL_SHOW             =       "show"
+PL_SHOW_PAYLOAD     =       "show payload"
+PL_SHOW_EXPLOIT     =       "show exploit"
+PL_SHOW_HANDLER     =       "show handler"
+PL_SHOW_SCANNER     =       "show scanner"
 PL_HELP             =       "help"
 PL_USE              =       "use"
 PL_SEARCH           =       "search"

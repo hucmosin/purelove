@@ -57,7 +57,7 @@ def read_cmd_lines(PL_PWD,poc_re,PL_POC_FILE, poc_module_path_first_name, poc_mo
                         pass
                     else:
                         PL_STATUS = operation.pl_judge_file_name(PL_PWD, payload_shell) #判断文件是否存在
-                        if PL_STATUS:
+                        if PL_STATUS and poc.handler.listen == False:
                             poc.handler.listen = True #exploit模块监听状态置True
                             poc.handler.payload = payload_shell #传入payload模块
                             poc.handler.pwd = ch.pl_return_path(PL_PWD, payload_shell)

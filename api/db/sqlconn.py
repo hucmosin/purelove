@@ -13,9 +13,9 @@ import sqlite3
 
 # local pret classes
 
-
 #返回连接成功后的数据库操作
 def connect_db(database):
+
     try:
         conn = sqlite3.connect(database)
         return conn
@@ -65,16 +65,42 @@ class sql(object):
             self.conn.commit()
 
     #删除操作
-    def delect(self,sql = ""):
+    def delete(self,sql = "",poc_name_path = ""):
+        print poc_name_path
         if sql == "":
-            pass
+            c = self.conn.cursor()
+            cursor = c.execute("DELETE FROM POC WHERE POC_NAME_PATH=\"" + poc_name_path+"\"")
+            self.conn.commit()
         else:
-            pass
+            c = self.conn.cursor()
+            c.execute(sql)
+            self.conn.commit()
 
     #创建数据库表
     def create_table(self):
-        pass
-    
+        cursor = self.conn.cursor()
+        #执行语句
+        sql = '''CREATE TABLE POC (
+            POC_NAME CHAR, 
+            POC_NAME_PATH CHAR, 
+            DATE DATETIME);
+        '''
+        sql2 = '''CREATE TABLE STATUS (
+            ID INT PRIMARY KEY ASC, 
+            FLAG BOOLEAN);
+        '''
+        cursor.execute(sql)
+        cursor.execute(sql2)
+        #使用游标关闭数据库的链接
+        self.conn.commit()
+        self.db_close()
+
+    #清除数据库
+    def clean_table_data(self):
+        c = self.conn.cursor()
+        c.execute("DELETE FROM POC")
+        self.conn.commit()
+        self.db_close()
     #创建数据库
     def create_db(self):
         pass

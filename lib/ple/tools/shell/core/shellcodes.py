@@ -17,6 +17,6 @@ Shellcode Modules
 
 '''
         print desc
-        PWD = PWD + "/purelove/lib/ple/tools/shell/database"
+        PWD = PWD + "/lib/ple/tools/shell/database"
         m = index_modules(PWD)
         return_modules(PWD,m)

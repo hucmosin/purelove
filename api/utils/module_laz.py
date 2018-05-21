@@ -1,3 +1,8 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+
+# python standard library
+
 import os
 
 
@@ -34,14 +39,14 @@ def human_ize_path(path):
     """
     return path.replace('.', '/')
 
-#Ä£¿é´òÓ¡
+#æ¨¡å—æ‰“å°
 def return_modules(PWD,modules):
-    #µ±Â·¾¶ÔÚÊ±£¬×ª»»£¬¹ıÂË
-    #modulesÎªindex_modulesµÃµ½Ä£¿éÃû
-    #PWDÎªÏà¶ÔÂ·¾¶£¬Ö¸ÏòmodulesÄ¿Â¼£¬²»½øÈëÀïÃæ
+    #å½“è·¯å¾„åœ¨æ—¶ï¼Œè½¬æ¢ï¼Œè¿‡æ»¤
+    #modulesä¸ºindex_moduleså¾—åˆ°æ¨¡å—å
+    #PWDä¸ºç›¸å¯¹è·¯å¾„ï¼ŒæŒ‡å‘modulesç›®å½•ï¼Œä¸è¿›å…¥é‡Œé¢
     m = human_ize_path(modules)
     for r in m:
-        #È¥³ıÂ·¾¶
+        #å»é™¤è·¯å¾„
         if PWD not in r:
             print r
         
