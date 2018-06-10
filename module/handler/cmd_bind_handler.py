@@ -22,8 +22,8 @@ docs = '''
 '''
 
 from modules.exploit import BGExploit
-from lib.ple.network.TCP import TCP
-from lib.ple.network import NC
+from lib.core.network.TCP import TCP
+from lib.core.network import NC
 
 
 class PLScan(BGExploit):
@@ -89,8 +89,8 @@ class PLScan(BGExploit):
         pass
        
     def exploit(self):
-        HOST   = self.option.LHOST['default']
-        PORT   = self.option.LPORT['default']
+        HOST = self.option.LHOST['default']
+        PORT = self.option.LPORT['default']
         try:
             sock = TCP().create_tcp_connect(HOST,PORT)
             NC.nc(sock)
