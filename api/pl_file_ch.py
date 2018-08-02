@@ -132,7 +132,7 @@ def pl_bg_arg(poc):
             if poc.handler.listen == True:
                 #判断监听模块 
                 poc.exploit()
-                judgeHandler.judge_str(poc.handler.payload_handler) #This is Bug.
+                judgeHandler.judge_str(poc.handler.payload_handler) #This is Bug.Wait me fix.
                 #poc.handler.payload_fun.exploit()
             else:
                 poc.exploit()       # 默认为 exploit，如果用户指定payload则重新赋值
