@@ -9,10 +9,10 @@ import sys
 docs = '''
 
 #==============================================================================
-#title                  :load handler
+#title                  :handler
 #description            :shell handler
 #author                 :mosin
-#date                   :20180712
+#date                   :20181012
 #version                :0.1
 #usage                  ：
 #python_version         :2.7.5
@@ -23,16 +23,18 @@ docs = '''
 
 from modules.exploit import BGExploit
 
+
 class PLScan(BGExploit):
     
     def __init__(self):
         super(self.__class__, self).__init__()
+        self.handler.payload = ""
         self.info = {
             "name": "监听",  # 该POC的名称
             "product": "Handler",  # 该POC所针对的应用名称,
             "product_version": "1.0",  # 应用的版本号
             "desc": '''
-            装载Handler的payload模块shell,默认运行为NC类型监听模块
+            用于监听反弹过来的shell,模块为NC类型交互
 
             ''',  # 该POC的描述
             "author": ["mosin"],  # 编写POC者
@@ -43,12 +45,24 @@ class PLScan(BGExploit):
             "type": self.type.other,  # 漏洞类型
             "severity": self.severity.handler,  # 漏洞等级
             "privileged": False,  # 是否需要登录
-            "disclosure_date": "2017-07-17",  # 漏洞公开时间
-            "create_date": "2017-07-17",  # POC 创建时间
+            "disclosure_date": "2017-07-17",  # 漏self公开时间
+            "create_date": "2017-07-17",  # POC 创self时间
         }
 
         #自定义显示参数
         self.register_option({
+            "LHOST": {
+                "default": "0.0.0.0",
+                "convert": self.convert.str_field,
+                "desc": "监听地址",
+                "Required":"no"
+            },
+            "LPORT": {
+                "default": 4444,
+                "convert": self.convert.int_field,
+                "desc": "监听端口",
+                "Required":"no"
+            },
             "mode": {
                 "default": "exploit",
                 "convert": self.convert.str_field,
@@ -75,10 +89,11 @@ class PLScan(BGExploit):
         pass
        
     def exploit(self):
+        HOST   = self.option.LHOST['default']
+        PORT   = self.option.LPORT['default']
         if self.handler.listen == False:
-            print_error("[-] Handler Error.")
+            self.print_error("[-] Handler Error.")
             return
-
 
 
 #下面为单框架程序执行，可以省略

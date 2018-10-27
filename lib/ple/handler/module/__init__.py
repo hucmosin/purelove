@@ -9,6 +9,7 @@ import os
 import sys
 
 pwd = os.getcwd()
-pwd = pwd.split('Purelove')[0]
-pwd = pwd +"/Purelove"
+pwd = pwd.split('purelove')[0]
+pwd = pwd +"/purelove"
 sys.path.append(os.path.join(os.path.dirname(__file__), pwd ))
+

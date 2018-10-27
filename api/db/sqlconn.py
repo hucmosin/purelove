@@ -66,7 +66,7 @@ class sql(object):
 
     #删除操作
     def delete(self,sql = "",poc_name_path = ""):
-        print poc_name_path
+        #print poc_name_path
         if sql == "":
             c = self.conn.cursor()
             cursor = c.execute("DELETE FROM POC WHERE POC_NAME_PATH=\"" + poc_name_path+"\"")

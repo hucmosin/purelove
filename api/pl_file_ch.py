@@ -98,7 +98,8 @@ def pl_run_poc(poc):
             print('\t* {ref_key}: {ref_value}'.format(ref_key = ref_key, ref_value = each_ref.get(ref_key).strip()))
         poc.result.status = False
     elif poc.result.exp_status:
-        poc.result.exp_status = False
+        #poc.result.exp_status = False
+        pass
     else:
         print setcolor.set_red("[-] ") + " 目标不存在漏洞"
 def pl_get_poc_option(PL_POC_FILE):
@@ -130,9 +131,9 @@ def pl_bg_arg(poc):
         if poc.option.mode.default == 'exploit':
             #判断监听状态
             if poc.handler.listen == True:
-                #判断监听模块 
-                poc.exploit()
-                judgeHandler.judge_str(poc.handler.payload_handler) #This is Bug.Wait me fix.
+                #判断监听模块
+                judgeHandler(poc).judge_str() #This is Bug.Wait me fix.
+                #poc.exploit()
                 #poc.handler.payload_fun.exploit()
             else:
                 poc.exploit()       # 默认为 exploit，如果用户指定payload则重新赋值
@@ -190,6 +191,8 @@ def pl_run_poc_show(poc,poc_re):
         pl_payload_listen_tf(poc)
 #判断payload是否设置
 def pl_payload_listen_tf(poc):
+    if poc.handler.payload == "":
+        return
     print
     print "Payload options " + '(' + poc.handler.payload + ') :'
     print

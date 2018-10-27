@@ -44,6 +44,7 @@ def read_cmd_lines(PL_PWD,poc_re,PL_POC_FILE, poc_module_path_first_name, poc_mo
         ple = setcolor.UseStyle("ple",mode = 'underline')
         poc_shell_input = raw_input(ple + " " + poc_module_path_first_name + "(" + setcolor.set_red(poc_module_path_end_name) +") > ").strip()
         if poc_shell_input == const.PL_BACK:
+            poc.handler.__init__()
             return
         else:
             if poc_shell_input[:3] == const.PL_SET:
@@ -52,6 +53,7 @@ def read_cmd_lines(PL_PWD,poc_re,PL_POC_FILE, poc_module_path_first_name, poc_mo
                 if poc_shell == None:
                     pass
                 elif pay_shell == const.PL_SET_PAYLOAD:
+                    poc.handler.__init__()
                     payload_shell = const.PL_PAYLOAD_DIR + poc_shell_input[11:].strip().lower() #获取payload名，进行存在判断
                     if poc_shell == None:
                         pass
@@ -61,7 +63,11 @@ def read_cmd_lines(PL_PWD,poc_re,PL_POC_FILE, poc_module_path_first_name, poc_mo
                             poc.handler.listen = True #exploit模块监听状态置True
                             poc.handler.payload = payload_shell #传入payload模块
                             poc.handler.pwd = ch.pl_return_path(PL_PWD, payload_shell)
-                            poc.handler.payload_fun = getinfo.import_pocs(poc.handler.pwd)
+                            poc.handler.payload_fun = getinfo.import_pocs(poc.handler.pwd) #装载模块
+                        elif PL_STATUS and poc.handler.listen == True:
+                            poc.handler.payload = payload_shell #传入payload模块
+                            poc.handler.pwd = ch.pl_return_path(PL_PWD, payload_shell)
+                            poc.handler.payload_fun = getinfo.import_pocs(poc.handler.pwd)#装载模块
                         else:
                             print setcolor.set_red(" [!] ") + "没有找到此模块 => ".decode('utf-8') + poc_shell
                 else:
@@ -70,19 +76,22 @@ def read_cmd_lines(PL_PWD,poc_re,PL_POC_FILE, poc_module_path_first_name, poc_mo
                         option_key   = poc_shells[0]
                         option_value = poc_shells[1]
                         if poc.handler.listen == True:
-                            for option_pay, option_filter_pay in poc.handler.payload_fun.option.items():
-                                if option_filter_pay['default'] == None:
-                                    option_filter_pay['default'] = ''
-                                if option_filter_pay['desc'] == None:
-                                    option_filter_pay['desc'] = ''
-                            for option_pay, option_filter_pay in poc.handler.payload_fun.option.items():
-                                if option_key == option_pay:
-                                    if option_filter_pay['Required'] == "":
-                                        print setcolor.set_yellow("[-] ") + "参数为固定值,无法修改!"
-                                    else:
-                                        print option_key + " => " + option_value
-                                        option_filter_pay['default'] = option_filter_pay['convert'](option_value) 
-                                        option_filter_pay['Required'] = "yes"
+                            if poc.handler.payload == "":
+                                pass
+                            else:
+                                for option_pay, option_filter_pay in poc.handler.payload_fun.option.items():
+                                    if option_filter_pay['default'] == None:
+                                        option_filter_pay['default'] = ''
+                                    if option_filter_pay['desc'] == None:
+                                        option_filter_pay['desc'] = ''
+                                for option_pay, option_filter_pay in poc.handler.payload_fun.option.items():
+                                    if option_key == option_pay:
+                                        if option_filter_pay['Required'] == "":
+                                            print setcolor.set_yellow("[-] ") + "参数为固定值,无法修改!"
+                                        else:
+                                            print option_key + " => " + option_value
+                                            option_filter_pay['default'] = option_filter_pay['convert'](option_value) 
+                                            option_filter_pay['Required'] = "yes"
                         for option, option_filter in poc.option.items():
                             if option_filter['default'] == None:
                                 option_filter['default'] = ''
@@ -114,16 +123,19 @@ def read_cmd_lines(PL_PWD,poc_re,PL_POC_FILE, poc_module_path_first_name, poc_mo
                     poc_shell = poc_shell_input[5:].strip()
                     #Payload Listen
                     if poc.handler.listen == True:
-                        for option_pay,options_filter_pay in poc.handler.payload_fun.option.items():
-                            if poc_shell == option:
-                                if option_filter['default'] == "":
-                                    pass
-                                elif option_filter['default'] != "":
-                                    print poc_shell + " => unset" 
-                                    option_filter['default'] = "" 
-                                    option_filter['Required'] = "no"
-                                else:
-                                    pass
+                        if poc.handler.payload == "":
+                            pass
+                        else:
+                            for option_pay,options_filter_pay in poc.handler.payload_fun.option.items():
+                                if poc_shell == option:
+                                    if option_filter['default'] == "":
+                                        pass
+                                    elif option_filter['default'] != "":
+                                        print poc_shell + " => unset" 
+                                        option_filter['default'] = "" 
+                                        option_filter['Required'] = "no"
+                                    else:
+                                        pass
                     for option, option_filter in poc.option.items():
                         if poc_shell == option:
                             if option_filter['default'] == "":
@@ -143,6 +155,7 @@ def read_cmd_lines(PL_PWD,poc_re,PL_POC_FILE, poc_module_path_first_name, poc_mo
                 else:
                     PL_STATUS = operation.pl_judge_file_name(PL_PWD, PL_POC_FILE)
                     if PL_STATUS:
+                        poc.handler.__init__()
                         poc_re = PL_POC_FILE
                         poc_module_path_first_name  = ch.pl_path_split_first_name(PL_POC_FILE)
                         poc_module_path_end_name    = ch.pl_path_split_end_name(PL_POC_FILE)
