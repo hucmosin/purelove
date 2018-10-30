@@ -72,8 +72,9 @@ class Payload(BGExploit):
     #打开文件
     def open_file(self):
         try:
-            f = open('lib/soure/data/win_cmd_bid_tcp.shell','r')
+            f = open('lib/soure/data/win_cmd_bind.shell','r')
             file_data = f.read()
+            f.close()
         except:
             print "[-] TempleteFile Open Fail"
         return file_data
