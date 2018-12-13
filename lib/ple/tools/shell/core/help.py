@@ -38,6 +38,7 @@ Shellcode Commands
 \tCommands		Description
 \t------------		-------------
 \tback			Exit Current Module
+\tinfo                  Show Modules Informatons
 \toutput 			Save option to shellcode(txt,py,c,cpp,exe)
 \tshow options		Show Current Options Of Selected Module
 """)

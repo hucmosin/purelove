@@ -38,3 +38,14 @@ Purelove  v1.1.4.9
 - 4.补充利用模块
 - 5.添加payload模块
 
+2018-12-13
+Purelove  v1.1.5.0
+
+- 1.优化代码
+- 2.添加框架功能模块
+- 3.修复其他相关Bug
+- 4.修复Handler监听问题
+- 5.添加payload模块
+- 6.添加Shellcode模块，升级Shellsploit子框架模块功能
+
+

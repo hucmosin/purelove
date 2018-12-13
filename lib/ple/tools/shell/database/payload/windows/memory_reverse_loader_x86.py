@@ -9,7 +9,19 @@ class Payload(BGExploit):
         
     def __init__(self):
         super(self.__class__, self).__init__()
-
+        
+        self.register_info({
+            "Info":{
+                "Name":"memory_reverse_loader_x86",
+                "Author":"Mosin",
+                "Type":"Reverse",
+                "Ref":"----",
+                "Version":"1.0",
+                "Desc":"This is Reverse MemoryLoader.You can customize the DLL, through the remote loading,\n"+
+                " specific can see URL:https://github.com/hucmosin/purelove/wiki/dll_loader%E7%9A%84%E6%AD%A3%E7%A1%AE%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"
+            }
+        })
+        
         #自定义显示参数
         self.register_option({
             "RHOST": {
@@ -71,7 +83,7 @@ class Payload(BGExploit):
     #打开文件
     def open_file(self):
         try:
-            f = open('lib/soure/data/win_reverse_tcp.shell','r')
+            f = open('lib/soure/data/win_memory_loader_x86.shell','r')
             file_data = f.read()
         except:
             print "[-] TempleteFile Open Fail"

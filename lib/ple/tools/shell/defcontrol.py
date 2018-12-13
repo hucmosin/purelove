@@ -84,6 +84,10 @@ class DPLline(object):
                 from core.SHELLoptions import controlset
                 controlset(poc,string)
 
+            elif terminal[:4] == PL_INFO:
+                from core.SHELLoptions import controlinfo
+                controlinfo(poc,string)
+                
             elif terminal[:6] == PL_OUTPUT:
                 poc.payload()
                 

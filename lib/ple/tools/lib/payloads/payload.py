@@ -64,11 +64,15 @@ class BGExploit(object):
     def __init__(self):
         super(BGExploit, self).__init__()  #初始化
         self.options    = {}                #新增参数
-
+        self.info       = {}
 
     def register_option(self, dict_option):
         assert isinstance(dict_option, dict)
         self.options = DottedDict(dict_option)
+        
+    def register_info(self, dict_option):
+        assert isinstance(dict_option, dict)
+        self.info = DottedDict(dict_option)
         
     """
     payload框架利用输出

@@ -8,11 +8,7 @@
 
 from color import *
 
-def controlset(poc,choice):
-        #导入shellcode中info文件
-        pl_run_poc_show(poc,choice)
-
-
+#===================================================================================#
 def pl_run_poc_show(poc,poc_re):
     print
     print (bcolors.GREEN + "Module options " + '(' + poc_re + ') :')
@@ -32,7 +28,30 @@ def pl_run_poc_show(poc,poc_re):
                                                                                     Required     = str(option_filter['Required']),
                                                                                     Descriptions = str(option_filter['desc']))
     print 
+#===================================================================================#
+#Modify:2018-12-12
+def pl_info_poc_show(poc,poc_re):
+    print
+    print (bcolors.GREEN + "Module Info " + '(' + poc_re + ') :')
+    print
+    print
+    #print infomations
+    for option, option_filter in poc.info.items():
+        print "\tName:    {}".format(str(option_filter['Name']))
+        print "\tAuthor:  {}".format(str(option_filter['Author']))
+        print "\tType:    {}".format(str(option_filter['Type']))
+        print "\tRef:     {}".format(str(option_filter['Ref']))
+        print "\tVersion: {}".format(str(option_filter['Version']))
+        print "\tDesc:    {}".format(str(option_filter['Desc']))
 
+    print 
 
-
-
+#===================================================================================#
+def controlset(poc,choice):
+        #导入shellcode中info文件
+        pl_run_poc_show(poc,choice)
+#===================================================================================#
+def controlinfo(poc,choice):
+        #show文件中的info信息
+        pl_info_poc_show(poc,choice)
+#===================================================================================#
