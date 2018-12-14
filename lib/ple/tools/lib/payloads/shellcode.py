@@ -183,9 +183,10 @@ class Shellcode(Disassembly):
         super(Shellcode, self).__init__()
         Disassembly.__init__(self)
         self.options = {}
-
+        self.shellcode_info = ""
+        
     def getpayload(self):
-        return Shellcode.info["payload"][0]
+        return self.shellcode_info
 
     def getsize(self, x):
         return len(x.split("\\x"))

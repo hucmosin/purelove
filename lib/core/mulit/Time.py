@@ -5,6 +5,8 @@
 @Author:mosin
 @date:2018-6-05
 说明：该文件类主要为框架模块提供时间支持，方便提取整数和其他需要的时间格式
+The file type is mainly provide time support framework module,
+convenient to extract the integer and the time required for other format
 '''
 
 import time
