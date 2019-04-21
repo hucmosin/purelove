@@ -16,6 +16,7 @@ def ExeFile( shellcode, OS=None,filename = None):
     padd = ""
     if OS == "windows":
         padd = db[2]
+    # Other OS
     else:
         print "Not supported os .."
         return

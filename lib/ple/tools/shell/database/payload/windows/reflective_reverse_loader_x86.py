@@ -24,12 +24,12 @@ class Payload(BGExploit):
         
         #自定义显示参数
         self.register_option({
-            "LHOST": {
+            "RHOST": {
                 "default": "127.0.0.1",
                 "desc": "目标IP",
                 "Required":"no"
             },
-            "LPORT": {
+            "RPORT": {
                 "default": "4444",
                 "desc": "目标端口",
                 "Required":"no"
@@ -90,8 +90,8 @@ class Payload(BGExploit):
         return file_data
         
     def payload(self):
-        ex_ip = self.options.LHOST['default']
-        ex_port = self.options.LPORT['default']
+        ex_ip = self.options.RHOST['default']
+        ex_port = self.options.RPORT['default']
         path_name = self.options.FILEPATH['default']
         ex_ip,ex_port = self.cover(ex_ip,ex_port)
         print u"[+] 正在转换..."

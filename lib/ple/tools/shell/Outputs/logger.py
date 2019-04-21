@@ -17,10 +17,16 @@ def logs(data=None, extension=None,filename = None):
     else:
         filename = "{0}.{1}".format(filename,extension)
 
+    #EXE Write
     if extension == "exe":
         logs = open(os.getcwd()+os.sep+filename, "wb")
     else:
         logs = open(os.getcwd()+os.sep+filename, "w")
+
+    #暂时留存
+    #DLL Write
+    #ELF Write
+    #MACOS Write
 
     logs.write(data)
     logs.close()

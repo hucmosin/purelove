@@ -90,8 +90,8 @@ class Payload(BGExploit):
         return file_data
         
     def payload(self):
-        ex_ip = self.options.LHOST['default']
-        ex_port = self.options.LPORT['default']
+        ex_ip = self.options.RHOST['default']
+        ex_port = self.options.RPORT['default']
         path_name = self.options.FILEPATH['default']
         ex_ip,ex_port = self.cover(ex_ip,ex_port)
         print u"[+] 正在转换..."
