@@ -52,13 +52,13 @@ class PLScan(BGExploit):
 
         #自定义显示参数
         self.register_option({
-            "RHOST": {
-                "default": "192.168.1.1",
+            "LHOST": {
+                "default": "0.0.0.0",
                 "convert": self.convert.str_field,
                 "desc": "监听地址",
                 "Required":"no"
             },
-            "RPORT": {
+            "LPORT": {
                 "default": 19954,
                 "convert": self.convert.int_field,
                 "desc": "监听端口",
@@ -89,10 +89,10 @@ class PLScan(BGExploit):
         pass
        
     def exploit(self):
-        HOST = self.option.RHOST['default']
-        PORT = self.option.RPORT['default']
+        HOST = self.option.LHOST['default']
+        PORT = self.option.LPORT['default']
         try:
-            sock = TCP().create_tcp_connect(HOST,PORT)
+            sock = TCP().create_tcp_server(HOST,PORT)
             NC.nc(sock)
         except:
             print_error("[-] Handler Error.")

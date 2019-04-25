@@ -49,6 +49,7 @@ def shellsploit():
                     #执行自定义脚本处理程序
                     from defcontrol import DPLline
                     DPLline().control(terminal)
+                    shellsploit()
                 else:    
                     PLline().control(terminal)
                     shellsploit()

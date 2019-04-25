@@ -63,5 +63,5 @@ class Payload(Shellcode):
         
         covert_shellcode = CovertBin(self.stager).little_covert_all(rhost,rport)
         customized_shellcode = "\\x" + '\\x'.join(covert_shellcode[i:i + 2] for i in range(0, len(covert_shellcode), 2))
-        shellcode_info = EncoderModule(customized_shellcode).do_the_magic()
+        self.shellcode_info = EncoderModule(customized_shellcode).do_the_magic()
 
